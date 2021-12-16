@@ -1,91 +1,111 @@
-<div class="container d-flex flex-wrap justify-content-around">
-  <a href="/uploadfile">
-    <div class="card my-3" style="width: 18rem;">
-      <img src="https://picsum.photos/300/250/?random=1">
-      <div class="card-body">
-        <h4 class="text-center">第一週作業 正音練習</h4>
-      </div>
+<div class="row w-100 p-0 m-0">
+  <section class="sidebar-section col-12 col-md-3 bg-white">
+    <div class="sidebar-img text-center w-100 p-1">
+      <img class="d-block m-auto" src="https://picsum.photos/180/180/?random=1">
+      <span class="d-block mt-2">管理員，您好</span>
     </div>
-  </a>
-  
-  <a href="/uploadfile">
-    <div class="card my-3" style="width: 18rem;">
-      <img src="https://picsum.photos/300/250/?random=2">
-      <div class="card-body">
-        <h4 class="text-center">第二週作業 高音練習</h4>
+    <hr />
+    <a href="">
+      <div class="manage-classes text-center p-2">
+        <span class="font-weight-bold">管理所有班級</span>
       </div>
-    </div>
-  </a>
-    
-  <a href="/uploadfile">
-    <div class="card my-3" style="width: 18rem;">
-      <img src="https://picsum.photos/300/250/?random=3">
-      <div class="card-body">
-        <h4 class="text-center">第三週作業 低音練習</h4>
+    </a>
+    <a href="">
+      <div class="manage-classes text-center p-2">
+        <span class="font-weight-bold">管理使用者權限</span>
       </div>
-    </div>
-  </a>
-  
-  <a href="/uploadfile">
-    <div class="card my-3" style="width: 18rem;">
-      <img src="https://picsum.photos/300/250/?random=4">
-      <div class="card-body">
-        <h4 class="text-center">第四週作業 曲折調練習</h4>
+    </a>
+    <a href="">
+      <div class="manage-classes text-center p-2">
+        <span class="font-weight-bold">瀏覽所有學員音檔</span>
       </div>
-    </div>
-  </a>
+    </a>
+    <a href="">
+      <div class="manage-classes text-center p-2">
+        <span class="font-weight-bold">點評音檔作業</span>
+      </div>
+    </a>
+  </section>
 
-  <a href="/uploadfile">
-    <div class="card my-3" style="width: 18rem;">
-      <img src="https://picsum.photos/300/250/?random=4">
-      <div class="card-body">
-        <h4 class="text-center">第四週作業 曲折調練習</h4>
+  <section class="classes-section col-12 col-md-9">
+    <div class="classes-container">
+      <div class="classes-title d-flex justify-content-between my-3">
+        <h3 class="font-weitht-bold">管理所有班級權限</h3>
+        <a href="/admin/classes/create" class="btn btn-primary">新增班級</a>
       </div>
-    </div>
-  </a>
+      
+      <table class="classes-table bg-white w-100">
+        <thead class="thead-dark bg-info bg-gradient w-100">
+          <tr class="w-100 text-white">
+            <th scope="col-3" class="p-1">班級</th>
+            <th scope="col-3" class="p-1">編輯</th>
+            <th scope="col-3" class="p-1">狀態</th>
+            <th scope="col-3" class="p-1">*</th>
+          </tr>
+        </thead>
 
-  <a href="/uploadfile">
-    <div class="card my-3" style="width: 18rem;">
-    <img src="https://picsum.photos/300/250/?random=5">
+        <tbody>
+          {{#each classes}}
+          <tr>
+            <th scope="row" class="p-1">
+              {{this.name}}
+            </th>
+            <td class="p-1">
+              <a href="">編輯</a>
+            </td>
+            {{#if this.isPublic}}
+            <td class="p-1">
+              公開
+            </td>
+            {{else}}
+            <td class="p-1">
+              不公開
+            </td>
+            {{/if}}
+            <td class="p-1">
+              <a href="">刪除</a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody> 
+      </table>
+    </div>
+  </section>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{!-- {{#each classes}}
+<a href="/class/{{this.id}}">
+  <div class="card my-3" style="width: 18rem;">
+    <img src="{{this.image}}" alt="">
     <div class="card-body">
-      <h4 class="text-center">第五週作業 膛音練習</h4>
+      <h4 class="text-center">{{{this.name}}}</h4>
     </div>
   </div>
-  </a>
-  
-  <a href="/uploadfile">
-    <div class="card my-3" style="width: 18rem;">
-      <img src="https://picsum.photos/300/250/?random=6">
-      <div class="card-body">
-        <h4 class="text-center">第六週作業 噴口音練習</h4>
-      </div>
-    </div>
-  </a>
+</a>
+{{/each}} --}}
 
-  <a href="/uploadfile">
-    <div class="card my-3" style="width: 18rem;">
-      <img src="https://picsum.photos/300/250/?random=6">
-      <div class="card-body">
-        <h4 class="text-center">第六週作業 噴口音練習</h4>
-      </div>
-    </div>
-  </a>
-  
-  <a href="/uploadfile">
-    <div class="card my-3" style="width: 18rem;">
-      <img src="https://picsum.photos/300/250/?random=7">
-      <div class="card-body">
-        <h4 class="text-center">第七週作業 全音練習</h4>
-      </div>
-    </div>
-  </a>
-  
-  <a href="/uploadfile">
-    <div class="card my-3" style="width: 18rem;">
-      <img src="https://picsum.photos/300/250/?random=8">
-      <div class="card-body">
-        <h4 class="text-center">第八週作業 綜合練習</h4>
-      </div>
-    </div>
-  </a>
-</div>
+
+
+
