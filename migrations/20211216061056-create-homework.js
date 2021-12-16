@@ -9,7 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       image: {
         type: Sequelize.STRING
@@ -18,7 +19,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       isPublic: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       ClassId: {
         type: Sequelize.INTEGER
