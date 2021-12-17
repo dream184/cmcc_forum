@@ -1,113 +1,46 @@
-<div class="row w-100 p-0 m-0">
-  <section class="sidebar-section col-12 col-md-3 bg-white">
-    <div class="sidebar-img text-center w-100 p-1">
-      <img class="d-block m-auto" src="https://picsum.photos/180/180/?random=1">
-      <span class="d-block mt-2">管理員，您好</span>
+<section class="classes-section col-12 col-md-9">
+  <div class="classes-container">
+    <div class="classes-title d-flex justify-content-between my-3">
+      <h3 class="font-weitht-bold">管理所有班級權限</h3>
+      <a href="/admin/classes/create" class="btn btn-primary text-center">新增班級</a>
     </div>
-    <hr />
-    <a href="">
-      <div class="manage-classes text-center p-2">
-        <span class="font-weight-bold">管理所有班級</span>
-      </div>
-    </a>
-    <a href="">
-      <div class="manage-classes text-center p-2">
-        <span class="font-weight-bold">管理使用者權限</span>
-      </div>
-    </a>
-    <a href="">
-      <div class="manage-classes text-center p-2">
-        <span class="font-weight-bold">瀏覽所有學員音檔</span>
-      </div>
-    </a>
-    <a href="">
-      <div class="manage-classes text-center p-2">
-        <span class="font-weight-bold">點評音檔作業</span>
-      </div>
-    </a>
-  </section>
+    
+    <table class="classes-table bg-white w-100">
+      <thead class="thead-dark bg-info bg-gradient w-100">
+        <tr class="w-100 text-white">
+          <th scope="col-3" class="p-1">班級</th>
+          <th scope="col-3" class="p-1">編輯</th>
+          <th scope="col-3" class="p-1">狀態</th>
+          <th scope="col-3" class="p-1">*</th>
+        </tr>
+      </thead>
 
-  <section class="classes-section col-12 col-md-9">
-    <div class="classes-container">
-      <div class="classes-title d-flex justify-content-between my-3">
-        <h3 class="font-weitht-bold">管理所有班級權限</h3>
-        <a href="/admin/classes/create" class="btn btn-primary text-center">新增班級</a>
-      </div>
-      
-      <table class="classes-table bg-white w-100">
-        <thead class="thead-dark bg-info bg-gradient w-100">
-          <tr class="w-100 text-white">
-            <th scope="col-3" class="p-1">班級</th>
-            <th scope="col-3" class="p-1">編輯</th>
-            <th scope="col-3" class="p-1">狀態</th>
-            <th scope="col-3" class="p-1">*</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {{#each classes}}
-          <tr>
-            <th scope="row" class="p-1">
-              {{this.name}}
-            </th>
-            <td class="p-1">
-              <a href="/admin/classes/{{this.id}}/edit">編輯</a>
-            </td>
-            {{#if this.isPublic}}
-            <td class="p-1">
-              公開
-            </td>
-            {{else}}
-            <td class="p-1">
-              不公開
-            </td>
-            {{/if}}
-            <td class="p-1">
-              <form action="/admin/classes/{{this.id}}?_method=DELETE" method="POST">
-                <button type="submit" class="btn btn-danger">刪除</button>
-              </form>
-            </td>
-          </tr>
-          {{/each}}
-        </tbody> 
-      </table>
-    </div>
-  </section>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{{!-- {{#each classes}}
-<a href="/class/{{this.id}}">
-  <div class="card my-3" style="width: 18rem;">
-    <img src="{{this.image}}" alt="">
-    <div class="card-body">
-      <h4 class="text-center">{{{this.name}}}</h4>
-    </div>
+      <tbody>
+        {{#each classes}}
+        <tr>
+          <th scope="row" class="p-1">
+            {{this.name}}
+          </th>
+          <td class="p-1">
+            <a href="/admin/classes/{{this.id}}/edit">編輯</a>
+          </td>
+          {{#if this.isPublic}}
+          <td class="p-1">
+            公開
+          </td>
+          {{else}}
+          <td class="p-1">
+            不公開
+          </td>
+          {{/if}}
+          <td class="p-1">
+            <form action="/admin/classes/{{this.id}}?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-danger">刪除</button>
+            </form>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody> 
+    </table>
   </div>
-</a>
-{{/each}} --}}
-
-
-
-
+</section>

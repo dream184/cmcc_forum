@@ -8,22 +8,20 @@ const adminController = {
   getClasses: (req, res) => {
     Class.findAll({ raw: true })
       .then((classes) => {
-        return res.render('admin/classes', { classes: classes})
+        return res.render('admin/classes', { classes: classes, layout: 'admin'})
       })
   },
   createClass: (req, res) => {
-    return res.render('admin/createClass')
+    return res.render('admin/createClass', {layout: 'admin'})
   },
   editClass: (req, res) => {
     return Class.findByPk(req.params.id).then((selectedClass) => {
-      return res.render('admin/editClass', { class: selectedClass.toJSON() })
+      return res.render('admin/editClass', { class: selectedClass.toJSON(), layout: 'admin' })
     })
   },
   putClass: (req, res) => {
     const { file } = req
     const { name, isPublic } = req.body
-
-    
 
     if(file) {
       return Class.findByPk(req.params.id).then((selectedClass) => {
