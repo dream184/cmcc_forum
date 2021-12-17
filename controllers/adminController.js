@@ -14,6 +14,53 @@ const adminController = {
   createClass: (req, res) => {
     return res.render('admin/createClass')
   },
+  editClass: (req, res) => {
+    return Class.findByPk(req.params.id).then((selectedClass) => {
+      return res.render('admin/editClass', { class: selectedClass.toJSON() })
+    })
+  },
+  putClass: (req, res) => {
+    const { file } = req
+    const { name, isPublic } = req.body
+
+    
+
+    if(file) {
+      return Class.findByPk(req.params.id).then((selectedClass) => {
+        if(name !== selectedClass.name) {
+          googleDrive.renameFile(name, selectedClass.googleFolderId)
+        }
+        googleDrive.deleteFile(selectedClass.image)
+        googleDrive.uploadImage(file, name, classImgFolderId).then((uploadedId) => {
+          googleDrive.becomePublic(uploadedId).then((publicImage) => {
+            return selectedClass.update({
+              name: name,
+              isPublic: isPublic,
+              image: publicImage.id
+            })
+              .then(() => {
+                return res.redirect('/admin/classes')
+              })
+              .catch((error) => console.log(error))  
+          })
+        })
+      })
+    } else {
+      return Class.findByPk(req.params.id).then((selectedClass) => {
+        if(name !== selectedClass.name) {
+          googleDrive.renameFile(name, selectedClass.googleFolderId)
+        }
+        return selectedClass.update({
+          name: name,
+          isPublic: isPublic,
+        })
+          .then(() => {
+            return res.redirect('/admin/classes')
+          })
+          .catch((error) => console.log(error))  
+      })
+    }
+  },
   postClass: (req, res) => {
     const { file } = req
     const { name, isPublic } = req.body

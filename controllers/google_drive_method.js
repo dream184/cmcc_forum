@@ -38,7 +38,7 @@ async function createFolder(className, parentsFolder) {
       resource: fileMetadata,
       fields: 'id'
     })
-    console.log('folder_id:', response.data.id)
+    console.log('Created new google folder, folder_id:', response.data.id)
     return response.data
   } catch(error) {
     console.log(error.message)
@@ -61,7 +61,7 @@ async function uploadImage(file, name, parentsFolderId) {
       media: media,
       fields: 'id', 
     })
-    console.log(response.data.id)
+    console.log('Uploaded image to google drive, image_id:',response.data.id)
     return response.data.id
   } catch (error) {
     console.log(error.message)
@@ -79,18 +79,32 @@ async function becomePublic(uploadedId) {
       }
     })
     const result = await drive.files.get({fileId: fileId})
+    console.log('file status is public')
     return result.data
   } catch (error) {
     console.log(error.message)
   }
-}  
+}
+
+async function renameFile(name, renameFileId) {
+  try {
+    const fileId = renameFileId
+    const response = await drive.files.update({
+      fileId: fileId,
+      resource: {'name': name}
+    })
+    console.log(response.data, response.status)
+  } catch (error){
+    console.log(error.message)
+  }
+}
 
 async function deleteFile(fileId) {
   try {
     const response = await drive.files.delete({
       'fileId': fileId
     });
-    console.log(response.data, response.status)
+    console.log('Deleted file on google drive',response.data, response.status)
   } catch (error) {
     console.log(error.message)
   }
@@ -100,5 +114,6 @@ module.exports = {
   createFolder,
   uploadImage,
   becomePublic,
+  renameFile,
   deleteFile
 }
