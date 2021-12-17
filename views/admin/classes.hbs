@@ -63,7 +63,9 @@
             </td>
             {{/if}}
             <td class="p-1">
-              <a href="">刪除</a>
+              <form action="/admin/classes/{{this.id}}?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-danger">刪除</button>
+              </form>
             </td>
           </tr>
           {{/each}}

@@ -17,16 +17,16 @@ const adminController = {
   postClass: (req, res) => {
     const { file } = req
     const { name, isPublic } = req.body
-    console.log(file, name, isPublic)
 
     if (file) {
       googleDrive.uploadImage(file, name, classImgFolderId).then((uploadedId) => {
         return googleDrive.becomePublic(uploadedId).then((publicImage) => {
-          return googleDrive.createFolder(name, rootFolderId).then((folderId) => {
+          return googleDrive.createFolder(name, rootFolderId).then((folder) => {
             Class.create({
               name: name,
               isPublic: isPublic,
               image: publicImage.id,
+              googleFolderId: folder.id
             })
               .then(() => {
                 return res.redirect('/admin/classes')
@@ -36,11 +36,12 @@ const adminController = {
         })
       })
     } else {
-      return googleDrive.createFolder(name, rootFolderId).then((folderId) => {
+      return googleDrive.createFolder(name, rootFolderId).then((folder) => {
         return Class.create({
           name: name,
           isPublic: isPublic,
           image: '',
+          googleFolderId: folder.id
         })
           .then(() => {
             return res.redirect('/admin/classes')
@@ -48,7 +49,17 @@ const adminController = {
           .catch((error) => console.log(error))
       })
     }
+  },
+  removeClass: (req, res) => {
+    return Class.findByPk(req.params.id).then((selectedClass) => {
+      selectedClass.destroy().then(() => {
+        googleDrive.deleteFile(selectedClass.googleFolderId)
+        googleDrive.deleteFile(selectedClass.image)
+      })
+        .then(() => {
+          return res.redirect('/admin/classes')
+        })   
+    })
   }
 }
-
 module.exports = adminController

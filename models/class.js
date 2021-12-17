@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     group: DataTypes.STRING,
     image: DataTypes.STRING,
+    googleFolderId: DataTypes.STRING,
     isPublic: DataTypes.BOOLEAN
   }, {
     sequelize,

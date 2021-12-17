@@ -85,8 +85,20 @@ async function becomePublic(uploadedId) {
   }
 }  
 
+async function deleteFile(fileId) {
+  try {
+    const response = await drive.files.delete({
+      'fileId': fileId
+    });
+    console.log(response.data, response.status)
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
 module.exports = {
   createFolder,
   uploadImage,
-  becomePublic
+  becomePublic,
+  deleteFile
 }

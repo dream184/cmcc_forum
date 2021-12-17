@@ -7,5 +7,5 @@ module.exports = (app) => {
   app.get('/admin/classes', adminController.getClasses)
   app.get('/admin/classes/create', adminController.createClass)
   app.post('/admin/classes', upload.single('imageFile'),adminController.postClass)
-
+  app.delete('/admin/classes/:id', adminController.removeClass)
 }
