@@ -1,0 +1,44 @@
+<section class="homework-section col-12 col-md-9">
+  <div class="homework-container">
+    <h3 class="text-center">建立新的作業</h3>
+    <form action="/admin/classes/{{class.id}}/homeworks" method="POST" enctype="multipart/form-data">
+      <div class="homework">
+        <div class="image-container">
+          <img class="d-block m-auto p-3" src="">
+        </div>
+        <div class="homework-container d-flex flex-column bg-white mx-auto rounded-5 p-3">
+          <div class="homework-image mb-2">
+            <label for="homework-image" class="font-weight-bold w-100">上傳圖片</label>
+            <input class="w-100" type="file" id="homework-image" id="homework-image" name="imageFile">
+          </div>
+          <div class="homework-name mb-2">
+            <label for="homework-name" class="font-weight-bold">作業名稱</label>
+            <input type="text" class="w-100" id="homeworkName" name="name">
+          </div>
+          <div class="homework-description mb-2">
+            <label for="homework-description" class="font-weight-bold">作業描述</label>
+            <textarea id="homework-description" class="w-100" name="description" rows="5"></textarea>
+          </div>
+          <div class="expiredTime mb-2">
+            <label for="expiredTime" class="font-weight-bold">截止時間</label>
+            <input type="date" class="w-100" id="expiredTime" name="expiredTime">
+          </div>
+          <div class="homework-status mb-2">
+            <span class="font-weight-bold">作業狀態</span>
+            <input class="status" type="radio" name="isPublic" id="public" value="true">
+            <label class="form-check-label" for="homework-status">
+              公開
+            </label>
+            <input class="status" type="radio" name="isPublic" id="private" value="false">
+            <label class="form-check-label" for="homework-status">
+              不公開
+            </label> 
+          </div>
+          <div class="submit-button mb-2">
+            <button type="submit" class="btn btn-primary w-100">新增</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

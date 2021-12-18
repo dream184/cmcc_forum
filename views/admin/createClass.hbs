@@ -1,36 +1,36 @@
 <section class="class-section col-12 col-md-9">
-    <div class="class-container">
-      <h3 class="text-center">建立新的班級</h3>
-      <form action="/admin/classes" method="POST" enctype="multipart/form-data">
-        <div class="class">
-          <div class="image-container">
-            <img class="d-block m-auto p-3" src="https://picsum.photos/200/150/?random=1">
+  <div class="class-container">
+    <h3 class="text-center">建立新的班級</h3>
+    <form action="/admin/classes" method="POST" enctype="multipart/form-data">
+      <div class="class">
+        <div class="image-container">
+          <img class="d-block m-auto p-3" src="https://picsum.photos/200/150/?random=1">
+        </div>
+        <div class="class-container d-flex flex-column bg-white mx-auto rounded-5 p-3">
+          <div class="class-image mb-2">
+            <label for="class-image" class="font-weight-bold w-100">上傳圖片</label>
+            <input class="w-100" type="file" id="class-image" id="class-image" name="imageFile">
           </div>
-          <div class="class-container d-flex flex-column bg-white mx-auto rounded-5 p-3">
-            <div class="class-image mb-2">
-              <label for="class-image" class="font-weight-bold w-100">上傳圖片</label>
-              <input class="w-100" type="file" id="class-image" id="class-image" name="imageFile">
-            </div>
-            <div class="class-name mb-2">
-              <label for="class-name" class="font-weight-bold">班級名稱</label>
-              <input type="text" class="w-100" id="className" name="name">
-            </div>
-            <div class="class-status mb-2">
-              <span class="font-weight-bold">班級狀態</span>
-              <input class="status" type="radio" name="isPublic" id="public" value="true">
-              <label class="form-check-label" for="class-status">
-                公開
-              </label>
-              <input class="status" type="radio" name="isPublic" id="private" value="false">
-              <label class="form-check-label" for="class-status">
-                不公開
-              </label> 
-            </div>
-            <div class="submit-button mb-2">
-              <button type="submit" class="btn btn-primary w-100">新增</button>
-            </div>
+          <div class="class-name mb-2">
+            <label for="class-name" class="font-weight-bold">班級名稱</label>
+            <input type="text" class="w-100" id="className" name="name">
+          </div>
+          <div class="class-status mb-2">
+            <span class="font-weight-bold">班級狀態</span>
+            <input class="status" type="radio" name="isPublic" id="public" value="true">
+            <label class="form-check-label" for="class-status">
+              公開
+            </label>
+            <input class="status" type="radio" name="isPublic" id="private" value="false">
+            <label class="form-check-label" for="class-status">
+              不公開
+            </label> 
+          </div>
+          <div class="submit-button mb-2">
+            <button type="submit" class="btn btn-primary w-100">新增</button>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
+  </div>
 </section>

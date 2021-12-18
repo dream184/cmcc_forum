@@ -1,9 +1,11 @@
+const req = require('express/lib/request')
 const db = require('../models')
 const googleDrive = require('./google_drive_method.js')
 const Class = db.Class
 const Homework = db.Homework
 const rootFolderId = process.env.GOOGLE_ROOT_FOLDER_ID
 const classImgFolderId = process.env.GOOGLE_CLASS_IMAGE_FOLDER_ID
+const homeworkImgFolderId = process.env.GOOGLE_HOMEWORK_IMAGE_FOLDER_ID
 
 const adminController = {
   getClasses: (req, res) => {
@@ -108,14 +110,90 @@ const adminController = {
     })
   },
   getHomeworks: (req, res) => {
-    console.log('====================')
     return Class.findOne({
       where: { id: req.params.id },
-      include: [{model:Homework}]
+      include: [Homework]
     })
       .then((selectedClass) => {
-      console.log(selectedClass)
-    }).catch(err => console.log(err))
+        return res.render('admin/homework', {
+          class: selectedClass.toJSON(),
+          layout: 'admin'
+        })
+      })
+  },
+  createHomework: (req, res) => {
+    return Class.findOne({
+      where: { id: req.params.id },
+      include: [Homework]
+    })
+      .then((selectedClass) => {
+        return res.render('admin/createHomework', { 
+          class: selectedClass.toJSON(), 
+          layout: 'admin' 
+        })
+      })
+  },
+  postHomework: (req, res) => {
+    const { file } = req
+    const { name, description, expiredTime, isPublic } = req.body
+    const classId = req.params.id
+
+    if (file) {
+      googleDrive.uploadImage(file, name, homeworkImgFolderId).then((uploadedId) => {
+        return googleDrive.becomePublic(uploadedId).then((publicImage) => {
+          return Class.findByPk(classId).then((selectedClass) => {
+            return googleDrive.createFolder(name, selectedClass.googleFolderId).then((folder) => {
+              Homework.create({
+                name: name,
+                isPublic: isPublic,
+                image: publicImage.id,
+                description: description,
+                googleFolderId: folder.id,
+                expiredTime: expiredTime,
+                ClassId: classId
+              })
+                .then(() => {
+                  return res.redirect(`/admin/classes/${classId}/homeworks`)
+                })
+                .catch((error) => console.log(error))
+            })
+          })
+        })
+      })
+    } else {
+      Class.findByPk(req.params.id).then((selectedClass) => {
+        return googleDrive.createFolder(name, selectedClass.googleFolderId).then((folder) => {
+          return Homework.create({
+            name: name,
+            isPublic: isPublic,
+            image: '',
+            description: description,
+            googleFolderId: folder.id,
+            expiredTime: expiredTime,
+            ClassId: req.params.id
+          })
+            .then(() => {
+              return res.redirect(`/admin/classes/${classId}/homeworks`)
+            })
+            .catch((error) => console.log(error))
+        })
+      })
+      
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 
 }

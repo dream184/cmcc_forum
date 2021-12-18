@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     isPublic: DataTypes.BOOLEAN,
     expiredTime: DataTypes.DATE,
-    ClassId: DataTypes.INTEGER
+    ClassId: DataTypes.INTEGER,
+    googleFolderId: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Homework',
