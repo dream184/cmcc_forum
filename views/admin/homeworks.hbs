@@ -1,23 +1,23 @@
-<section class="classes-section col-12 col-md-9">
-  <div class="classes-container">
-    <div class="classes-title d-flex justify-content-between my-3">
-      <h3 class="font-weitht-bold">管理所有班級權限</h3>
-      <a href="/admin/classes/create" class="btn btn-primary text-center">新增班級</a>
+<section class="homeworks-section col-12 col-md-9">
+  <div class="homeworlds-container">
+    <div class="homeworks-title d-flex justify-content-between my-3">
+      <h3 class="class-name font-weight-bold">聲音表達基礎班第140期</h3>
+      <a href="/admin/class/homeworks/create" class="btn btn-primary text-center">新增班級</a>
     </div>
     
-    <table class="classes-table bg-white w-100">
+    <table class="homework-table bg-white w-100">
       <thead class="thead-dark bg-info bg-gradient w-100">
         <tr class="w-100 text-white">
-          <th scope="col-3" class="p-1">班級</th>
-          <th scope="col-3" class="p-1">狀態</th>
           <th scope="col-3" class="p-1">作業</th>
+          <th scope="col-3" class="p-1">狀態</th>
+          <th scope="col-3" class="p-1">到期日</th>
           <th scope="col-3" class="p-1">編輯</th>
           <th scope="col-3" class="p-1">*</th>
         </tr>
       </thead>
 
       <tbody>
-        {{#each classes}}
+        {{#each homeworks}}
         <tr>
           <th scope="row" class="p-1">
             {{this.name}}
@@ -32,13 +32,14 @@
           </td>
           {{/if}}
           <th scope="row" class="p-1">
-            <a href="/admin/classes/{{this.id}}/homeworks">管理</a>
+            {{this.expiredTime}}
           </th>
+
           <td class="p-1">
-            <a href="/admin/classes/{{this.id}}/edit">編輯</a>
+            <a href="/admin/class/homeworks/{{this.id}}/edit">編輯</a>
           </td>
           <td class="p-1">
-            <form action="/admin/classes/{{this.id}}?_method=DELETE" method="POST">
+            <form action="/admin/class/homeworks/{{this.id}}?_method=DELETE" method="POST">
               <button type="submit" class="btn btn-danger">刪除</button>
             </form>
           </td>

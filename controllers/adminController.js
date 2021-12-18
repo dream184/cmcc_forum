@@ -1,6 +1,7 @@
 const db = require('../models')
 const googleDrive = require('./google_drive_method.js')
 const Class = db.Class
+const Homework = db.Homework
 const rootFolderId = process.env.GOOGLE_ROOT_FOLDER_ID
 const classImgFolderId = process.env.GOOGLE_CLASS_IMAGE_FOLDER_ID
 
@@ -105,6 +106,17 @@ const adminController = {
           return res.redirect('/admin/classes')
         })   
     })
+  },
+  getHomeworks: (req, res) => {
+    console.log('====================')
+    return Class.findOne({
+      where: { id: req.params.id },
+      include: [{model:Homework}]
+    })
+      .then((selectedClass) => {
+      console.log(selectedClass)
+    }).catch(err => console.log(err))
   }
+
 }
 module.exports = adminController

@@ -13,4 +13,6 @@ module.exports = (app) => {
   app.post('/admin/classes', upload.single('imageFile'), adminController.postClass)
   
   app.delete('/admin/classes/:id', adminController.removeClass)
+
+  app.get('/admin/classes/:id/homeworks',adminController.getHomeworks)
 }
