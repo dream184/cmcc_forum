@@ -1,5 +1,5 @@
-const req = require('express/lib/request')
 const db = require('../models')
+const homework = require('../models/homework')
 const googleDrive = require('./google_drive_method.js')
 const Class = db.Class
 const Homework = db.Homework
@@ -180,21 +180,71 @@ const adminController = {
       })
       
     }
+  },
+  editHomework: (req, res) => {
+    console.log(req.params)
+    return Homework.findByPk(req.params.id).then((homework) => {
+      return res.render('admin/editHomework', { homework: homework.toJSON(), layout: 'admin' })
+    })
+  },
+  putHomework: (req, res) => {
+    const { file } = req
+    const { name, description, expiredTime, isPublic } = req.body
+    console.log(req.body)
+    console.log(req.query)
+    console.log(file)
 
+    if(file) {
+      return Homework.findByPk(req.params.id).then((homework) => {
+        if(name !== homework.name) {
+          googleDrive.renameFile(name, homework.googleFolderId)
+        }
+        googleDrive.deleteFile(homework.image)
+        googleDrive.uploadImage(file, name, homeworkImgFolderId).then((uploadedId) => {
+          googleDrive.becomePublic(uploadedId).then((publicImage) => {
+            return homework.update({
+              name: name,
+              isPublic: isPublic,
+              image: publicImage.id,
+              description: description,
+              expiredTime: expiredTime
+            })
+              .then(() => {
+                return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
+              })
+              .catch((error) => console.log(error))  
+          })
+        })
+      })
+    } else {
+      return Homework.findByPk(req.params.id).then((homework) => {
+        if(name !== homework.name) {
+          googleDrive.renameFile(name, homework.googleFolderId)
+        }
+        return homework.update({
+          name: name,
+          isPublic: isPublic,
+          description: description,
+          expiredTime: expiredTime
+        })
+          .then(() => {
+            return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
+          })
+          .catch((error) => console.log(error))  
+      })
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
+  },
+  deleteHomework: (req, res) => {
+    return Homework.findByPk(req.params.id).then((homework) => {
+      homework.destroy().then(() => {
+        googleDrive.deleteFile(homework.googleFolderId)
+        googleDrive.deleteFile(homework.image)
+      })
+        .then(() => {
+          return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
+        })   
+    })
   }
-
 }
 module.exports = adminController

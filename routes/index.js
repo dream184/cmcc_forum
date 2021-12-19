@@ -18,4 +18,9 @@ module.exports = (app) => {
   app.get('/admin/classes/:id/homeworks',adminController.getHomeworks)
   app.get('/admin/classes/:id/homeworks/create', adminController.createHomework)
   app.post('/admin/classes/:id/homeworks', upload.single('imageFile'), adminController.postHomework)
+  app.get('/admin/classes/:id/homeworks/:id/edit', adminController.editHomework)
+  app.put('/admin/classes/:id/homeworks/:id', upload.single('imageFile'), adminController.putHomework)
+  app.delete('/admin/classes/:id/homeworks/:id', adminController.deleteHomework )
 }
+
+

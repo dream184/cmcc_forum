@@ -4,6 +4,7 @@ const { google } = require('googleapis')
 const googleApi = require('../config/google_api.js').google_api
 const privatekey = JSON.parse(JSON.stringify(googleApi))
 
+const pageToken = null
 
 // configure a JWT auth client
 let jwtClient = new google.auth.JWT(
@@ -110,10 +111,28 @@ async function deleteFile(fileId) {
   }
 }
 
+
+  async function searchfile() {
+    try {
+      const response = await drive.files.list({
+        q: "mimeType='application/vnd.google-apps.folder'",
+        fields: 'nextPageToken, files(id, name)',
+        spaces: 'drive',
+        pageToken: pageToken
+      })
+      console.log(response.data.files)
+      return response.data
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+
 module.exports = {
   createFolder,
   uploadImage,
   becomePublic,
   renameFile,
-  deleteFile
+  deleteFile,
+  searchfile
 }

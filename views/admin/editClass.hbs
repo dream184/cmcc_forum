@@ -18,11 +18,11 @@
             </div>
             <div class="class-status mb-2">
               <span class="font-weight-bold">班級狀態</span>
-              <input class="status" type="radio" name="isPublic" id="public" value="true">
-              <label class="form-check-label" for="class-status">
+              <input class="status" type="radio" name="isPublic" id="public" value="true" {{#if isPublic}}checked{{/if}}>
+              <label class="form-check-label" for="class-status" >
                 公開
               </label>
-              <input class="status" type="radio" name="isPublic" id="private" value="false">
+              <input class="status" type="radio" name="isPublic" id="private" value="false" {{#unless isPublic}}checked{{/unless}}>
               <label class="form-check-label" for="class-status">
                 不公開
               </label> 
@@ -34,6 +34,7 @@
         
         </div>
         <hr>
+        {{#if homeworkfds}}
         <div class="row w-100 m-0 p-0">         
           <h4 class="col-12 text-center bg-white m-0 p-3">新增每周作業</h3>
           <div class="homework-image-container col-12 col-md-4 bg-white">
@@ -62,7 +63,7 @@
           <hr />
         </div>
         <hr />
-        {{#if homework}}
+        
         <div class="row w-100 m-0 p-0">
           <h4 class="col-12 text-center bg-white m-0 p-3">已有的每周作業</h3>      
           <div class="homework-image-container col-12 col-md-4 bg-white">

@@ -36,10 +36,10 @@
           </th>
 
           <td class="p-1">
-            <a href="/admin/class/homeworks/{{this.id}}/edit">編輯</a>
+            <a href="/admin/classes/{{../class.id}}/homeworks/{{this.id}}/edit">編輯</a>
           </td>
           <td class="p-1">
-            <form action="/admin/class/homeworks/{{this.id}}?_method=DELETE" method="POST">
+            <form action="/admin/classes/{{../class.id}}/homeworks/{{this.id}}?_method=DELETE" method="POST">
               <button type="submit" class="btn btn-danger">刪除</button>
             </form>
           </td>
