@@ -1,5 +1,4 @@
 const db = require('../models')
-const homework = require('../models/homework')
 const googleDrive = require('./google_drive_method.js')
 const Class = db.Class
 const Homework = db.Homework

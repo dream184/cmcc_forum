@@ -1,6 +1,6 @@
 <div class="container d-flex flex-wrap justify-content-around">
-  {{#each classes}}
-  <a href="/classes/{{this.id}}">
+  {{#each class.Homework}}
+  <a href="/classes/{{../class.id}}/homeworks/{{this.id}}">
     <div class="card my-3" style="width: 18rem;">
       <img src="https://drive.google.com/uc?export=view&id={{{this.image}}}" alt="">
       <div class="card-body p-0">

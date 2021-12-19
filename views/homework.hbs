@@ -1,0 +1,151 @@
+<style>
+/* Start  styling the page */
+.container-audio {
+    width: 100%; 
+    height: auto;
+    border-radius: 5px;
+    background-color: #F1F3F4;
+    color: #fff;
+    overflow: hidden;
+}
+audio {
+  width:100%;
+}
+
+@media screen and (min-width: 768px) {
+  .upload-file-container {
+    position: relative;
+    left: 67%;
+  }
+  .posts-container {
+    position: relative;
+    right:33%;
+  }
+}
+</style>
+
+
+<div class="banner mb-2" style="background-color:#F0F0F0;">
+  <div class="row m-auto">
+    <div class="col-12 col-md-5">
+      <div class="image-container d-flex justify-content-center p-2">
+        <img src="https://picsum.photos/300/250/?random=5">
+      </div>
+    </div>
+    
+    <div class="col-12 col-md-7">
+      <div class="banner-content p-3">  
+        <h3 class="text-center">第一週 正音練習</h3>
+        <p class="p-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit modi minus molestias hic mollitia.
+          Officia modi,
+          sit possimus sapiente adipisci voluptatum, neque odit delectus dolorum totam impedit est esse porro.</p>
+      </div>
+    </div>    
+  </div>
+</div>
+
+<div class="container" style="background-color:#F0F0F0;">
+  <div class="row m-auto">
+    <div class="upload-file-container col-12 col-md-4 mb-2">
+      <div class="uploadfile-section" style="background-color:#F0F0F0;">
+        <div class="input-group d-flex justify-content-center m-auto">
+          <form action="/uploadfile" method="POST" enctype="multipart/form-data" class="border p-4" style="border-radius:15px; background-color:#FFF">
+            <h3>音檔上傳區</h3>
+            <hr>
+            <div class="form-group m-auto">
+              <label for="voicefile">在此上傳音檔</label>
+              <input type="file" id="voicefile" name='voicefile' class="form-control">
+              <button type="submit" class="btn btn-primary w-100 mt-2">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    {{!-- {{#if voicefile}} --}}
+      <div class="posts-container col-12 col-md-8">
+        <div class="posts-section">
+          <div class="post p-1">
+            <div class="row m-auto" style="background-color: #fff; border-radius:15px;">
+              <div class="col-6">
+                <div class="author-img d-flex justify-content-center p-1">
+                  <i class="fas fa-user-circle text-secondary" style="font-size: 35px;"></i>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="voicefile-name d-flex justify-content-center align-items-center p-1">
+                  <span>第一週作業</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="author-name d-flex justify-content-center p-1">
+                  <h4>曾阿明</h4>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="upload-time d-flex justify-content-center p-1">
+                  <span class="d-block">上傳日期: 2021/11/30</span>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="container-audio">
+                  <audio controls>
+                    <source src="{{voicefile.url}}" type="audio/mpeg">
+                    Your browser dose not Support the audio Tag
+                  </audio>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <hr class="m-1"/>
+                <div class="feedback-button d-flex justify-content-around">
+                  <a class="thumb btn "><i class="far fa-thumbs-up"></i>讚</a>
+                  <a class="favorite btn"><i class="fas fa-heart"></i>收藏</a>
+                  <a class="feedback btn"><i class="fas fa-comments"></i>回饋</a>
+                </div>
+                <hr class="m-1"/>
+              </div>
+
+              <div class="col-12">
+                <div class="feedback-area">
+                  <div class="post-feedback d-flex">  
+                    <div class="user-image">
+                      <i class="fas fa-user-circle text-secondary" style="font-size: 35px;"></i>
+                    </div>
+                    <div class="feedback-content m-2 p-1 border">
+                      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequuntur repellendus explicabo fugiat. Unde id facere perspiciatis, ullam magnam nihil qui sunt suscipit, velit nemo soluta dolorem non exercitationem ab?
+                    </div>
+                  </div>
+                </div>
+
+              </div>    
+              
+              <div class="col-12">
+                <div class="feedback-area">
+                  <div class="post-feedback d-flex">  
+                    <div class="user-image">
+                      <i class="fas fa-user-circle text-secondary" style="font-size: 35px;"></i>
+                    </div>
+                    <div class="feedback-content m-2 p-1 border">
+                      Lorem, ipsum dolor sit amet consectetur adipisicing
+                    </div>
+                  </div>
+                </div>
+              </div> 
+            </div>      
+          </div>
+        </div>
+      </div>
+    {{!-- {{else}} --}}
+    <div class="posts-container col-10 col-md-8 mx-auto">
+      <div class="posts-section">
+        <div class="alert alert-info" role="alert">
+          現在沒有音檔<br />
+          成為第一個上傳者
+        </div>
+      </div>
+    </div>     
+    {{!-- {{/if}} --}}
+  </div>
+</div>
