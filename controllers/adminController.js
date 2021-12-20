@@ -1,7 +1,7 @@
 const dayjs = require('dayjs')
 require('dayjs/locale/zh-tw')
 var utc = require('dayjs/plugin/utc')
-var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
+var timezone = require('dayjs/plugin/timezone')
 dayjs.locale('zh-tw') 
 dayjs.extend(utc)
 dayjs.extend(timezone)
