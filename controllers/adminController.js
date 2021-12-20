@@ -181,7 +181,6 @@ const adminController = {
     }
   },
   editHomework: (req, res) => {
-    console.log(req.params)
     return Homework.findByPk(req.params.id).then((homework) => {
       return res.render('admin/editHomework', { homework: homework.toJSON(), layout: 'admin' })
     })
@@ -189,9 +188,7 @@ const adminController = {
   putHomework: (req, res) => {
     const { file } = req
     const { name, description, expiredTime, isPublic } = req.body
-    console.log(req.body)
-    console.log(req.query)
-    console.log(file)
+
 
     if(file) {
       return Homework.findByPk(req.params.id).then((homework) => {

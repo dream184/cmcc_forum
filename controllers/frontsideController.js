@@ -2,6 +2,7 @@ const res = require('express/lib/response')
 const db = require('../models')
 const Class = db.Class
 const Homework = db.Homework
+const VoiceFile = db.Voicefile
 
 const frontsideController = {
   getClasses: (req, res) => {
@@ -24,11 +25,13 @@ const frontsideController = {
   getHomework: (req, res) => {
     return Homework.findOne({
       where: {id: req.params.id},
-      include: [Class]
+      include: [Class, VoiceFile]
     })
       .then((homework) => {
-        
+        console.log(homework)
+        return res.render('homework', { homework: homework.toJSON()})
       })
+
   }
 }
 module.exports = frontsideController

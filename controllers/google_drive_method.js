@@ -69,6 +69,30 @@ async function uploadImage(file, name, parentsFolderId) {
   }
 }
 
+async function uploadVoiceFile(file, name, parentsFolderId) {
+  const fileMetadata = {
+    name: name,
+    parents: [parentsFolderId]
+  };
+  const media = {
+    mimeType: 'audio/mpeg',
+    body: fs.createReadStream(file.path)
+  };
+
+  try {
+    const response = await drive.files.create({
+      resource: fileMetadata,
+      media: media,
+      fields: 'id', 
+    })
+    console.log('Uploaded voice file to google drive, google_file_id:',response.data.id)
+    return response.data.id
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
 async function becomePublic(uploadedId) {
   try {
     const fileId = uploadedId
@@ -115,10 +139,10 @@ async function deleteFile(fileId) {
   async function searchfile() {
     try {
       const response = await drive.files.list({
-        q: "mimeType='application/vnd.google-apps.folder'",
-        fields: 'nextPageToken, files(id, name)',
-        spaces: 'drive',
-        pageToken: pageToken
+        // q: "''",
+        // fields: 'nextPageToken, files(id, name)',
+        // spaces: 'drive',
+        // pageToken: pageToken
       })
       console.log(response.data.files)
       return response.data
@@ -131,6 +155,7 @@ async function deleteFile(fileId) {
 module.exports = {
   createFolder,
   uploadImage,
+  uploadVoiceFile,
   becomePublic,
   renameFile,
   deleteFile,

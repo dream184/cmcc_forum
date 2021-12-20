@@ -35,10 +35,10 @@ audio {
     
     <div class="col-12 col-md-7">
       <div class="banner-content p-3">  
-        <h3 class="text-center">第一週 正音練習</h3>
-        <p class="p-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit modi minus molestias hic mollitia.
-          Officia modi,
-          sit possimus sapiente adipisci voluptatum, neque odit delectus dolorum totam impedit est esse porro.</p>
+        <h3 class="text-center">{{homework.Class.name}}  {{homework.name}}</h3>
+        <p class="p-2">
+          {{homework.description}}
+        </p>
       </div>
     </div>    
   </div>
@@ -49,12 +49,12 @@ audio {
     <div class="upload-file-container col-12 col-md-4 mb-2">
       <div class="uploadfile-section" style="background-color:#F0F0F0;">
         <div class="input-group d-flex justify-content-center m-auto">
-          <form action="/uploadfile" method="POST" enctype="multipart/form-data" class="border p-4" style="border-radius:15px; background-color:#FFF">
+          <form action="/classes/{{homework.Class.id}}/homeworks/{{homework.id}}/uploadVoiceFile" method="POST" enctype="multipart/form-data" class="border p-4" style="border-radius:15px; background-color:#FFF">
             <h3>音檔上傳區</h3>
             <hr>
             <div class="form-group m-auto">
               <label for="voicefile">在此上傳音檔</label>
-              <input type="file" id="voicefile" name='voicefile' class="form-control">
+              <input type="file" id="voicefile" name='voiceFile' class="form-control">
               <button type="submit" class="btn btn-primary w-100 mt-2">Submit</button>
             </div>
           </form>
@@ -63,8 +63,9 @@ audio {
 
     </div>
 
-    {{!-- {{#if voicefile}} --}}
+    {{#if homework.Voicefiles}} 
       <div class="posts-container col-12 col-md-8">
+        {{#each homework.Voicefiles}}
         <div class="posts-section">
           <div class="post p-1">
             <div class="row m-auto" style="background-color: #fff; border-radius:15px;">
@@ -75,7 +76,7 @@ audio {
               </div>
               <div class="col-6">
                 <div class="voicefile-name d-flex justify-content-center align-items-center p-1">
-                  <span>第一週作業</span>
+                  <span>{{../homework.name}}</span>
                 </div>
               </div>
               <div class="col-6">
@@ -85,18 +86,18 @@ audio {
               </div>
               <div class="col-6">
                 <div class="upload-time d-flex justify-content-center p-1">
-                  <span class="d-block">上傳日期: 2021/11/30</span>
+                  <span class="d-block">上傳日期: {{this.createdAt}}</span>
                 </div>
               </div>
               <div class="col-12">
                 <div class="container-audio">
                   <audio controls>
-                    <source src="{{voicefile.url}}" type="audio/mpeg">
+                    <source src="https://docs.google.com/uc?export=download&id={{this.googleFileId}}" type="audio/mpeg">
                     Your browser dose not Support the audio Tag
                   </audio>
                 </div>
               </div>
-
+           
               <div class="col-12">
                 <hr class="m-1"/>
                 <div class="feedback-button d-flex justify-content-around">
@@ -106,7 +107,7 @@ audio {
                 </div>
                 <hr class="m-1"/>
               </div>
-
+              {{#if feedback}}
               <div class="col-12">
                 <div class="feedback-area">
                   <div class="post-feedback d-flex">  
@@ -133,11 +134,14 @@ audio {
                   </div>
                 </div>
               </div> 
+              {{/if}}
+
             </div>      
           </div>
         </div>
+        {{/each}}
       </div>
-    {{!-- {{else}} --}}
+    {{else}}
     <div class="posts-container col-10 col-md-8 mx-auto">
       <div class="posts-section">
         <div class="alert alert-info" role="alert">
@@ -146,6 +150,6 @@ audio {
         </div>
       </div>
     </div>     
-    {{!-- {{/if}} --}}
+    {{/if}}
   </div>
 </div>
