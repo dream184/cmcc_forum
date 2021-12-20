@@ -67,7 +67,16 @@ audio {
       <div class="posts-container col-12 col-md-8">
         {{#each homework.Voicefiles}}
         <div class="posts-section">
-          <div class="post p-1">
+          <div class="post position-relative p-1">   
+            <div class="delete-homework" style="position: absolute; right: 30px; top: 10px; z-index:1;">
+              <form action="/classes/{{../homework.Class.id}}/homeworks/{{../homework.id}}/voicefiles/{{this.id}}?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-link">
+                  <i class="fas fa-minus-square text-danger" style="font-size: 20px;"></i>
+                </button>
+              </form>
+              
+            </div>
+          
             <div class="row m-auto" style="background-color: #fff; border-radius:15px;">
               <div class="col-6">
                 <div class="author-img d-flex justify-content-center p-1">

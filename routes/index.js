@@ -25,6 +25,7 @@ module.exports = (app) => {
   app.get('/classes/:id/homeworks/:id', frontsideController.getHomework)
 
   app.post('/classes/:id/homeworks/:id/uploadVoiceFile', upload.single('voiceFile'), voiceFileController.postVoiceFile)
+  app.delete('/classes/:id/homeworks/:id/voicefiles/:id', voiceFileController.deleteVoiceFile)
 }
 
 

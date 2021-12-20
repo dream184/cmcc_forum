@@ -1,3 +1,4 @@
+const { google } = require('googleapis')
 const db = require('../models')
 const VoiceFile = db.Voicefile
 const Homework = db.Homework
@@ -18,7 +19,6 @@ const voiceFileController = {
           googleDrive.uploadVoiceFile(file, file.originalname, homeworkJSON.googleFolderId).then((googleFileId) => {
             googleDrive.becomePublic(googleFileId).then((result) => {
               const { id, name, mimeType } = result
-
               return VoiceFile.create({
                 name: name,
                 googleFileId: id,
@@ -33,10 +33,19 @@ const voiceFileController = {
           })   
         } else {
           console.log('error')
-          return res.redirect(`/classes/${homework.Class.id}/homeworks/${homework.id}`)
+          return res.redirect('back')
         }
       })
-
+  },
+  deleteVoiceFile: (req, res) => {
+    return VoiceFile.findByPk(req.params.id).then((voicefile) => {
+      voicefile.destroy().then(() => {
+        googleDrive.deleteFile(voicefile.googleFileId)
+      })
+        .then(() => {
+          return res.redirect('back')
+        })
+    })   
   }
 }
 
