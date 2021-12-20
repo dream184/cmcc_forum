@@ -1,3 +1,11 @@
+const dayjs = require('dayjs')
+require('dayjs/locale/zh-tw')
+var utc = require('dayjs/plugin/utc')
+var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
+dayjs.locale('zh-tw') 
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
 const db = require('../models')
 const googleDrive = require('./google_drive_method.js')
 const Class = db.Class
@@ -114,8 +122,10 @@ const adminController = {
       include: [Homework]
     })
       .then((selectedClass) => {
+        const selectedClassJSON = selectedClass.toJSON()
+        selectedClassJSON.Homework.forEach(x => x.expiredTime = dayjs(x.expiredTime).format('YYYY/MM/DD HH:mm'))
         return res.render('admin/homework', {
-          class: selectedClass.toJSON(),
+          class: selectedClassJSON,
           layout: 'admin'
         })
       })
@@ -148,7 +158,7 @@ const adminController = {
                 image: publicImage.id,
                 description: description,
                 googleFolderId: folder.id,
-                expiredTime: expiredTime,
+                expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss'),
                 ClassId: classId
               })
                 .then(() => {
@@ -168,7 +178,7 @@ const adminController = {
             image: '',
             description: description,
             googleFolderId: folder.id,
-            expiredTime: expiredTime,
+            expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss'),
             ClassId: req.params.id
           })
             .then(() => {
@@ -189,7 +199,6 @@ const adminController = {
     const { file } = req
     const { name, description, expiredTime, isPublic } = req.body
 
-
     if(file) {
       return Homework.findByPk(req.params.id).then((homework) => {
         if(name !== homework.name) {
@@ -203,7 +212,7 @@ const adminController = {
               isPublic: isPublic,
               image: publicImage.id,
               description: description,
-              expiredTime: expiredTime
+              expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss')
             })
               .then(() => {
                 return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
@@ -221,7 +230,7 @@ const adminController = {
           name: name,
           isPublic: isPublic,
           description: description,
-          expiredTime: expiredTime
+          expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss')
         })
           .then(() => {
             return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)

@@ -139,10 +139,10 @@ async function deleteFile(fileId) {
   async function searchfile() {
     try {
       const response = await drive.files.list({
-        // q: "''",
-        // fields: 'nextPageToken, files(id, name)',
-        // spaces: 'drive',
-        // pageToken: pageToken
+        q: "",
+        fields: 'nextPageToken, files(id, name)',
+        spaces: 'drive',
+        pageToken: pageToken
       })
       console.log(response.data.files)
       return response.data

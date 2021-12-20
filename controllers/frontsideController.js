@@ -1,4 +1,6 @@
-const res = require('express/lib/response')
+const dayjs = require('dayjs')
+require('dayjs/locale/zh-tw')
+dayjs.locale('zh-tw') 
 const db = require('../models')
 const Class = db.Class
 const Homework = db.Homework
@@ -28,8 +30,12 @@ const frontsideController = {
       include: [Class, VoiceFile]
     })
       .then((homework) => {
-        console.log(homework)
-        return res.render('homework', { homework: homework.toJSON()})
+        const homeworkJSON = homework.toJSON()
+        homeworkJSON.Voicefiles.forEach(x => x.createdAt = dayjs(x.createdAt).format('YYYY/MM/DD HH:mm'))
+        return res.render('homework', { 
+          homework: homeworkJSON,
+          
+        })
       })
 
   }
