@@ -27,9 +27,9 @@ audio {
 
 <div class="banner mb-2" style="background-color:#F0F0F0;">
   <div class="row m-auto">
-    <div class="col-12 col-md-5">
+    <div class="col-12 col-md-5 d-flex align-items-center">
       <div class="image-container d-flex justify-content-center p-2">
-        <img src="https://picsum.photos/300/250/?random=5">
+        <img src="https://drive.google.com/uc?export=view&id={{homework.image}}" class="w-50">
       </div>
     </div>
     
@@ -37,7 +37,7 @@ audio {
       <div class="banner-content p-3">  
         <h3 class="text-center">{{homework.Class.name}}  {{homework.name}}</h3>
         <p class="p-2">
-          {{homework.description}}
+          <pre style="white-space: pre-wrap;">{{homework.description}}</pre>
         </p>
       </div>
     </div>    

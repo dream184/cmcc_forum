@@ -3,8 +3,8 @@
     <h3 class="text-center">{{homework.name}}</h3>
     <form action="/admin/classes/{{homework.ClassId}}/homeworks/{{homework.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
       <div class="homework bg-white">
-        <div class="image-container">
-          <img class="d-block m-auto p-3 w-100" src="https://drive.google.com/uc?export=view&id={{homework.image}}">
+        <div class="image-container w-100">
+          <img class="d-block m-auto p-3 w-50" src="https://drive.google.com/uc?export=view&id={{homework.image}}">
         </div>
         
         <div class="homework-container d-flex flex-column bg-white mx-auto rounded-5 p-3">

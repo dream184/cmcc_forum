@@ -8,7 +8,10 @@ const VoiceFile = db.Voicefile
 
 const frontsideController = {
   getClasses: (req, res) => {
-    Class.findAll({ raw: true })
+    Class.findAll({
+      where: {isPublic: true},
+      raw: true 
+    })
       .then((classes) => {
         return res.render('index', {
           classes: classes, layout: 'main'
@@ -17,7 +20,10 @@ const frontsideController = {
   },
   getHomeworks: (req, res) => {
     return Class.findOne({
-      where: {id: req.params.id},
+      where: {
+        id: req.params.id,
+        isPublic: true
+      },
       include: [Homework]
     })
       .then((selectedClass) => {

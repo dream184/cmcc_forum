@@ -192,13 +192,17 @@ const adminController = {
   },
   editHomework: (req, res) => {
     return Homework.findByPk(req.params.id).then((homework) => {
-      return res.render('admin/editHomework', { homework: homework.toJSON(), layout: 'admin' })
+      const homeworkJSON = homework.toJSON()
+      homeworkJSON.expiredTime = dayjs(homeworkJSON.expiredTime).format('YYYY-MM-DD')
+      console.log(homeworkJSON.expiredTime)
+      return res.render('admin/editHomework', { homework: homeworkJSON, layout: 'admin' })
     })
   },
   putHomework: (req, res) => {
     const { file } = req
     const { name, description, expiredTime, isPublic } = req.body
 
+    console.log(description)
     if(file) {
       return Homework.findByPk(req.params.id).then((homework) => {
         if(name !== homework.name) {
