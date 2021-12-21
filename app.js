@@ -4,6 +4,7 @@ const methodOverride = require('method-override')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 var favicon = require('serve-favicon')
+const flash = require('connect-flash')
 const path = require('path')
 const app = express()
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
@@ -19,6 +20,7 @@ app.engine('hbs', exphbs.engine({
 }))
 app.set('view engine', 'hbs')
 
+app.use(flash())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(express.static('public'))
@@ -28,6 +30,11 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }))
+app.use((req, res, next) => {
+  res.locals.success_messages = req.flash('success_messages')
+  res.locals.error_messages = req.flash('error_messages')
+  next()
+})
 
 app.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`)

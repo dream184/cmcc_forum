@@ -26,7 +26,7 @@ const voiceFileController = {
       .then((homework) => {
         const homeworkJSON = homework.toJSON()
         if (homework.expiredTime < nowTW) {
-          console.log('You are late! can\'t upload file!')
+          req.flash('error_messages', '已過繳交期限，無法上傳')
           return res.redirect('back')
         }
 
@@ -42,12 +42,18 @@ const voiceFileController = {
                 isPublic: true,
               })
                 .then((voiceFile) => {
+                  res.flash('success_messages', '音檔上傳成功！')
                   return res.redirect(`/classes/${homework.Class.id}/homeworks/${homework.id}`)
+                })
+                .catch((error) => {
+                  res.flash('error_messages', '未選上傳音檔，上傳失敗')
+                  console.log(error)
+                  return res.redirect('back')
                 })
             })
           })   
         } else {
-          console.log('error')
+          res.flash('error_messages', '未選上傳音檔，上傳失敗')
           return res.redirect('back')
         }
       })

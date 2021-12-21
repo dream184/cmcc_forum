@@ -1,5 +1,6 @@
 <section class="homework-section col-12 col-md-9">
   <div class="homework-container">
+    {{>message}}
     <h3 class="text-center">{{homework.name}}</h3>
     <form action="/admin/classes/{{homework.ClassId}}/homeworks/{{homework.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
       <div class="homework bg-white">

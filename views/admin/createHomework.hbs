@@ -1,5 +1,6 @@
 <section class="homework-section col-12 col-md-9">
   <div class="homework-container">
+    {{>message}}
     <h3 class="text-center">建立新的作業</h3>
     <form action="/admin/classes/{{class.id}}/homeworks" method="POST" enctype="multipart/form-data">
       <div class="homework">

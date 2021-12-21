@@ -33,6 +33,15 @@ const adminController = {
     const { file } = req
     const { name, isPublic } = req.body
 
+    if (name.trim().length === 0) {
+      req.flash('error_messages', '必須填寫名稱')
+      return res.redirect('back')
+    }
+    if (!isPublic) {
+      req.flash('error_messages', '必須選擇作業狀態')
+      return res.redirect('back')
+    }
+
     if(file) {
       return Class.findByPk(req.params.id).then((selectedClass) => {
         if(name !== selectedClass.name) {
@@ -47,9 +56,14 @@ const adminController = {
               image: publicImage.id
             })
               .then(() => {
+                req.flash('success_messages', '班級更新成功')
                 return res.redirect('/admin/classes')
               })
-              .catch((error) => console.log(error))  
+              .catch((error) => {
+                req.flash('error_messages', '班級更新失敗')
+                console.log(error)
+                return res.redirect('back')
+              })  
           })
         })
       })
@@ -63,15 +77,29 @@ const adminController = {
           isPublic: isPublic,
         })
           .then(() => {
+            req.flash('success_messages', '班級更新成功')
             return res.redirect('/admin/classes')
           })
-          .catch((error) => console.log(error))  
+          .catch((error) => {
+            req.flash('error_messages', '班級更新失敗')
+            console.log(error)
+            return res.redirect('back')
+          })  
       })
     }
   },
   postClass: (req, res) => {
     const { file } = req
     const { name, isPublic } = req.body
+
+    if (name.trim().length === 0) {
+      req.flash('error_messages', '必須填寫名稱')
+      return res.redirect('back')
+    }
+    if (!isPublic) {
+      req.flash('error_messages', '必須選擇作業狀態')
+      return res.redirect('back')
+    }
 
     if (file) {
       googleDrive.uploadImage(file, name, classImgFolderId).then((uploadedId) => {
@@ -84,9 +112,14 @@ const adminController = {
               googleFolderId: folder.id
             })
               .then(() => {
+                req.flash('success_messages', '班級已經成功建立！')
                 return res.redirect('/admin/classes')
               })
-              .catch((error) => console.log(error))
+              .catch((error) => {
+                req.flash('error_messages', '班級無法建立！')
+                console.log(error)
+                return res.redirect('back')
+              })
           })
         })
       })
@@ -99,6 +132,7 @@ const adminController = {
           googleFolderId: folder.id
         })
           .then(() => {
+            req.flash('success_messages', '班級已經成功建立！')
             return res.redirect('/admin/classes')
           })
           .catch((error) => console.log(error))
@@ -112,8 +146,14 @@ const adminController = {
         googleDrive.deleteFile(selectedClass.image)
       })
         .then(() => {
+          req.flash('success_messages', '班級已經成功被刪除！')
           return res.redirect('/admin/classes')
-        })   
+        })
+        .catch((error) => {
+          req.flash('error_messages', '無法刪除')
+          console.log(error)
+          return res.redirect('back')
+        })  
     })
   },
   getHomeworks: (req, res) => {
@@ -147,6 +187,19 @@ const adminController = {
     const { name, description, expiredTime, isPublic } = req.body
     const classId = req.params.id
 
+    if (name.trim().length === 0) {
+      req.flash('error_messages', '必須填寫名稱')
+      return res.redirect('back')
+    }
+    if (expiredTime.trim().length === 0) {
+      req.flash('error_messages', '必須選擇截止日期')
+      return res.redirect('back')
+    }
+    if (!isPublic) {
+      req.flash('error_messages', '必須選擇作業狀態')
+      return res.redirect('back')
+    }
+    
     if (file) {
       googleDrive.uploadImage(file, name, homeworkImgFolderId).then((uploadedId) => {
         return googleDrive.becomePublic(uploadedId).then((publicImage) => {
@@ -202,7 +255,19 @@ const adminController = {
     const { file } = req
     const { name, description, expiredTime, isPublic } = req.body
 
-    console.log(description)
+    if (name.trim().length === 0) {
+      req.flash('error_messages', '必須填寫名稱')
+      return res.redirect('back')
+    }
+    if (expiredTime.trim().length === 0) {
+      req.flash('error_messages', '必須選擇截止日期')
+      return res.redirect('back')
+    }
+    if (!isPublic) {
+      req.flash('error_messages', '必須選擇作業狀態')
+      return res.redirect('back')
+    }
+
     if(file) {
       return Homework.findByPk(req.params.id).then((homework) => {
         if(name !== homework.name) {
@@ -219,9 +284,14 @@ const adminController = {
               expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss')
             })
               .then(() => {
+                req.flash('success_messages', '作業更新成功')
                 return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
               })
-              .catch((error) => console.log(error))  
+              .catch((error) => {
+                console.log(error)
+                req.flash('error_messages', '更新失敗')
+                return res.redirect('back')
+              })  
           })
         })
       })
@@ -237,9 +307,14 @@ const adminController = {
           expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss')
         })
           .then(() => {
+            req.flash('success_messages', '作業更新成功')
             return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
           })
-          .catch((error) => console.log(error))  
+          .catch((error) => {
+            console.log(error)
+            req.flash('error_messages', '更新失敗')
+            return res.redirect('back')
+          }) 
       })
     }
 
@@ -251,8 +326,14 @@ const adminController = {
         googleDrive.deleteFile(homework.image)
       })
         .then(() => {
+          req.flash('success_messages', '作業已經成功被刪除')
           return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
-        })   
+        })
+        .catch((error) => {
+          req.flash('error_messages', '無法刪除')
+          console.log(error)
+          return res.redirect('back')
+        })
     })
   }
 }
