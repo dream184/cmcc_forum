@@ -16,7 +16,7 @@
           </div>
           <div class="homework-name mb-2">
             <label for="homework-name" class="font-weight-bold">作業名稱</label>
-            <input type="text" class="w-100" id="homeworkName" name="name">
+            <input type="text" class="w-100" id="homeworkName" name="name" required>
           </div>
           <div class="homework-description mb-2">
             <label for="homework-description" class="font-weight-bold">作業描述</label>
@@ -24,11 +24,11 @@
           </div>
           <div class="expiredTime mb-2">
             <label for="expiredTime" class="font-weight-bold">截止時間</label>
-            <input type="date" class="w-100" id="expiredTime" name="expiredTime">
+            <input type="date" class="w-100" id="expiredTime" name="expiredTime" required>
           </div>
           <div class="homework-status mb-2">
             <span class="font-weight-bold">作業狀態</span>
-            <input class="status" type="radio" name="isPublic" id="public" value="true">
+            <input class="status" type="radio" name="isPublic" id="public" value="true" required>
             <label class="form-check-label" for="homework-status">
               公開
             </label>

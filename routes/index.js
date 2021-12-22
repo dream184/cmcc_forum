@@ -2,6 +2,7 @@ const adminController = require('../controllers/adminController.js')
 const frontsideController = require('../controllers/frontsideController')
 const voiceFileController = require('../controllers/voiceFileController')
 const multer = require('multer')
+const userController = require('../controllers/userController.js')
 const upload = multer({ dest: 'temp/'})
 
 module.exports = (app) => {
@@ -26,6 +27,9 @@ module.exports = (app) => {
 
   app.post('/classes/:id/homeworks/:id/uploadVoiceFile', upload.single('voiceFile'), voiceFileController.postVoiceFile)
   app.delete('/classes/:id/homeworks/:id/voicefiles/:id', voiceFileController.deleteVoiceFile)
+
+  app.get('/signin', userController.signInPage)
+  app.get('/signup', userController.signUpPage)
 }
 
 

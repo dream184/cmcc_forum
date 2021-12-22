@@ -3,8 +3,12 @@
     {{>message}}
     <h3 class="text-center">{{class.name}}</h3>
       <div class="class bg-white">
-        <div class="image-container">
-          <img class="d-block m-auto p-3 w-50" src="https://drive.google.com/uc?export=view&id={{class.image}}">
+        <div class="image-container w-100">
+          {{#if class.image}}
+          <img class="d-block m-auto p-3" src="https://drive.google.com/uc?export=view&id={{class.image}}" style="width: 350px;">
+          {{else}}
+          <img class="d-block m-auto p-3" src="/image/logo.jpg" style="width: 350px;">
+          {{/if}}
         </div>
         
         <div class="class-container d-flex flex-column bg-white mx-auto rounded-5 p-3">
@@ -15,11 +19,11 @@
             </div>
             <div class="class-name mb-2">
               <label for="class-name" class="font-weight-bold">班級名稱</label>
-              <input type="text" class="w-100" id="className" name="name" value="{{class.name}}">
+              <input type="text" class="w-100" id="className" name="name" value="{{class.name}}" required>
             </div>
             <div class="class-status mb-2">
               <span class="font-weight-bold">班級狀態</span>
-              <input class="status" type="radio" name="isPublic" id="public" value="true" {{#if class.isPublic}}checked{{/if}}>
+              <input class="status" type="radio" name="isPublic" id="public" value="true" {{#if class.isPublic}}checked{{/if}} required>
               <label class="form-check-label" for="class-status" >
                 公開
               </label>

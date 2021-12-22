@@ -3,7 +3,11 @@
     {{#if this.isPublic}}
     <a href="/classes/{{../class.id}}/homeworks/{{this.id}}">
       <div class="card my-3" style="width: 18rem;">
-        <img src="https://drive.google.com/uc?export=view&id={{{this.image}}}" alt="">
+        {{#if this.image}}
+        <img src="https://drive.google.com/uc?export=view&id={{this.image}}">
+        {{else}}
+        <img class="d-block w-100 p-3" src="/image/logo.jpg">
+        {{/if}}
         <div class="card-body p-0">
           <h4 class="text-center">{{{this.name}}}</h4>
         </div>
