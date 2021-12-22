@@ -5,9 +5,16 @@ const multer = require('multer')
 const userController = require('../controllers/userController.js')
 const upload = multer({ dest: 'temp/'})
 
-module.exports = (app) => {
+module.exports = (app, passport) => {
+  const authenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      return next()
+    }
+    res.redirect('/signin')
+  }
+
   app.get('/', (req, res) => {res.redirect('/classes')})
-  app.get('/admin/classes', adminController.getClasses)
+  app.get('/admin/classes', authenticated, adminController.getClasses)
   app.get('/admin/classes/create', adminController.createClass)
   app.get('/admin/classes/:id/edit', adminController.editClass)
   app.put('/admin/classes/:id', upload.single('imageFile'), adminController.putClass)
@@ -30,6 +37,9 @@ module.exports = (app) => {
 
   app.get('/signin', userController.signInPage)
   app.get('/signup', userController.signUpPage)
+
+  app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signin)
+  app.get('/logout', userController.logout)
 }
 
 

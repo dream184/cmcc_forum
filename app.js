@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 var favicon = require('serve-favicon')
 const flash = require('connect-flash')
+const passport = require('./config/passport')
 const path = require('path')
 const app = express()
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
@@ -35,10 +36,12 @@ app.use((req, res, next) => {
   res.locals.error_messages = req.flash('error_messages')
   next()
 })
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`)
 })
-require('./routes')(app)
+require('./routes')(app, passport)
 
 module.exports = app
