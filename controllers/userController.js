@@ -54,7 +54,6 @@ const userController = {
       include: [Authority]
     })
       .then((users) => {
-        console.log(users)
         return res.render('admin/users', { users: users, layout: 'admin' })
       })
   },
@@ -128,8 +127,26 @@ const userController = {
           return res.redirect('back')
         })
       })
+  },
+  putUserAuthority: (req, res) => {
+    const { authority } = req.body
+    if(req.user.Authority.name !== 'admin') {
+      req.flash('error_messages', '您沒有權限進行此操作')
+      return res.redirect('back')
+    }
+    if(!authority) {
+      req.flash('error_messages', '未選擇權限!')
+      return res.redirect('back')
+    }
+    return User.findByPk(req.params.id)
+      .then((user) => {
+        user.update({AuthorityId: authority})
+          .then(() => {
+            req.flash('success_messages', '已修改權限!')
+            return res.redirect('back')
+          })
+      })   
   }
-
 }
 
 module.exports = userController

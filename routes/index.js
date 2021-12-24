@@ -28,17 +28,16 @@ module.exports = (app, passport) => {
   app.put('/admin/classes/:id/homeworks/:id', upload.single('imageFile'), adminController.putHomework)
   app.delete('/admin/classes/:id/homeworks/:id', adminController.deleteHomework )
   app.get('/admin/users', userController.getUsers)
+  app.put('/admin/users/:id/authority', userController.putUserAuthority)
 
   app.get('/classes', frontsideController.getClasses)
   app.get('/classes/:id', frontsideController.getHomeworks)
   app.get('/classes/:id/homeworks/:id', frontsideController.getHomework)
-
   app.post('/classes/:id/homeworks/:id/uploadVoiceFile', upload.single('voiceFile'), voiceFileController.postVoiceFile)
   app.delete('/classes/:id/homeworks/:id/voicefiles/:id', voiceFileController.deleteVoiceFile)
 
   app.get('/signin', userController.signInPage)
   app.get('/signup', userController.signUpPage)
-
   app.post('/signup', userController.signUp)
   app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signin)
   app.get('/logout', userController.logout)
@@ -47,6 +46,7 @@ module.exports = (app, passport) => {
   app.get('/profile/edit', authenticated, userController.editProfile)
   app.put('/profile/:id', authenticated, userController.putUserProfile)
   app.put('/profile/:id/emailpassword', authenticated, userController.putUserEmailPassword)
+  
 }
 
 

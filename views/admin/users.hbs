@@ -8,8 +8,8 @@
       <thead class="thead-dark bg-info bg-gradient w-100">
         <tr class="w-100 text-white">
           <th scope="col-3" class="p-1">使用者</th>
-          <th scope="col-3" class="p-1">權限</th>
-          <th scope="col-3" class="p-1">變更</th>
+          <th scope="col-3" class="p-1">目前權限</th>
+          <th scope="col-3" class="p-1">變更權限</th>
           <th scope="col-3" class="p-1">*</th>
         </tr>
       </thead>
@@ -26,7 +26,25 @@
           </td>
          
           <th scope="row" class="p-1">
-            <a href="/admin/classes/{{this.id}}/homeworks">管理</a>
+            
+            <form action="/admin/users/{{this.id}}/authority?_method=PUT" method="POST">
+              <div class="user-authority form-row align-items-center">
+                <div class="col-auto my-1">
+                  <label class="mr-sm-2 sr-only" for="authoritySelect">Preference</label>
+                  <select class="custom-select mr-sm-2" id="authoritySelect" name="authority">
+                    <option selected disabled>選擇...</option>
+                    <option value="1">user</option>
+                    <option value="3">mentor</option>
+                    <option value="4">admin</option>
+                  </select>
+                </div>
+                <div class="col-auto my-1">
+                  <button type="submit" class="btn btn-primary">變更</button>
+                </div>
+              </div>
+            </form>
+
+
           </th>
           <td class="p-1">
             <a href="/admin/classes/{{this.id}}/edit">編輯</a>

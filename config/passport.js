@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local')
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+const Authority = db.Authority
 
 
 passport.use(new LocalStrategy(
@@ -28,7 +29,9 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((id, done) => {
-  User.findByPk(id)
+  User.findByPk(id, {
+    include: [Authority]
+  })
     .then(user => {
       user = user.toJSON()
       return done(null, user)
