@@ -1,0 +1,39 @@
+<section class="users-section col-12 col-md-9">
+  <div class="users-container">
+    <div class="users-title d-flex justify-content-between my-3">
+      <h3 class="font-weitht-bold">管理所有使用者權限</h3>
+    </div>
+    {{>message}}
+    <table class="users-table bg-white w-100">
+      <thead class="thead-dark bg-info bg-gradient w-100">
+        <tr class="w-100 text-white">
+          <th scope="col-3" class="p-1">使用者</th>
+          <th scope="col-3" class="p-1">權限</th>
+          <th scope="col-3" class="p-1">變更</th>
+          <th scope="col-3" class="p-1">*</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#each users}}
+        <tr>
+          <th scope="row" class="p-1">
+            {{this.name}}
+          </th>
+         
+          <td class="p-1">
+            {{this.Authority.name}}
+          </td>
+         
+          <th scope="row" class="p-1">
+            <a href="/admin/classes/{{this.id}}/homeworks">管理</a>
+          </th>
+          <td class="p-1">
+            <a href="/admin/classes/{{this.id}}/edit">編輯</a>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody> 
+    </table>
+  </div>
+</section>

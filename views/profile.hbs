@@ -1,0 +1,112 @@
+<style>
+  .container-audio {
+      width: 100%; 
+      height: auto;
+      border-radius: 5px;
+      background-color: #F1F3F4;
+      color: #fff;
+      overflow: hidden;
+  }
+  audio {
+    width:100%;
+  }
+</style>
+
+<div class="banner bg-secondary position-relative" style="height: 150px; margin-bottom: 90px; background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);">
+  <div class="d-flex justify-content-around position-relative" style="bottom: -50%;">
+    <div class="avatar">
+      <img src="https://picsum.photos/150/150/?random=1">
+    </div>
+    <div class="edit-profile my-auto">
+      <a href="/profile/edit" class="btn btn-success">編輯個人檔案</a>
+    </div>
+  </div>
+</div>
+<div class="profile-body">
+  <div class="row w-100 m-0">
+    <div class="user-data-container col-12 col-md-3">
+      <div class="user-data bg-white rounded">
+        <div class="user-name text-center m-2">姓名: {{user.name}}</div>
+        <div class="user-class text-center m-2">聲音基礎班140期學員</div>
+        <div class="self-introduction text-center m-2">
+          <h3>自我介紹</h3>
+          <p>{{user.introduction}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="class-voicefile-container col-12 col-md-9">
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">課程一覽</a>
+        <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">音檔管理</a>
+      </div>
+      <div class="tab-content bg-white" id="nav-tabContent">
+        <div class="tab-pane fade show active p-3" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          {{#each user.AttendClasses}}
+          <div class="card mb-3 p-3 mb-2 bg-light text-dark mx-auto mb-3" style="max-width: 720px;">
+            <a href="/classes/{{this.Class.id}}">      
+              <div class="class row no-gutters">
+                <div class="col-md-4 d-flex align-items-center">
+                  <img class="w-100" src="https://drive.google.com/uc?export=view&id={{this.Class.image}}" alt="...">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{this.Class.name}}</h5>
+                    <p class="card-text"><small class="text-muted">加入日期：{{this.Class.createdAt}}</small></p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          {{/each}}
+        </div>
+
+        <div class="tab-pane fade p-3" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+          
+          <h3 class="text-center">所有音檔</h3>
+          <hr />
+          {{#each voicefiles}}
+            <div class="card bg-light text-dark m-auto" style="max-width: 720px;">
+              <div class="class row no-gutters">
+                <div class="col-md-4 d-flex flex-column">
+
+                  <div class="">
+                    <div class="voicefile-name d-flex justify-content-center align-items-center p-1">
+                      <span>{{this.Homework.Class.name}}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="">
+                    <div class="voicefile-name d-flex justify-content-center align-items-center p-1">
+                      <span>{{this.Homework.name}}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="">
+                    <div class="upload-time d-flex justify-content-center p-1">
+                      <span class="d-block">{{this.createdAt}}</span>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <div class="container-audio">
+                      <audio controls>
+                        <source src="https://docs.google.com/uc?export=download&id={{this.googleFileId}}" type="audio/mpeg">
+                        Your browser dose not Support the audio Tag
+                      </audio>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+           
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+

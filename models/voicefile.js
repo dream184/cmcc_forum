@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Voicefile extends Model {
     static associate(models) {
       Voicefile.belongsTo(models.Homework)
+      Voicefile.belongsTo(models.User)
     }
   };
   Voicefile.init({
@@ -14,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     favoriteCount: DataTypes.INTEGER,
     isPublic: DataTypes.BOOLEAN,
     HomeworkId: DataTypes.INTEGER,
-    mimeType: DataTypes.STRING
+    mimeType: DataTypes.STRING,
+    UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Voicefile',

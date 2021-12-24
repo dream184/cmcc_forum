@@ -44,7 +44,6 @@ const frontsideController = {
           
         })
       })
-
   }
 }
 module.exports = frontsideController

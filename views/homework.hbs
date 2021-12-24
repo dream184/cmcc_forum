@@ -1,5 +1,4 @@
 <style>
-/* Start  styling the page */
 .container-audio {
     width: 100%; 
     height: auto;
@@ -29,7 +28,11 @@ audio {
   <div class="row m-auto">
     <div class="col-12 col-md-5 d-flex align-items-center">
       <div class="image-container d-flex justify-content-center p-2">
+        {{#if homework.image}}
         <img src="https://drive.google.com/uc?export=view&id={{homework.image}}" class="w-50">
+        {{else}}
+        <img class="d-block w-50 p-3" src="/image/logo.jpg">
+        {{/if}}
       </div>
     </div>
     

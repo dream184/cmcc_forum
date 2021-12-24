@@ -9,26 +9,35 @@
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
       integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <style>
+      .dropdown-toggle::after {
+        display: none;
+      }
+    </style>
   </head>
 
-  <nav class="navbar navbar-dark bg-primary position-relative">
+  <nav class="navbar navbar-dark bg-primary position-relative" style="background-image: linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%););">
     <a href="/">
       <img src="/image/logo.png" alt="logo.png">
     </a>
-    <div>
-      <div class="d-flex align-items-center">
-        <i class="fas fa-user-circle text-white" style="font-size: 35px;"></i>
-      </div>
-      <div class="temporary-switcher" style="right: 60px;">
-        <a href="/" class="text-white d-block">前台</a>
-        <a href="/admin/classes" class="text-white d-block">後台</a>
-        <a href="/signin" class="text-white">登入</a>
-        <a href="/logout" class="text-white">登出</a>
+    
+    <div class="profile">
+      <div class="btn-group">
+        <button type="button" class="btn bg-transparent dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user-circle text-white" style="font-size: 35px;"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a href="/profile"><button class="dropdown-item text-center" type="button">個人檔案</button></a>
+          <a href="/signin"><button class="dropdown-item text-center" type="button">登入</button></a>
+          <a href="/logout"><button class="dropdown-item text-center" type="button">登出</button></a>
+          <a href="/"><button class="dropdown-item text-center" type="button">前台</button></a>
+          <a href="/admin/classes" class=" d-block"><button class="dropdown-item text-center" type="button">後台</button></a>
+        </div>
       </div>
     </div>
   </nav>
 
-  <body style="background-color:#F0F0F0;">
+  <body class="position-relative" style="background-color:#F0F0F0;">
     {{{body}}}  
   </body>
   <footer>

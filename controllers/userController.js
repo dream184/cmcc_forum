@@ -1,5 +1,10 @@
 const db = require('../models')
 const User = db.User
+const VoiceFile = db.Voicefile
+const AttendClass = db.AttendClass
+const Homework = db.Homework
+const Authority = db.Authority
+const Class = db.Class
 const bcrypt = require('bcryptjs')
 
 const userController = {
@@ -41,6 +46,88 @@ const userController = {
     req.flash('success_messages', '成功登出')
     req.logout()
     return res.redirect('/classes')
+  },
+  getUsers: (req, res) => {
+    User.findAll({
+      raw: true,
+      nest: true,
+      include: [Authority]
+    })
+      .then((users) => {
+        console.log(users)
+        return res.render('admin/users', { users: users, layout: 'admin' })
+      })
+  },
+  profilePage: (req, res)  => {
+    return User.findByPk(req.user.id, {
+      include: [
+        { model: AttendClass, include: [Class] }
+      ]
+    })
+      .then((user) => {
+        return VoiceFile.findAll({
+          where: { UserId: user.id },
+          include: [{
+            model: Homework,
+            include: [Class]
+          }],
+          raw: true,
+          nest: true
+        })
+          .then((voicefiles) => {
+            console.log(voicefiles)
+            return res.render('profile', { 
+              user: user.toJSON(),
+              voicefiles: voicefiles
+          })
+        })
+      })
+      
+  },
+  editProfile: (req, res) => {
+    console.log(req.body)
+    return User.findByPk(req.user.id, {
+      include: [
+        { model: AttendClass, include: [Class] }
+      ]
+    })
+      .then((user) => {
+        return res.render('editProfile', { user: user.toJSON() })
+      })
+  },
+  putUserProfile: (req, res) => {
+    const { name, nickname, introduction } = req.body
+    
+    return User.findByPk(req.params.id)
+      .then((user) => {
+        return user.update({
+          name: name,
+          nickName: nickname,
+          introduction: introduction,
+        })
+      })
+        .then(() => {
+          req.flash('success_messages', '會員資料已更新')
+          return res.redirect('back')
+        })
+  },
+  putUserEmailPassword: (req, res) => {
+    const { email, password, confirmPassword } = req.body
+    if (password !== confirmPassword) {
+      req.flash('error_messages', '兩次密碼輸入不同')
+      return res.redirect('back')
+    }
+    return User.findByPk(req.params.id)
+      .then((user) => {
+        return user.update({
+          email: email,
+          password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
+        })
+        .then(() => {
+          req.flash('success_messages', '會員資料已更新')
+          return res.redirect('back')
+        })
+      })
   }
 
 }

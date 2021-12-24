@@ -21,12 +21,13 @@ module.exports = (app, passport) => {
   app.post('/admin/classes', upload.single('imageFile'), adminController.postClass) 
   app.delete('/admin/classes/:id', adminController.removeClass)
 
-  app.get('/admin/classes/:id/homeworks',adminController.getHomeworks)
+  app.get('/admin/classes/:id/homeworks', adminController.getHomeworks)
   app.get('/admin/classes/:id/homeworks/create', adminController.createHomework)
   app.post('/admin/classes/:id/homeworks', upload.single('imageFile'), adminController.postHomework)
   app.get('/admin/classes/:id/homeworks/:id/edit', adminController.editHomework)
   app.put('/admin/classes/:id/homeworks/:id', upload.single('imageFile'), adminController.putHomework)
   app.delete('/admin/classes/:id/homeworks/:id', adminController.deleteHomework )
+  app.get('/admin/users', userController.getUsers)
 
   app.get('/classes', frontsideController.getClasses)
   app.get('/classes/:id', frontsideController.getHomeworks)
@@ -42,6 +43,10 @@ module.exports = (app, passport) => {
   app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signin)
   app.get('/logout', userController.logout)
 
+  app.get('/profile', authenticated, userController.profilePage)
+  app.get('/profile/edit', authenticated, userController.editProfile)
+  app.put('/profile/:id', authenticated, userController.putUserProfile)
+  app.put('/profile/:id/emailpassword', authenticated, userController.putUserEmailPassword)
 }
 
 

@@ -40,13 +40,14 @@ const voiceFileController = {
                 mimeType: mimeType,
                 HomeworkId: homework.id,
                 isPublic: true,
+                UserId: req.user.id
               })
                 .then((voiceFile) => {
-                  res.flash('success_messages', '音檔上傳成功！')
-                  return res.redirect(`/classes/${homework.Class.id}/homeworks/${homework.id}`)
+                  req.flash('success_messages', '音檔上傳成功！')
+                  return res.redirect('back')
                 })
                 .catch((error) => {
-                  res.flash('error_messages', '未選上傳音檔，上傳失敗')
+                  req.flash('error_messages', '未選上傳音檔，上傳失敗')
                   console.log(error)
                   return res.redirect('back')
                 })
