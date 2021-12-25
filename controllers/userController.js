@@ -99,7 +99,6 @@ const userController = {
   putUserProfile: (req, res) => {
     const { name, nickname, introduction } = req.body
     const { file } = req
-    console.log(file)
 
     if(file) {
       googleDrive.uploadImage(file, name, avatarImgFolderId)

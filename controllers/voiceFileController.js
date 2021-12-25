@@ -17,6 +17,7 @@ const voiceFileController = {
     const { file } = req
     const now = dayjs()
     const nowTW = dayjs(now, "Asia/Taipei").valueOf()
+    console.log(file)
 
     return Homework.findOne({
       where: {id: req.params.id },
@@ -24,13 +25,14 @@ const voiceFileController = {
     })
       .then((homework) => {
         const homeworkJSON = homework.toJSON()
+        const filename = `${homework.Class.name}_${homework.name}_${req.user.name}`
         if (homework.expiredTime < nowTW) {
           req.flash('error_messages', '已過繳交期限，無法上傳')
           return res.redirect('back')
         }
 
         if (file) {
-          googleDrive.uploadVoiceFile(file, file.originalname, homeworkJSON.googleFolderId).then((googleFileId) => {
+          googleDrive.uploadVoiceFile(file, filename, homeworkJSON.googleFolderId).then((googleFileId) => {
             googleDrive.becomePublic(googleFileId).then((result) => {
               const { id, name, mimeType } = result
               return VoiceFile.create({

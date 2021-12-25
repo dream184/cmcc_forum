@@ -80,12 +80,22 @@ async function uploadImage(file, name, parentsFolderId) {
 }
 
 async function uploadVoiceFile(file, name, parentsFolderId) {
+  let rename = ''
+  const regex = /^([^\\]*)\.(\w+)$/;
+  const matches = file.originalname.match(regex);
+  if (matches) {
+    const extension = matches[2];
+    rename = `${name}.${extension}`
+  } else {
+    rename = name
+  }
+
   const fileMetadata = {
-    name: name,
+    name: rename,
     parents: [parentsFolderId]
   };
   const media = {
-    mimeType: 'audio/mpeg',
+    mimeType: file.mimetype,
     body: fs.createReadStream(file.path)
   };
 
