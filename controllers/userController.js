@@ -6,6 +6,8 @@ const Homework = db.Homework
 const Authority = db.Authority
 const Class = db.Class
 const bcrypt = require('bcryptjs')
+const googleDrive = require('./google_drive_method')
+const avatarImgFolderId = process.env.GOOGLE_USER_AVATAR_IMAGE_FOLDER_ID
 
 const userController = {
   signInPage: (req, res) => {
@@ -96,24 +98,52 @@ const userController = {
   },
   putUserProfile: (req, res) => {
     const { name, nickname, introduction } = req.body
-    
-    return User.findByPk(req.params.id)
-      .then((user) => {
-        return user.update({
-          name: name,
-          nickName: nickname,
-          introduction: introduction,
+    const { file } = req
+    console.log(file)
+
+    if(file) {
+      googleDrive.uploadImage(file, name, avatarImgFolderId)
+        .then((uploadedId) => {
+          return googleDrive.becomePublic(uploadedId).then((publicImage) => {
+            return User.findByPk(req.params.id)
+              .then((user) => {
+                googleDrive.deleteFile(user.googleImageId)
+                return user.update({
+                  name: name,
+                  nickName: nickname,
+                  introduction: introduction,
+                  googleImageId: publicImage.id
+                })
+              })
+                .then(() => {
+                  req.flash('success_messages', '會員資料已更新')
+                  return res.redirect('back')
+                })
+          })
         })
-      })
-        .then(() => {
-          req.flash('success_messages', '會員資料已更新')
-          return res.redirect('back')
+    } else {
+      return User.findByPk(req.params.id)
+        .then((user) => {
+          return user.update({
+            name: name,
+            nickName: nickname,
+            introduction: introduction
+          })
         })
+          .then(() => {
+            req.flash('success_messages', '會員資料已更新')
+            return res.redirect('back')
+          })
+    } 
   },
   putUserEmailPassword: (req, res) => {
     const { email, password, confirmPassword } = req.body
     if (password !== confirmPassword) {
       req.flash('error_messages', '兩次密碼輸入不同')
+      return res.redirect('back')
+    }
+    if (password.length < 6) {
+      req.flash('error_messages', '密碼長度至少6碼')
       return res.redirect('back')
     }
     return User.findByPk(req.params.id)
@@ -146,6 +176,9 @@ const userController = {
             return res.redirect('back')
           })
       })   
+  },
+  editUser: (req, res) => {
+    return res.render('admin/editUser', { layout: 'admin'})
   }
 }
 

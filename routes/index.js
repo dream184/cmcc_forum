@@ -29,6 +29,7 @@ module.exports = (app, passport) => {
   app.delete('/admin/classes/:id/homeworks/:id', adminController.deleteHomework )
   app.get('/admin/users', userController.getUsers)
   app.put('/admin/users/:id/authority', userController.putUserAuthority)
+  app.get('/admin/users/:id/edit', userController.editUser)
 
   app.get('/classes', frontsideController.getClasses)
   app.get('/classes/:id', frontsideController.getHomeworks)
@@ -44,7 +45,7 @@ module.exports = (app, passport) => {
 
   app.get('/profile', authenticated, userController.profilePage)
   app.get('/profile/edit', authenticated, userController.editProfile)
-  app.put('/profile/:id', authenticated, userController.putUserProfile)
+  app.put('/profile/:id', authenticated, upload.single('avatar'), userController.putUserProfile)
   app.put('/profile/:id/emailpassword', authenticated, userController.putUserEmailPassword)
   
 }

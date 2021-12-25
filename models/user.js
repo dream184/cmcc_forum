@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     voiceAttribute: DataTypes.STRING,
     nickName: DataTypes.STRING,
     email: DataTypes.STRING,
-    AuthorityId: DataTypes.INTEGER
+    AuthorityId: DataTypes.INTEGER,
+    googleImageId: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',

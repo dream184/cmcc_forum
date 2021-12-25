@@ -2,7 +2,6 @@ const dayjs = require('dayjs')
 require('dayjs/locale/zh-tw')
 var utc = require('dayjs/plugin/utc')
 var timezone = require('dayjs/plugin/timezone')
-const { google } = require('googleapis')
 const db = require('../models')
 const VoiceFile = db.Voicefile
 const Homework = db.Homework
@@ -65,6 +64,7 @@ const voiceFileController = {
         googleDrive.deleteFile(voicefile.googleFileId)
       })
         .then(() => {
+          req.flash('success_messages', '已成功刪除音檔')
           return res.redirect('back')
         })
     })   

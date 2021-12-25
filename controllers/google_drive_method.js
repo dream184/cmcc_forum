@@ -47,12 +47,22 @@ async function createFolder(className, parentsFolder) {
 }
 
 async function uploadImage(file, name, parentsFolderId) {
+  let rename = ''
+  const regex = /^([^\\]*)\.(\w+)$/;
+  const matches = file.originalname.match(regex);
+  if (matches) {
+    const extension = matches[2];
+    rename = `${name}.${extension}`
+  } else {
+    rename = name
+  }
+
   const fileMetadata = {
-    'name': `${name}.jpg`,
+    'name': rename,
     parents: [parentsFolderId]
   };
   const media = {
-    mimeType: 'image/jpeg',
+    mimeType: file.mimetype,
     body: fs.createReadStream(file.path)
   };
 
