@@ -162,10 +162,8 @@ const adminController = {
       include: [Homework]
     })
       .then((selectedClass) => {
-        const selectedClassJSON = selectedClass.toJSON()
-        selectedClassJSON.Homework.forEach(x => x.expiredTime = dayjs(x.expiredTime).format('YYYY/MM/DD HH:mm'))
         return res.render('admin/homework', {
-          class: selectedClassJSON,
+          class: selectedClass.toJSON(),
           layout: 'admin'
         })
       })
@@ -211,7 +209,7 @@ const adminController = {
                 image: publicImage.id,
                 description: description,
                 googleFolderId: folder.id,
-                expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss'),
+                expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss'),
                 ClassId: classId
               })
                 .then(() => {
@@ -247,7 +245,6 @@ const adminController = {
     return Homework.findByPk(req.params.id).then((homework) => {
       const homeworkJSON = homework.toJSON()
       homeworkJSON.expiredTime = dayjs(homeworkJSON.expiredTime).format('YYYY-MM-DD')
-      console.log(homeworkJSON.expiredTime)
       return res.render('admin/editHomework', { homework: homeworkJSON, layout: 'admin' })
     })
   },
@@ -281,7 +278,7 @@ const adminController = {
               isPublic: isPublic,
               image: publicImage.id,
               description: description,
-              expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss')
+              expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss')
             })
               .then(() => {
                 req.flash('success_messages', '作業更新成功')
@@ -304,7 +301,7 @@ const adminController = {
           name: name,
           isPublic: isPublic,
           description: description,
-          expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss')
+          expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss')
         })
           .then(() => {
             req.flash('success_messages', '作業更新成功')

@@ -63,7 +63,7 @@
                 <div class="col-md-8">
                   <div class="card-body">
                     <h5 class="card-title">{{this.Class.name}}</h5>
-                    <p class="card-text"><small class="text-muted">加入日期：{{this.Class.createdAt}}</small></p>
+                    <p class="card-text"><small class="text-muted">加入日期：{{dayjs this.Class.createdAt}}</small></p>
                   </div>
                 </div>
               </div>
@@ -81,21 +81,21 @@
               <div class="class row no-gutters">
                 <div class="col-md-4 d-flex flex-column">
 
-                  <div class="">
+                  <div class="voicefile-class">
                     <div class="voicefile-name d-flex justify-content-center align-items-center p-1">
                       <span>{{this.Homework.Class.name}}</span>
                     </div>
                   </div>
                   
-                  <div class="">
+                  <div class="voicefile-homework">
                     <div class="voicefile-name d-flex justify-content-center align-items-center p-1">
                       <span>{{this.Homework.name}}</span>
                     </div>
                   </div>
                   
-                  <div class="">
+                  <div class="voicefile-upload-time">
                     <div class="upload-time d-flex justify-content-center p-1">
-                      <span class="d-block">{{this.createdAt}}</span>
+                      <span class="d-block">{{dayjs this.createdAt}}</span>
                     </div>
                   </div>
 
