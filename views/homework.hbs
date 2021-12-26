@@ -71,10 +71,14 @@ audio {
         {{#each homework.Voicefiles}}
         <div class="posts-section">
           <div class="post position-relative p-1">   
-            <div class="delete-homework" style="position: absolute; right: 30px; top: 10px; z-index:1;">
+            <div class="delete-homework" style="position: absolute; right: 20px; top: 10px; z-index:1;">
               <form action="/classes/{{../homework.Class.id}}/homeworks/{{../homework.id}}/voicefiles/{{this.id}}?_method=DELETE" method="POST">
-                <button type="submit" class="btn btn-link">
+                {{!-- <button type="submit" class="btn btn-link">
                   <i class="fas fa-minus-square text-danger" style="font-size: 20px;"></i>
+                  
+                </button> --}}
+                <button type="submit" class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
                 </button>
               </form>
               
@@ -86,17 +90,17 @@ audio {
                   <i class="fas fa-user-circle text-secondary" style="font-size: 35px;"></i>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-6 d-flex justify-content-center">
                 <div class="voicefile-name d-flex justify-content-center align-items-center p-1">
                   <span>{{../homework.name}}</span>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-6 d-flex justify-content-center">
                 <div class="author-name d-flex justify-content-center p-1">
-                  <h4>曾阿明</h4>
+                  <h4>{{this.User.name}}</h4>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-6 d-flex justify-content-center align-items-center">
                 <div class="upload-time d-flex justify-content-center p-1">
                   <span class="d-block">上傳日期: {{this.createdAt}}</span>
                 </div>

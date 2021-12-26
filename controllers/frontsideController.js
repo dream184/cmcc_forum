@@ -5,6 +5,7 @@ const db = require('../models')
 const Class = db.Class
 const Homework = db.Homework
 const VoiceFile = db.Voicefile
+const User = db.User
 
 const frontsideController = {
   getClasses: (req, res) => {
@@ -34,14 +35,16 @@ const frontsideController = {
   getHomework: (req, res) => {
     return Homework.findOne({
       where: {id: req.params.id},
-      include: [Class, VoiceFile]
+      include: [
+        Class, 
+        { model: VoiceFile, include: [User] }
+      ]
     })
       .then((homework) => {
         const homeworkJSON = homework.toJSON()
         homeworkJSON.Voicefiles.forEach(x => x.createdAt = dayjs(x.createdAt).format('YYYY/MM/DD HH:mm'))
         return res.render('homework', { 
           homework: homeworkJSON,
-          
         })
       })
   }

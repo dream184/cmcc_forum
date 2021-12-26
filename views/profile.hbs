@@ -30,10 +30,18 @@
   <div class="row w-100 m-0">
     <div class="user-data-container col-12 col-md-3">
       <div class="user-data bg-white rounded">
-        <div class="user-name text-center m-2">姓名: {{user.name}}</div>
-        <div class="user-class text-center m-2">聲音基礎班140期學員</div>
+        <div class="user-name text-center m-2">
+          {{user.name}}
+        </div>
+        <div class="user-class text-center m-2">
+          {{#each user.AttendClasses}}
+            {{this.Class.name}}
+            <br>
+          {{/each}}
+        </div>
+        <br />
         <div class="self-introduction text-center m-2">
-          <h3>自我介紹</h3>
+          自我介紹
           <p>{{user.introduction}}</p>
         </div>
       </div>
