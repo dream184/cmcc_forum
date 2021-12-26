@@ -17,7 +17,6 @@ const voiceFileController = {
     const { file } = req
     const now = dayjs()
     const nowTW = dayjs(now, "Asia/Taipei").valueOf()
-    console.log(file)
 
     return Homework.findOne({
       where: {id: req.params.id },
@@ -49,7 +48,6 @@ const voiceFileController = {
                 })
                 .catch((error) => {
                   req.flash('error_messages', '未選上傳音檔，上傳失敗')
-                  console.log(error)
                   return res.redirect('back')
                 })
             })

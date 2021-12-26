@@ -76,7 +76,6 @@ const userController = {
           nest: true
         })
           .then((voicefiles) => {
-            console.log(voicefiles)
             return res.render('profile', { 
               user: user.toJSON(),
               voicefiles: voicefiles
@@ -86,7 +85,6 @@ const userController = {
       
   },
   editProfile: (req, res) => {
-    console.log(req.body)
     return User.findByPk(req.user.id, {
       include: [
         { model: AttendClass, include: [Class] }
@@ -177,7 +175,26 @@ const userController = {
       })   
   },
   editUser: (req, res) => {
-    return res.render('admin/editUser', { layout: 'admin'})
+    return User.findByPk(req.params.id, {
+      include: [
+        Authority,
+        { model: AttendClass, include: [Class] },
+      ]
+    })
+      .then((user) => {
+        return Class.findAll({
+          raw: true,
+          limit: 10,
+          order: [['createdAt', 'DESC']]
+        })
+          .then((selectedClasses) => {
+            return res.render('admin/editUser', { 
+              user: user.toJSON(),
+              class: selectedClasses,
+              layout: 'admin'
+            })
+          })
+      })
   }
 }
 

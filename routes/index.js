@@ -3,6 +3,7 @@ const frontsideController = require('../controllers/frontsideController')
 const voiceFileController = require('../controllers/voiceFileController')
 const multer = require('multer')
 const userController = require('../controllers/userController.js')
+const attendController = require('../controllers/attendController.js')
 const upload = multer({ dest: 'temp/'})
 
 module.exports = (app, passport) => {
@@ -30,6 +31,8 @@ module.exports = (app, passport) => {
   app.get('/admin/users', userController.getUsers)
   app.put('/admin/users/:id/authority', userController.putUserAuthority)
   app.get('/admin/users/:id/edit', userController.editUser)
+  app.post('/admin/users/:id/attendclasses', attendController.addAttendClass)
+  app.delete('/admin/users/:id/attendclasses/:id', attendController.deleteAttendClass)
 
   app.get('/classes', frontsideController.getClasses)
   app.get('/classes/:id', frontsideController.getHomeworks)
@@ -47,7 +50,6 @@ module.exports = (app, passport) => {
   app.get('/profile/edit', authenticated, userController.editProfile)
   app.put('/profile/:id', authenticated, upload.single('avatar'), userController.putUserProfile)
   app.put('/profile/:id/emailpassword', authenticated, userController.putUserEmailPassword)
-  
 }
 
 
