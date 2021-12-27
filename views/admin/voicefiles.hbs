@@ -1,0 +1,143 @@
+<section class="voicefiles-section col-12 col-md-9">
+  <div class="voicefiles-container">
+    {{>message}}
+    <div class="homeworks-title d-flex justify-content-between my-3">
+      <h3 class="class-name">瀏覽所有學員音檔</h3>
+    </div>
+
+    <table class="voicefiles-table bg-white w-100">
+      <thead class="thead-dark bg-info bg-gradient w-100">
+        <tr class="w-100 text-white">
+          <th scope="col-3" class="p-1">作業</th>
+          <th scope="col-3" class="p-1">播放音檔</th>
+          <th scope="col-3" class="p-1">群組</th>
+          <th scope="col-3" class="p-1">發布人</th>
+          <th scope="col-3" class="p-1">*</th>
+        </tr>
+      </thead>
+    
+      <tbody>
+        {{#each voicefiles}}
+        <tr>
+          <th scope="row" class="p-1">
+            {{this.Homework.name}}
+          </th>
+       
+          <th scope="row" class="p-1">
+            <audio id="player">
+              <source src="https://docs.google.com/uc?export=download&id={{this.googleFileId}}" type="audio/mpeg">
+              您的瀏覽器不支援 audio tag，請點選下面網址收聽音檔
+              <a href="https://docs.google.com/uc?export=download&id={{this.googleFileId}}">音檔連結</a>
+            </audio>
+            <div>
+            <button class="btn btn-success" onclick="document.getElementById('player').play()">Play</button>
+            <button class="btn btn-danger" onclick="document.getElementById('player').pause()">Stop</button>
+            <!-- <button class="btn btn-light border" onclick="document.getElementById('player').volume += 0.1">Vol+</button>
+            <button class="btn btn-light border" onclick="document.getElementById('player').volume -= 0.1">Vol-</button> -->
+            </div>
+          </th>
+    
+          <td class="p-1">
+            {{this.Class.name}}
+          </td>
+
+          <td class="p-1">
+            {{this.User.name}}
+          </td>
+
+          <td class="p-1">
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mentorFeedback">
+              點評
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="mentorFeedback" data-backdrop="static" data-keyboard="false" tabindex="-1"
+              aria-labelledby="mentorFeedbackLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="mentorFeedbackLabel">{{this.Homework.name}} {{this.User.name}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="col-12">
+                      <div class="container-audio d-flex justify-content-center">
+                        <audio controls class="">
+                          <source src="https://docs.google.com/uc?export=download&id={{this.googleFileId}}" type="audio/mpeg">
+                          Your browser dose not Support the audio Tag
+                        </audio>
+                      </div>
+                    </div>
+                    {{#each this.Feedback}}
+                    <div class="other-feedback mt-2">
+                      <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row no-gutters">
+                          <div class="col-md-2 d-flex justify-content-center align-items-center">
+                            <div class="avatar">
+                              <img src="https://picsum.photos/50/50/?random=1" class="mb-2">
+                              <h6 class="text-center">{{this.User.name}}</h6>
+                            </div>
+                          </div>
+                          <div class="col-md-10">
+                            <div class="card-body">
+                              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content.
+                                This content is a little bit longer.</p>
+                              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {{/each}}
+                    
+                    <div class="form-group">
+                      <form action="/admin/voicefiles/{{this.id}}/feedback" method="POST">
+                        <label for="feedbackTextarea" class="d-block font-weight-bold">點評回饋</label>
+                        <div class="form-check form-check-inline">
+                          星星數
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="ranking" id="one-star" value="1">
+                          <label class="form-check-label" for="one-star">1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="ranking" id="two-star" value="2">
+                          <label class="form-check-label" for="two-star">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="ranking" id="three-star" value="3">
+                          <label class="form-check-label" for="three-star">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="ranking" id="four-star" value="4">
+                          <label class="form-check-label" for="four-star">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="ranking" id="five-star" value="5">
+                          <label class="form-check-label" for="five-star">5 (顆星)</label>
+                        </div>
+                        <textarea class="form-control mt-2" id="feedbackTextarea" rows="3" name="feedback"></textarea>
+                        <div class="modal-footer border-0">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                          <button type="submit" class="btn btn-primary">送出</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  
+
+
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>

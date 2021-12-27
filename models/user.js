@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Authority)
       User.hasMany(models.AttendClass)
       User.hasMany(models.Voicefile)
+      User.hasMany(models.Feedback)
     }
   };
   User.init({

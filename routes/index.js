@@ -4,6 +4,7 @@ const voiceFileController = require('../controllers/voiceFileController')
 const multer = require('multer')
 const userController = require('../controllers/userController.js')
 const attendController = require('../controllers/attendController.js')
+const feedbackController = require('../controllers/feedbackController')
 const upload = multer({ dest: 'temp/'})
 
 module.exports = (app, passport) => {
@@ -33,6 +34,8 @@ module.exports = (app, passport) => {
   app.get('/admin/users/:id/edit', authenticated, userController.editUser)
   app.post('/admin/users/:id/attendclasses', authenticated, attendController.addAttendClass)
   app.delete('/admin/users/:id/attendclasses/:id', authenticated, attendController.deleteAttendClass)
+  app.get('/admin/voicefiles', authenticated, voiceFileController.getVoiceFiles)
+  app.post('/admin/voicefiles/:id/feedback', feedbackController.postFeedback)
 
   app.get('/classes', authenticated, frontsideController.getClasses)
   app.get('/classes/:id', authenticated, frontsideController.getHomeworks)

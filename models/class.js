@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Class.hasMany(models.Homework)
       Class.hasMany(models.AttendClass)
+      Class.hasMany(models.Voicefile)
     }
   };
   Class.init({

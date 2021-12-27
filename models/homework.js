@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   Homework.init({
     name: DataTypes.STRING,
     image: DataTypes.STRING,
-    description: DataTypes.STRING,
+    description: DataTypes.TEXT,
     isPublic: DataTypes.BOOLEAN,
     expiredTime: DataTypes.DATE,
     ClassId: DataTypes.INTEGER,

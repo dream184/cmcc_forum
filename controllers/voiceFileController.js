@@ -6,6 +6,8 @@ const db = require('../models')
 const VoiceFile = db.Voicefile
 const Homework = db.Homework
 const Class = db.Class
+const User = db.User
+const Feedback = db.Feedback
 const googleDrive = require('./google_drive_method')
 
 dayjs.locale('zh-tw') 
@@ -13,6 +15,24 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 const voiceFileController = {
+  getVoiceFiles: (req, res) => {
+    return VoiceFile.findAll({
+      raw: true,
+      nest: true,
+      include: [
+        User,
+        Homework,
+        Class
+      ]
+    })
+      .then((voicefiles) => {
+        console.log(voicefiles)
+        return res.render('admin/voicefiles', {
+          voicefiles: voicefiles,
+          layout: 'admin'
+        })
+      })
+  },
   postVoiceFile: (req, res) => {
     const { file } = req
     const now = dayjs()
@@ -40,7 +60,8 @@ const voiceFileController = {
                 mimeType: mimeType,
                 HomeworkId: homework.id,
                 isPublic: true,
-                UserId: req.user.id
+                UserId: req.user.id,
+                ClassId: homeworkJSON.Class.id
               })
                 .then((voiceFile) => {
                   req.flash('success_messages', '音檔上傳成功！')
