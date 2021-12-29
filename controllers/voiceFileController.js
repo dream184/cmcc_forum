@@ -9,6 +9,7 @@ const Class = db.Class
 const User = db.User
 const Feedback = db.Feedback
 const googleDrive = require('./google_drive_method')
+const Op = require('sequelize').Op
 
 dayjs.locale('zh-tw') 
 dayjs.extend(utc)
@@ -16,7 +17,7 @@ dayjs.extend(timezone)
 
 const voiceFileController = {
   getVoiceFiles: (req, res) => {
-    return VoiceFile.findAll({
+    return VoiceFile.findAll({   
       raw: true,
       nest: true,
       include: [
@@ -28,6 +29,25 @@ const voiceFileController = {
       .then((voicefiles) => {
         console.log(voicefiles)
         return res.render('admin/voicefiles', {
+          voicefiles: voicefiles,
+          layout: 'admin'
+        })
+      })
+  },
+  getNoFeedbackVoicefiles: (req, res) => {
+    return VoiceFile.findAll({
+      where: { isFeedbackedBy: {[Op.not]: req.user.id } },
+      raw: true,
+      nest: true,
+      include: [
+        User,
+        Homework,
+        Class
+      ]
+    })
+      .then((voicefiles) => {
+        console.log(voicefiles)
+        return res.render('admin/nofeedbackvoicefiles', {
           voicefiles: voicefiles,
           layout: 'admin'
         })

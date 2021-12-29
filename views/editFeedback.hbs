@@ -1,0 +1,90 @@
+<div class="class-voicefile-container col-12 col-md-9 mx-auto my-2">
+  {{>message}}
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home"
+      aria-selected="true">回饋一覽</a>
+  </div>
+  <div class="tab-content bg-white" id="nav-tabContent">
+    <div class="tab-pane fade show active p-3" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+      <div class="d-flex justify-content-around">
+        <h3 class="text-center mb-0">修改回饋</h3>
+      </div>
+      <hr />
+      <div class="card bg-light text-dark m-auto" style="max-width: 720px;">
+        <div class="voicefile row no-gutters">
+          <div class="col-md-4 d-flex flex-column justify-content-center">
+
+            <div class="voicefile-homework">
+              <div class="voicefile-name d-flex justify-content-center align-items-center p-1">
+                <span>{{feedback.Voicefile.Homework.name}}</span>
+              </div>
+            </div>
+
+            <div class="voicefile-upload-time">
+              <div class="upload-time d-flex justify-content-center p-1">
+                <span class="d-block">{{dayjs feedback.Voicefile.createdAt}}</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <div class="container-audio d-flex justify-content-center">
+                <audio controls>
+                  <source src="https://docs.google.com/uc?export=download&id={{feedback.Voicefile.googleFileId}}"
+                    type="audio/mpeg">
+                  Your browser dose not Support the audio Tag
+                </audio>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+  
+      <div class="card bg-light text-dark m-auto" style="max-width: 720px;">
+        <div class="feedback row no-gutters">
+          <div class="col-md-3 d-flex justify-content-center align-items-center">
+            <div>
+              <div class="feedback-image-container">
+                <div class="feedback-name d-flex justify-content-center align-items-center p-1">
+                  <img src="https://drive.google.com/uc?export=view&id={{feedback.User.googleImageId}}" style="width: 50px; height: 50px">
+                </div>
+              </div>
+              <div class="feedback-user-container">
+                <div class="feedback-user-container d-flex justify-content-center p-1">
+                  <span class="d-block">{{feedback.User.name}}</span>
+                </div>
+              </div>
+
+              <div class="feedback-createdAt-container">
+                <div class="feedback-createdAt d-flex justify-content-center p-1">
+                  <span class="d-block">{{dayjs feedback.createdAt}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <form
+              action="/classes/{{feedback.Voicefile.ClassId}}/homeworks/{{feedback.Voicefile.Homework.id}}/voicefiles/{{feedback.Voicefile.id}}/feedbacks/{{feedback.id}}?_method=PUT"
+              method="POST">
+              <div class="card-body">
+                
+                <label for="feedbackTextarea" class="d-block font-weight-bold">回饋</label>       
+                <textarea class="form-control mt-2" id="feedbackTextarea" rows="3" name="feedback">{{feedback.feedback}}</textarea>
+              </div>
+              <div class="feedback-button text-right">
+                <a href="javascript:history.back()" class="btn btn-success">返回</a>
+                <button type="submit" class="btn btn-primary">送出</button>
+                
+                
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <br>
+
+    </div>
+  </div>
+</div>

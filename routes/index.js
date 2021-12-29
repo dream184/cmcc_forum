@@ -35,13 +35,20 @@ module.exports = (app, passport) => {
   app.post('/admin/users/:id/attendclasses', authenticated, attendController.addAttendClass)
   app.delete('/admin/users/:id/attendclasses/:id', authenticated, attendController.deleteAttendClass)
   app.get('/admin/voicefiles', authenticated, voiceFileController.getVoiceFiles)
-  app.post('/admin/voicefiles/:id/feedback', feedbackController.postFeedback)
+  app.post('/admin/voicefiles/:id/feedbacks', feedbackController.postAdminFeedback)
+  app.get('/admin/voicefiles/waitingfeedback', voiceFileController.getNoFeedbackVoicefiles)
+  app.get('/admin/voicefiles/:id/feedbacks', feedbackController.getAdminFeedbacks)
 
   app.get('/classes', authenticated, frontsideController.getClasses)
   app.get('/classes/:id', authenticated, frontsideController.getHomeworks)
   app.get('/classes/:id/homeworks/:id', authenticated, frontsideController.getHomework)
   app.post('/classes/:id/homeworks/:id/uploadVoiceFile', authenticated, upload.single('voiceFile'), voiceFileController.postVoiceFile)
   app.delete('/classes/:id/homeworks/:id/voicefiles/:id', authenticated, voiceFileController.deleteVoiceFile)
+  app.get('/classes/:id/homeworks/:id/voicefiles/:id/feedbacks', authenticated, feedbackController.getFeedbacks)
+  app.post('/classes/:id/homeworks/:id/voicefiles/:id/feedbacks', feedbackController.postFeedback)
+  app.get('/classes/:id/homeworks/:id/voicefiles/:id/feedbacks/:id/edit', authenticated, feedbackController.editFeedback)
+  app.put('/classes/:id/homeworks/:id/voicefiles/:id/feedbacks/:id', authenticated, feedbackController.putFeedback)
+  app.delete('/classes/:id/homeworks/:id/voicefiles/:id/feedbacks/:id', authenticated, feedbackController.deleteFeedback)
 
   app.get('/signin', userController.signInPage)
   app.get('/signup', userController.signUpPage)
@@ -54,5 +61,4 @@ module.exports = (app, passport) => {
   app.put('/profile/:id', authenticated, upload.single('avatar'), userController.putUserProfile)
   app.put('/profile/:id/emailpassword', authenticated, userController.putUserEmailPassword)
 }
-
 

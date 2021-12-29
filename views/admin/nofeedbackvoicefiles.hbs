@@ -2,42 +2,41 @@
   <div class="voicefiles-container">
     {{>message}}
     <div class="homeworks-title d-flex justify-content-between my-3">
-      <h3 class="class-name">瀏覽所有學員音檔</h3>
+      <h3 class="class-name">未點評音檔作業</h3>
     </div>
 
     <table class="voicefiles-table bg-white w-100">
       <thead class="thead-dark bg-info bg-gradient w-100">
         <tr class="w-100 text-white">
           <th scope="col-3" class="p-1">作業</th>
-          <!-- <th scope="col-3" class="p-1">播放音檔</th> -->
+          <th scope="col-3" class="p-1">播放音檔</th>
           <th scope="col-3" class="p-1">群組</th>
           <th scope="col-3" class="p-1">發布人</th>
-          <th scope="col-3" class="p-1">查看評論</th>
           <th scope="col-3" class="p-1">*</th>
         </tr>
       </thead>
-    
+
       <tbody>
         {{#each voicefiles}}
         <tr>
           <th scope="row" class="p-1">
             {{this.Homework.name}}
           </th>
-       
-          <!-- <th scope="row" class="p-1">
+
+          <th scope="row" class="p-1">
             <audio id="player">
               <source src="https://docs.google.com/uc?export=download&id={{this.googleFileId}}" type="audio/mpeg">
               您的瀏覽器不支援 audio tag，請點選下面網址收聽音檔
               <a href="https://docs.google.com/uc?export=download&id={{this.googleFileId}}">音檔連結</a>
             </audio>
             <div>
-            <button class="btn btn-success" onclick="document.getElementById('player').play()">Play</button>
-            <button class="btn btn-danger" onclick="document.getElementById('player').pause()">Stop</button>
-            <button class="btn btn-light border" onclick="document.getElementById('player').volume += 0.1">Vol+</button>
-            <button class="btn btn-light border" onclick="document.getElementById('player').volume -= 0.1">Vol-</button>
+              <button class="btn btn-success" onclick="document.getElementById('player').play()">Play</button>
+              <button class="btn btn-danger" onclick="document.getElementById('player').pause()">Stop</button>
+              <!-- <button class="btn btn-light border" onclick="document.getElementById('player').volume += 0.1">Vol+</button>
+            <button class="btn btn-light border" onclick="document.getElementById('player').volume -= 0.1">Vol-</button> -->
             </div>
-          </th> -->
-    
+          </th>
+
           <td class="p-1">
             {{this.Class.name}}
           </td>
@@ -47,19 +46,16 @@
           </td>
 
           <td class="p-1">
-            <a href="/admin/voicefiles/{{this.id}}/feedbacks" class="btn btn-success">查看</a>
-          </td>
-
-          <td class="p-1">
 
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mentorFeedbackVoicefile{{this.id}}">
+            <button type="button" class="btn btn-primary" data-toggle="modal"
+              data-target="#mentorFeedbackVoicefile{{this.id}}">
               點評
             </button>
-            
+
             <!-- Modal -->
-            <div class="modal fade" id="mentorFeedbackVoicefile{{this.id}}" data-backdrop="static" data-keyboard="false" tabindex="-1"
-              aria-labelledby="mentorFeedbackLabel" aria-hidden="true">
+            <div class="modal fade" id="mentorFeedbackVoicefile{{this.id}}" data-backdrop="static" data-keyboard="false"
+              tabindex="-1" aria-labelledby="mentorFeedbackLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -72,7 +68,8 @@
                     <div class="col-12">
                       <div class="container-audio d-flex justify-content-center">
                         <audio controls class="">
-                          <source src="https://docs.google.com/uc?export=download&id={{this.googleFileId}}" type="audio/mpeg">
+                          <source src="https://docs.google.com/uc?export=download&id={{this.googleFileId}}"
+                            type="audio/mpeg">
                           Your browser dose not Support the audio Tag
                         </audio>
                       </div>
@@ -89,7 +86,8 @@
                           </div>
                           <div class="col-md-10">
                             <div class="card-body">
-                              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content.
+                              <p class="card-text">This is a wider card with supporting text below as a natural lead-in
+                                to additional content.
                                 This content is a little bit longer.</p>
                               <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                             </div>
@@ -98,7 +96,7 @@
                       </div>
                     </div>
                     {{/each}}
-                    
+
                     <div class="form-group">
                       <form action="/admin/voicefiles/{{this.id}}/feedbacks" method="POST">
                         <label for="feedbackTextarea" class="d-block font-weight-bold">點評回饋</label>
@@ -133,9 +131,6 @@
                       </form>
                     </div>
                   </div>
-                  
-
-
                 </div>
               </div>
             </div>

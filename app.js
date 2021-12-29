@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 var favicon = require('serve-favicon')
 const flash = require('connect-flash')
-const dayjs = require('./config/handlebars-helpers')
+const hbsHelpers = require('./config/handlebars-helpers')
 const passport = require('./config/passport')
 const path = require('path')
 const app = express()
@@ -19,7 +19,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.engine('hbs', exphbs.engine({
   defaultLayout: 'main',
   extname: '.hbs',
-  helpers: dayjs
+  helpers: hbsHelpers
 }))
 app.set('view engine', 'hbs')
 

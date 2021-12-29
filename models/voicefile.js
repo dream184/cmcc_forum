@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     HomeworkId: DataTypes.INTEGER,
     mimeType: DataTypes.STRING,
     UserId: DataTypes.INTEGER,
-    ClassId: DataTypes.INTEGER
+    ClassId: DataTypes.INTEGER,
+    isFeedbackedBy: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Voicefile',
