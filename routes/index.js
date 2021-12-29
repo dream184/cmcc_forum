@@ -35,9 +35,12 @@ module.exports = (app, passport) => {
   app.post('/admin/users/:id/attendclasses', authenticated, attendController.addAttendClass)
   app.delete('/admin/users/:id/attendclasses/:id', authenticated, attendController.deleteAttendClass)
   app.get('/admin/voicefiles', authenticated, voiceFileController.getVoiceFiles)
-  app.post('/admin/voicefiles/:id/feedbacks', feedbackController.postAdminFeedback)
-  app.get('/admin/voicefiles/waitingfeedback', voiceFileController.getNoFeedbackVoicefiles)
-  app.get('/admin/voicefiles/:id/feedbacks', feedbackController.getAdminFeedbacks)
+  app.post('/admin/voicefiles/:id/feedbacks', authenticated, feedbackController.postAdminFeedback)
+  app.get('/admin/voicefiles/waitingfeedback', authenticated, voiceFileController.getNoFeedbackVoicefiles)
+  app.get('/admin/voicefiles/:id/feedbacks', authenticated, feedbackController.getAdminFeedbacks)
+  app.get('/admin/voicefiles/:id/feedbacks/:id/edit', feedbackController.editAdminFeedback)
+  app.put('/admin/voicefiles/:id/feedbacks/:id', feedbackController.putAdminFeedback)
+
 
   app.get('/classes', authenticated, frontsideController.getClasses)
   app.get('/classes/:id', authenticated, frontsideController.getHomeworks)

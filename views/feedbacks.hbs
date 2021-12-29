@@ -61,7 +61,6 @@
                 <div class="form-group">
                   <form action="/classes/{{voicefile.Homework.Class.id}}/homeworks/{{voicefile.Homework.id}}/voicefiles/{{voicefile.id}}/feedbacks" method="POST">
                     <label for="feedbackTextarea" class="d-block font-weight-bold">回饋</label>
-
                     <textarea class="form-control mt-2" id="feedbackTextarea" rows="3" name="feedback"></textarea>
                     <div class="modal-footer border-0">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
@@ -143,6 +142,8 @@
                 {{this.feedback}}
               </p>
             </div>
+            
+            {{#if (isAuthor this.User.id ../currentUser.id)}}
             <div class="feedback-button d-flex justify-content-end">
               <form
                 action="/classes/{{../voicefile.Homework.Class.id}}/homeworks/{{../voicefile.Homework.id}}/voicefiles/{{../voicefile.id}}/feedbacks/{{this.id}}?_method=DELETE"
@@ -151,6 +152,7 @@
               </form>
               <a href="/classes/{{../voicefile.Homework.Class.id}}/homeworks/{{../voicefile.Homework.id}}/voicefiles/{{../voicefile.id}}/feedbacks/{{this.id}}/edit" class="btn btn-success m-1">修改</a>    
             </div>
+            {{/if}}
           </div>
         </div>
       </div>

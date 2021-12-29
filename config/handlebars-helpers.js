@@ -9,5 +9,11 @@ module.exports = {
   rankingStar: function (number) {
     const star = '<i class="fas fa-star text-warning"></i>'
     return star.repeat(number)
+  },
+  isAuthor: function (AuthorId, userId) {
+    return AuthorId === userId
+  },
+  equal: function (a, b) {
+    return a === b
   }
 }

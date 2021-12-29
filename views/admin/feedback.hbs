@@ -159,7 +159,17 @@
               {{{rankingStar this.ranking}}}       
               <p>
                 {{this.feedback}}
-              </p> 
+              </p>
+              {{#if (isAuthor this.User.id ../currentUser.id)}}
+              <div class="feedback-button d-flex justify-content-end">
+                <form
+                  action="/classes/{{../voicefile.Homework.Class.id}}/homeworks/{{../voicefile.Homework.id}}/voicefiles/{{../voicefile.id}}/feedbacks/{{this.id}}?_method=DELETE"
+                  method="POST" class="m-1">
+                  <button class="submit btn btn-light border-danger text-danger">刪除</button>
+                </form>
+                <a href="/admin/voicefiles/{{../voicefile.id}}/feedbacks/{{this.id}}/edit" class="btn btn-success m-1">修改</a>
+              </div>
+              {{/if}}
             </div>
           </div>
         </div>

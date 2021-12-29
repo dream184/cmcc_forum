@@ -41,14 +41,15 @@
         </div>
       </div>
       <br>
-  
+
       <div class="card bg-light text-dark m-auto" style="max-width: 720px;">
         <div class="feedback row no-gutters">
           <div class="col-md-3 d-flex justify-content-center align-items-center">
             <div>
               <div class="feedback-image-container">
                 <div class="feedback-name d-flex justify-content-center align-items-center p-1">
-                  <img src="https://drive.google.com/uc?export=view&id={{feedback.User.googleImageId}}" style="width: 50px; height: 50px">
+                  <img src="https://drive.google.com/uc?export=view&id={{feedback.User.googleImageId}}"
+                    style="width: 50px; height: 50px">
                 </div>
               </div>
               <div class="feedback-user-container">
@@ -66,11 +67,35 @@
           </div>
           <div class="col-md-9">
             <form
-              action="/classes/{{feedback.Voicefile.ClassId}}/homeworks/{{feedback.Voicefile.Homework.id}}/voicefiles/{{feedback.Voicefile.id}}/feedbacks/{{feedback.id}}?_method=PUT"
+              action="/admin/voicefiles/{{feedback.Voicefile.id}}/feedbacks/{{feedback.id}}?_method=PUT"
               method="POST">
-              <div class="card-body">            
-                <label for="feedbackTextarea" class="d-block font-weight-bold">回饋</label>       
-                <textarea class="form-control mt-2" id="feedbackTextarea" rows="3" name="feedback">{{feedback.feedback}}</textarea>
+              <div class="card-body">
+                <label for="feedbackTextarea" class="d-block font-weight-bold">回饋</label>
+                <div class="form-check form-check-inline">
+                  星星數
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="ranking" id="one-star" value="1" {{#if (equal feedback.ranking 1)}}checked{{/if}}>
+                  <label class="form-check-label" for="one-star">1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="ranking" id="two-star" value="2" {{#if (equal feedback.ranking 2)}}checked{{/if}}>
+                  <label class="form-check-label" for="two-star">2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="ranking" id="three-star" value="3" {{#if (equal feedback.ranking 3)}}checked{{/if}}>
+                  <label class="form-check-label" for="three-star">3</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="ranking" id="four-star" value="4" {{#if (equal feedback.ranking 4)}}checked{{/if}}>
+                  <label class="form-check-label" for="four-star">4</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="ranking" id="five-star" value="5" {{#if (equal feedback.ranking 5)}}checked{{/if}}>
+                  <label class="form-check-label" for="five-star">5 (顆星)</label>
+                </div>
+                <textarea class="form-control mt-2" id="feedbackTextarea" rows="3"
+                  name="feedback">{{feedback.feedback}}</textarea>
               </div>
               <div class="feedback-button text-right">
                 <a href="javascript:history.back()" class="btn btn-success">返回</a>

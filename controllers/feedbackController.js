@@ -18,7 +18,8 @@ const feedbackController = {
         console.log(voicefile.Feedbacks)
         return res.render('feedbacks', {
           layout: 'main',
-          voicefile: voicefile.toJSON()
+          voicefile: voicefile.toJSON(),
+          currentUser: req.user
         })
       })
   },
@@ -54,6 +55,10 @@ const feedbackController = {
       })
   },
   putFeedback: (req, res) => {
+    if (!req.body.feedback) {
+      req.flash('error_messages', '回饋欄必須填寫')
+      return res.redirect('back')
+    }
     const { feedback } = req.body
     return Feedback.findByPk(req.params.id, {
       include: [User,
@@ -69,17 +74,18 @@ const feedbackController = {
           feedback: req.body.feedback
         })
           .then(() => {
+            req.flash('success_messages', '回饋修改成功')
             return res.redirect(`/classes/${feedback.Voicefile.ClassId}/homeworks/${feedback.Voicefile.Homework.id}/voicefiles/${feedback.Voicefile.id}/feedbacks`)
           })
       })
   },
   deleteFeedback: (req, res) => {
-    if (feedback.UserId !== req.user.id) {
-      req.flash('error_messages', '您不是發布人，無法進行此操作')
-      return res.redirect(`/classes/${feedback.Voicefile.ClassId}/homeworks/${feedback.Voicefile.Homework.id}/voicefiles/${feedback.Voicefile.id}/feedbacks`)
-    }
     return Feedback.findByPk(req.params.id)
       .then((feedback) => {
+        if (feedback.UserId !== req.user.id) {
+          req.flash('error_messages', '您不是發布人，無法進行此操作')
+          return res.redirect('back')
+        }
         feedback.destroy()
           .then(() => {
             req.flash('success_messages', '已經成功刪除回饋')
@@ -99,7 +105,8 @@ const feedbackController = {
         console.log(voicefile.toJSON())
         return res.render('admin/feedback', {
           layout: 'admin',
-          voicefile: voicefile.toJSON()
+          voicefile: voicefile.toJSON(),
+          currentUser: req.user
         })
       })
   },
@@ -125,7 +132,55 @@ const feedbackController = {
         req.flash('success_messages', '已經送出點評回饋')
         return res.redirect('back')
       })
-  }
+  },
+  editAdminFeedback: (req, res) => {
+    return Feedback.findByPk(req.params.id, {
+      include: [User,
+        { model: VoiceFile, include: [Homework, User] }
+      ]
+    })
+      .then((feedback) => {
+        if (feedback.UserId !== req.user.id) {
+          req.flash('error_messages', '您不是發布人，無法進行此操作')
+          return res.redirect(`/classes/${feedback.Voicefile.ClassId}/homeworks/${feedback.Voicefile.Homework.id}/voicefiles/${feedback.Voicefile.id}/feedbacks`)
+        }
+        return res.render('admin/editFeedback', {
+          layout: 'admin',
+          feedback: feedback.toJSON(),
+        })
+      })
+  },
+  putAdminFeedback: (req, res) => {
+    const { feedback } = req.body
+    if (!req.body.feedback) {
+      req.flash('error_messages', '回饋欄必須填寫')
+      return res.redirect('back')
+    }
+    if (!req.body.ranking) {
+      req.flash('error_messages', '星星數必須勾選')
+      return res.redirect('back')
+    }
+    return Feedback.findByPk(req.params.id, {
+      include: [
+        User,
+        { model: VoiceFile, include: [Homework, User] }
+      ]
+    })
+      .then((feedback) => {
+        if (feedback.UserId !== req.user.id) {
+          req.flash('error_messages', '您不是發布人，無法進行此操作')
+          return res.redirect(`/classes/${feedback.Voicefile.ClassId}/homeworks/${feedback.Voicefile.Homework.id}/voicefiles/${feedback.Voicefile.id}/feedbacks`)
+        }
+        return feedback.update({
+          feedback: req.body.feedback,
+          ranking: req.body.ranking
+        })
+          .then(() => {
+            req.flash('success_messages', '回饋修改成功')
+            return res.redirect(`/admin/voicefiles/${feedback.Voicefile.id}/feedbacks`)
+          })
+      })
+  },
 }
 
 module.exports = feedbackController
