@@ -12,8 +12,7 @@ const frontsideController = {
     })
       .then((classes) => {
         return res.render('index', {
-          classes: classes, 
-          layout: 'main'
+          classes: classes
         })
       })
   },

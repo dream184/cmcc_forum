@@ -27,11 +27,13 @@
           <i class="fas fa-user-circle text-white" style="font-size: 35px;"></i>
         </button>
         <div class="dropdown-menu dropdown-menu-right">
+          {{#if user}}
           <a href="/profile"><button class="dropdown-item text-center" type="button">個人檔案</button></a>
-          <a href="/signin"><button class="dropdown-item text-center" type="button">登入</button></a>
-          <a href="/logout"><button class="dropdown-item text-center" type="button">登出</button></a>
-          <a href="/"><button class="dropdown-item text-center" type="button">前台</button></a>
           <a href="/admin/classes" class=" d-block"><button class="dropdown-item text-center" type="button">後台</button></a>
+          <a href="/logout"><button class="dropdown-item text-center" type="button">登出</button></a>
+          {{else}}
+          <a href="/signin"><button class="dropdown-item text-center" type="button">登入</button></a>
+          {{/if}}
         </div>
       </div>
     </div>

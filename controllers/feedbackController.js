@@ -38,7 +38,8 @@ const feedbackController = {
       .then(() => {
         req.flash('success_messages', '已經送出回饋')
         return res.redirect('back')
-      })
+      })    
+     
   },
   editFeedback: (req, res) => {
     return Feedback.findByPk(req.params.id, {
@@ -80,18 +81,16 @@ const feedbackController = {
       })
   },
   deleteFeedback: (req, res) => {
-    return Feedback.findByPk(req.params.id)
-      .then((feedback) => {
-        if (feedback.UserId !== req.user.id) {
-          req.flash('error_messages', '您不是發布人，無法進行此操作')
-          return res.redirect('back')
-        }
-        feedback.destroy()
-          .then(() => {
-            req.flash('success_messages', '已經成功刪除回饋')
-            return res.redirect('back')
-          })
-      })
+    return Feedback.findByPk(req.params.id).then((feedback) => {
+      if (feedback.UserId !== req.user.id) {
+        req.flash('error_messages', '您不是發布人，無法進行此操作')
+        return res.redirect('back')
+      }
+      return feedback.destroy().then(() => {    
+        req.flash('success_messages', '已經成功刪除回饋')
+        return res.redirect('back')
+      })    
+    })
   },
   getAdminFeedbacks: (req, res) => {
     return VoiceFile.findByPk(req.params.id, {
@@ -121,17 +120,24 @@ const feedbackController = {
       req.flash('error_messages', '回饋欄不能空白')
       return res.redirect('back')
     }
-    return Feedback.create({
-      feedback: feedback,
-      isMentor: false,
-      ranking: ranking,
-      VoicefileId: req.params.id,
-      UserId: req.user.id
-    })
-      .then(() => {
-        req.flash('success_messages', '已經送出點評回饋')
-        return res.redirect('back')
-      })
+
+    return VoiceFile.findByPk(req.params.id)
+      .then((voicefile) => {
+        return voicefile.update({ isFeedbackedBy: req.user.id })
+          .then(() => {
+            return Feedback.create({
+              feedback: feedback,
+              isMentor: false,
+              ranking: ranking,
+              VoicefileId: req.params.id,
+              UserId: req.user.id,     
+            })
+              .then(() => {
+                req.flash('success_messages', '已經送出點評回饋')
+                return res.redirect('back')
+              })
+          })     
+      }) 
   },
   editAdminFeedback: (req, res) => {
     return Feedback.findByPk(req.params.id, {

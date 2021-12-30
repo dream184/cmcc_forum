@@ -36,14 +36,10 @@ const voiceFileController = {
   },
   getNoFeedbackVoicefiles: (req, res) => {
     return VoiceFile.findAll({
-      where: { isFeedbackedBy: {[Op.not]: req.user.id } },
+      where: { isFeedbackedBy: {[Op.is]: false} },
       raw: true,
       nest: true,
-      include: [
-        User,
-        Homework,
-        Class
-      ]
+      include: [User, Homework, Class]
     })
       .then((voicefiles) => {
         console.log(voicefiles)
@@ -51,7 +47,7 @@ const voiceFileController = {
           voicefiles: voicefiles,
           layout: 'admin'
         })
-      })
+      }).catch((err) => console.log(err))
   },
   postVoiceFile: (req, res) => {
     const { file } = req
