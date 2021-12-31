@@ -3,17 +3,29 @@
     {{>message}}
     <div class="homeworks-title d-flex justify-content-between my-3">
       <h3 class="class-name">瀏覽所有學員音檔</h3>
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          選擇排序
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a href="/admin/voicefiles/date-asc" class="dropdown-item"> 依日期：從舊到新</a>
+          <a href="/admin/voicefiles/date-desc" class="dropdown-item">依日期：從新到舊</a>
+          <a href="/admin/voicefiles/classes" class="dropdown-item">依班級</a>
+          <a href="/admin/voicefiles/homeworks" class="dropdown-item">依作業排序</a>
+          <a href="/admin/voicefiles/authors" class="dropdown-item">依發布人排序</a>
+        </div>
+      </div>
     </div>
 
     <table class="voicefiles-table bg-white w-100">
       <thead class="thead-dark bg-info bg-gradient w-100">
         <tr class="w-100 text-white">
-          <th scope="col-3" class="p-1">作業</th>
-          <!-- <th scope="col-3" class="p-1">播放音檔</th> -->
-          <th scope="col-3" class="p-1">群組</th>
-          <th scope="col-3" class="p-1">發布人</th>
-          <th scope="col-3" class="p-1">查看評論</th>
-          <th scope="col-3" class="p-1">*</th>
+          <th scope="col" class="p-1">作業</th>
+          <th scope="col" class="p-1">日期</th>
+          <th scope="col" class="p-1">群組</th>
+          <th scope="col" class="p-1">發布人</th>
+          <th scope="col" class="p-1">查看評論</th>
+          <th scope="col" class="p-1">*</th>
         </tr>
       </thead>
     
@@ -37,6 +49,10 @@
             <button class="btn btn-light border" onclick="document.getElementById('player').volume -= 0.1">Vol-</button>
             </div>
           </th> -->
+
+          <td class="p-1">
+            {{dayjs this.createdAt}}
+          </td>
     
           <td class="p-1">
             {{this.Class.name}}

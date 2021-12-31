@@ -40,6 +40,7 @@ module.exports = (app, passport) => {
   app.get('/admin/voicefiles/:id/feedbacks', authenticated, feedbackController.getAdminFeedbacks)
   app.get('/admin/voicefiles/:id/feedbacks/:id/edit', feedbackController.editAdminFeedback)
   app.put('/admin/voicefiles/:id/feedbacks/:id', feedbackController.putAdminFeedback)
+  app.get('/admin/voicefiles/:orderby', authenticated, voiceFileController.getVoiceFilesByOrder)
 
   app.get('/classes', authenticated, frontsideController.getClasses)
   app.get('/classes/:id', authenticated, frontsideController.getHomeworks)

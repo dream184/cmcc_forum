@@ -20,6 +20,7 @@ const voiceFileController = {
     return VoiceFile.findAll({   
       raw: true,
       nest: true,
+      order: [['createdAt', 'DESC']],
       include: [
         User,
         Homework,
@@ -33,6 +34,36 @@ const voiceFileController = {
           layout: 'admin'
         })
       })
+  },
+  getVoiceFilesByOrder: (req, res) => {
+    const order = req.params.orderby
+    console.log(order)
+    function orderby(order) {
+      if (order === 'date-asc') return [['createdAt', 'ASC']]
+      if (order === 'date-desc') return [['createdAt', 'DESC']]
+      if (order === 'classes') return [['ClassId', 'DESC']]
+      if (order === 'homeworks') return [['HomeworkId', 'DESC']]
+      if (order === 'authors') return [['UserId', 'DESC']]
+    }
+    return VoiceFile.findAll({
+      raw: true,
+      nest: true,
+      order: orderby(order),
+      include: [
+        User,
+        Homework,
+        Class
+      ]
+    })
+      .then((voicefiles) => {
+        console.log(voicefiles)
+        return res.render('admin/voicefiles', {
+          voicefiles: voicefiles,
+          layout: 'admin'
+        })
+      })
+
+
   },
   getNoFeedbackVoicefiles: (req, res) => {
     return VoiceFile.findAll({
