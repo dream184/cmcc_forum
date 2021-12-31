@@ -38,7 +38,7 @@
                     <div class="row no-gutters">
                       <div class="col-md-2 d-flex justify-content-center align-items-center">
                         <div class="avatar">
-                          <img src="https://picsum.photos/50/50/?random=1" class="mb-2">
+                          <img src="/image/logo.jpg" class="mb-2" style="50px">
                           <h6 class="text-center">{{this.User.name}}</h6>
                         </div>
                       </div>
@@ -138,7 +138,11 @@
             <div>
               <div class="feedback-image-container">
                 <div class="feedback-name d-flex justify-content-center align-items-center p-1">
-                  <img src="https://picsum.photos/50/50/?random=1">
+                  {{#if this.User.googleImageId}}
+                  <img src="https://drive.google.com/uc?export=view&id={{this.User.googleImageId}}" alt="avatar" style="width: 50px">
+                  {{else}}
+                  <img src="/image/logo.jpg" style="width: 50px">
+                  {{/if}}
                 </div>
               </div>
               <div class="feedback-user-container">

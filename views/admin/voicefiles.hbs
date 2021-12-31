@@ -25,7 +25,7 @@
           <th scope="col" class="p-1">群組</th>
           <th scope="col" class="p-1">發布人</th>
           <th scope="col" class="p-1">查看評論</th>
-          <th scope="col" class="p-1">*</th>
+          <th scope="col" class="p-1">點評</th>
         </tr>
       </thead>
     
@@ -35,20 +35,6 @@
           <th scope="row" class="p-1">
             {{this.Homework.name}}
           </th>
-       
-          <!-- <th scope="row" class="p-1">
-            <audio id="player">
-              <source src="https://docs.google.com/uc?export=download&id={{this.googleFileId}}" type="audio/mpeg">
-              您的瀏覽器不支援 audio tag，請點選下面網址收聽音檔
-              <a href="https://docs.google.com/uc?export=download&id={{this.googleFileId}}">音檔連結</a>
-            </audio>
-            <div>
-            <button class="btn btn-success" onclick="document.getElementById('player').play()">Play</button>
-            <button class="btn btn-danger" onclick="document.getElementById('player').pause()">Stop</button>
-            <button class="btn btn-light border" onclick="document.getElementById('player').volume += 0.1">Vol+</button>
-            <button class="btn btn-light border" onclick="document.getElementById('player').volume -= 0.1">Vol-</button>
-            </div>
-          </th> -->
 
           <td class="p-1">
             {{dayjs this.createdAt}}
@@ -93,27 +79,6 @@
                         </audio>
                       </div>
                     </div>
-                    {{#each this.Feedback}}
-                    <div class="other-feedback mt-2">
-                      <div class="card mb-3" style="max-width: 540px;">
-                        <div class="row no-gutters">
-                          <div class="col-md-2 d-flex justify-content-center align-items-center">
-                            <div class="avatar">
-                              <img src="https://picsum.photos/50/50/?random=1" class="mb-2">
-                              <h6 class="text-center">{{this.User.name}}</h6>
-                            </div>
-                          </div>
-                          <div class="col-md-10">
-                            <div class="card-body">
-                              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content.
-                                This content is a little bit longer.</p>
-                              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {{/each}}
                     
                     <div class="form-group">
                       <form action="/admin/voicefiles/{{this.id}}/feedbacks" method="POST">

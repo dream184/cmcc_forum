@@ -14,7 +14,11 @@
         <div class="card mb-3 mx-auto">
           <div class="row no-gutters">
             <div class="col-md-4 d-flex justify-content-center align-items-center">
-              <img src="https://picsum.photos/150/150/?random=1">
+              {{#if user.googleImageId}}
+              <img src="https://drive.google.com/uc?export=view&id={{user.googleImageId}}" alt="avatar" style="width: 150px">
+              {{else}}
+              <img src="/image/logo.jpg" style="width: 150px">
+              {{/if}}
             </div>
             <div class="col-md-8">
               <div class="card-body bg-light pl-5">
@@ -38,7 +42,11 @@
         <div class="card mb-3 mx-auto">
           <div class="row no-gutters">
             <div class="col-md-4 d-flex justify-content-center align-items-center">
-              <img src="https://picsum.photos/150/150/?random=1">
+              {{#if user.googleImageId}}
+              <img src="https://drive.google.com/uc?export=view&id={{user.googleImageId}}" alt="avatar" style="width: 150px">
+              {{else}}
+              <img src="/image/logo.jpg" style="width: 150px">
+              {{/if}}
             </div>
             <div class="col-md-8">
               <div class="card-body bg-light pl-5">

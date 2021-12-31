@@ -4,7 +4,7 @@
       {{#if user.googleImageId}}
         <img src="https://drive.google.com/uc?export=view&id={{user.googleImageId}}" alt="avatar" style="width: 150px">
       {{else}}
-        <img src="https://picsum.photos/150/150/?random=1" style="width: 150px">
+        <img src="/image/logo.jpg" style="width: 150px">
       {{/if}}
     </div>
     <div class="edit-profile my-auto">
@@ -18,7 +18,12 @@
       <div class="user-data bg-white rounded">
         <div class="user-name text-center m-2">姓名: {{user.name}}</div>
         <div class="user-nickname text-center m-2">暱稱: {{user.nickName}}</div>
-        <div class="user-class text-center m-2">聲音基礎班140期學員</div>
+        <div class="user-class text-center m-2">
+          {{#each user.AttendClasses}}
+            {{this.Class.name}}
+            <br>
+          {{/each}}
+        </div>
         <div class="self-introduction text-center m-2">
           自我介紹
           <div>

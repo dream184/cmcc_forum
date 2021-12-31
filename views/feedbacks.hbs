@@ -35,28 +35,6 @@
                     </audio>
                   </div>
                 </div>
-                {{#each this.Feedback}}
-                <div class="other-feedback mt-2">
-                  <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row no-gutters">
-                      <div class="col-md-2 d-flex justify-content-center align-items-center">
-                        <div class="avatar">
-                          <img src="https://picsum.photos/50/50/?random=1" class="mb-2">
-                          <h6 class="text-center">{{this.User.name}}</h6>
-                        </div>
-                      </div>
-                      <div class="col-md-10">
-                        <div class="card-body">
-                          <p class="card-text">This is a wider card with supporting text below as a natural lead-in
-                            to additional content.
-                            This content is a little bit longer.</p>
-                          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {{/each}}
 
                 <div class="form-group">
                   <form action="/classes/{{voicefile.Homework.Class.id}}/homeworks/{{voicefile.Homework.id}}/voicefiles/{{voicefile.id}}/feedbacks" method="POST">
@@ -119,7 +97,12 @@
             <div>
               <div class="feedback-image-container">
                 <div class="feedback-name d-flex justify-content-center align-items-center p-1">
-                  <img src="https://picsum.photos/50/50/?random=1">
+                  {{!-- <img src="/image/logo.jpg" style="width: 50px"> --}}
+                  {{#if this.User.googleImageId}}
+                  <img src="https://drive.google.com/uc?export=view&id={{this.User.googleImageId}}" alt="avatar" style="width: 70px">
+                  {{else}}
+                  <img src="/image/logo.jpg" style="width: 50px">
+                  {{/if}}
                 </div>
               </div>
               <div class="feedback-user-container">

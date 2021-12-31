@@ -37,11 +37,11 @@
           </th>
 
           <td class="p-1">
-            <a href="/admin/classes/{{../class.id}}/homeworks/{{this.id}}/edit">編輯</a>
+            <a href="/admin/classes/{{../class.id}}/homeworks/{{this.id}}/edit" class="btn btn-success p-1">編輯</a>
           </td>
           <td class="p-1">
             <form action="/admin/classes/{{../class.id}}/homeworks/{{this.id}}?_method=DELETE" method="POST">
-              <button type="submit" class="btn btn-danger">刪除</button>
+              <button type="submit" class="btn btn-light border-danger text-danger p-1">刪除</button>
             </form>
           </td>
         </tr>

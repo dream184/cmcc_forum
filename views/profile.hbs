@@ -18,7 +18,7 @@
       {{#if user.googleImageId}}
         <img src="https://drive.google.com/uc?export=view&id={{user.googleImageId}}" alt="avatar" style="width: 150px">
       {{else}}
-        <img src="https://picsum.photos/150/150/?random=1" style="width: 150px">
+        <img src="/image/logo.jpg" style="width: 150px">
       {{/if}}
     </div>
     <div class="edit-profile my-auto">
@@ -99,8 +99,14 @@
                     </div>
                   </div>
 
+                  <div class="voicefile-feedback">
+                    <div class="upload-time d-flex justify-content-center p-1">
+                      <a href="/classes/{{this.Homework.Class.id}}/homeworks/{{this.Homework.id}}/voicefiles/{{this.id}}/feedbacks">查看回饋</a>
+                    </div>
+                  </div>
+
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8 d-flex jusfy-content-center align-items-center">
                   <div class="card-body">
                     <div class="container-audio">
                       <audio controls>
@@ -113,7 +119,6 @@
               </div>
             </div>
             <br>
-           
           {{/each}}
         </div>
       </div>

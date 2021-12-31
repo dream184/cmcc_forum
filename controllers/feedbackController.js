@@ -15,6 +15,7 @@ const feedbackController = {
       ]
     })
       .then((voicefile) => {
+        console.log(req.user)
         console.log(voicefile.Feedbacks)
         return res.render('feedbacks', {
           layout: 'main',

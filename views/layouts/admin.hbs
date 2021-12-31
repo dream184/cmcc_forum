@@ -44,8 +44,18 @@
     <div class="row w-100 p-0 m-0">
       <section class="sidebar-section col-12 col-md-3 bg-white">
         <div class="sidebar-img text-center w-100 p-1">
-          <img class="d-block m-auto" src="https://picsum.photos/180/180/?random=1">
-          <span class="d-block mt-2">管理員，您好</span>
+          {{#if user.googleImageId}}
+          <img src="https://drive.google.com/uc?export=view&id={{user.googleImageId}}" alt="avatar" style="width: 150px">
+          {{else}}
+          <img src="/image/logo.jpg" style="width: 150px">
+          {{/if}}
+          {{#if user.nickName}}
+            <span class="d-block mt-2">{{user.nickName}}，您好</span>
+          {{else}}
+            <span class="d-block mt-2">親愛的，您好</span>
+          {{/if}}
+
+          
         </div>
         <hr />
         <a href="/admin/classes">
