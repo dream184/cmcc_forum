@@ -29,7 +29,6 @@ const voiceFileController = {
       ]
     })
       .then((voicefiles) => {
-        console.log(voicefiles)
         return res.render('admin/voicefiles', {
           voicefiles: voicefiles,
           layout: 'admin'

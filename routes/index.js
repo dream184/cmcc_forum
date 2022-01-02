@@ -6,6 +6,7 @@ const userController = require('../controllers/userController.js')
 const attendController = require('../controllers/attendController.js')
 const feedbackController = require('../controllers/feedbackController.js')
 const favoriteController = require('../controllers/favoriteController.js')
+const likeController = require('../controllers/likeController.js')
 const upload = multer({ dest: 'temp/'})
 
 module.exports = (app, passport) => {
@@ -51,6 +52,9 @@ module.exports = (app, passport) => {
 
   app.post('/favorite/:id', authenticated, favoriteController.addFavoriteVoicefile)
   app.delete('/favorite/:id', authenticated, favoriteController.removeFavoriteVoicefile)
+
+  app.post('/like/:id', authenticated, likeController.addLike)
+  app.delete('/like/:id', authenticated, likeController.removeLike)
 
 
   app.get('/classes/:id/homeworks/:id/voicefiles/:id/feedbacks', authenticated, feedbackController.getFeedbacks)

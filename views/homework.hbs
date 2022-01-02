@@ -116,10 +116,25 @@ audio {
               <div class="col-12">
                 <hr class="m-1"/>
                 <div class="feedback-button d-flex justify-content-around">
-                  <a class="thumb btn "><i class="far fa-thumbs-up text-primary"></i> 讚</a>
-                  <form action="/favorite/{{this.id}}" method="POST">
-                    <button type="submit" class="btn btn-white"><i class="fas fa-heart text-danger"></i> 收藏</button>
+                  {{#if this.Likes}}
+                  <form action="/like/{{this.id}}?_method=DELETE" method="POST">
+                    <button type="submit" class="thumb btn"><i class="fas fa-thumbs-up text-primary"></i> 收回讚</button>
                   </form>
+                  {{else}}
+                  <form action="/like/{{this.id}}" method="POST">
+                    <button type="submit" class="thumb btn"><i class="far fa-thumbs-up text-primary"></i> 讚</button>
+                  </form>
+                  {{/if}}
+
+                  {{#if this.Favorites}}
+                  <form action="/favorite/{{this.id}}?_method=DELETE" method="POST">
+                    <button type="submit" class="btn btn-white"><i class="fas fa-heart text-danger"></i> 取消收藏</button>
+                  </form>
+                  {{else}}
+                  <form action="/favorite/{{this.id}}" method="POST">
+                    <button type="submit" class="btn btn-white"><i class="far fa-heart text-danger"></i> 收藏</button>
+                  </form>
+                  {{/if}}
                   <a href="/classes/{{../homework.Class.id}}/homeworks/{{../homework.id}}/voicefiles/{{this.id}}/feedbacks" class="feedback btn"><i class="far fa-comments text-primary"></i> 回饋</a>
                 </div>
                 <hr class="m-1"/>

@@ -5,7 +5,6 @@ const db = require('../models')
 const User = db.User
 const Authority = db.Authority
 
-
 passport.use(new LocalStrategy(
   {
     usernameField: 'email',

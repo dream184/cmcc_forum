@@ -3,6 +3,8 @@ const Class = db.Class
 const Homework = db.Homework
 const VoiceFile = db.Voicefile
 const User = db.User
+const Like = db.Like
+const Favorite = db.Favorite
 
 const frontsideController = {
   getClasses: (req, res) => {
@@ -33,7 +35,7 @@ const frontsideController = {
       where: {id: req.params.id},
       include: [
         Class, 
-        { model: VoiceFile, include: [User] }
+        { model: VoiceFile, include: [User, Like, Favorite] }
       ]
     })
       .then((homework) => {
