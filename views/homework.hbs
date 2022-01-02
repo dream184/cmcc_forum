@@ -61,7 +61,7 @@ audio {
             <div class="form-group m-auto">
               <label for="voicefile">在此上傳音檔</label>
               <input type="file" id="voicefile" name='voiceFile' class="form-control">
-              <button type="submit" class="btn btn-primary w-100 mt-2">Submit</button>
+              <button type="submit" class="btn btn-primary w-100 mt-2">上傳</button>
             </div>
           </form>
         </div>
@@ -116,9 +116,11 @@ audio {
               <div class="col-12">
                 <hr class="m-1"/>
                 <div class="feedback-button d-flex justify-content-around">
-                  <a class="thumb btn "><i class="far fa-thumbs-up"></i>讚</a>
-                  <a class="favorite btn"><i class="fas fa-heart"></i>收藏</a>
-                  <a href="/classes/{{../homework.Class.id}}/homeworks/{{../homework.id}}/voicefiles/{{this.id}}/feedbacks" class="feedback btn"><i class="far fa-comments"></i> 回饋</a>
+                  <a class="thumb btn "><i class="far fa-thumbs-up text-primary"></i> 讚</a>
+                  <form action="/favorite/{{this.id}}" method="POST">
+                    <button type="submit" class="btn btn-white"><i class="fas fa-heart text-danger"></i> 收藏</button>
+                  </form>
+                  <a href="/classes/{{../homework.Class.id}}/homeworks/{{../homework.id}}/voicefiles/{{this.id}}/feedbacks" class="feedback btn"><i class="far fa-comments text-primary"></i> 回饋</a>
                 </div>
                 <hr class="m-1"/>
               </div>

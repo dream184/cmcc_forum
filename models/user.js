@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.AttendClass)
       User.hasMany(models.Voicefile)
       User.hasMany(models.Feedback)
+      User.hasMany(models.Favorite)
+      User.hasMany(models.Like)
     }
   };
   User.init({

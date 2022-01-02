@@ -4,7 +4,8 @@ const voiceFileController = require('../controllers/voiceFileController')
 const multer = require('multer')
 const userController = require('../controllers/userController.js')
 const attendController = require('../controllers/attendController.js')
-const feedbackController = require('../controllers/feedbackController')
+const feedbackController = require('../controllers/feedbackController.js')
+const favoriteController = require('../controllers/favoriteController.js')
 const upload = multer({ dest: 'temp/'})
 
 module.exports = (app, passport) => {
@@ -47,6 +48,11 @@ module.exports = (app, passport) => {
   app.get('/classes/:id/homeworks/:id', authenticated, frontsideController.getHomework)
   app.post('/classes/:id/homeworks/:id/uploadVoiceFile', authenticated, upload.single('voiceFile'), voiceFileController.postVoiceFile)
   app.delete('/classes/:id/homeworks/:id/voicefiles/:id', authenticated, voiceFileController.deleteVoiceFile)
+
+  app.post('/favorite/:id', authenticated, favoriteController.addFavoriteVoicefile)
+  app.delete('/favorite/:id', authenticated, favoriteController.removeFavoriteVoicefile)
+
+
   app.get('/classes/:id/homeworks/:id/voicefiles/:id/feedbacks', authenticated, feedbackController.getFeedbacks)
   app.post('/classes/:id/homeworks/:id/voicefiles/:id/feedbacks', feedbackController.postFeedback)
   app.get('/classes/:id/homeworks/:id/voicefiles/:id/feedbacks/:id/edit', authenticated, feedbackController.editFeedback)

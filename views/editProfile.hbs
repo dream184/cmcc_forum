@@ -15,19 +15,24 @@
 <div class="profile-body">
   <div class="row w-100 m-0">
     <div class="user-data-container col-12 col-md-3">
-      <div class="user-data bg-white rounded">
-        <div class="user-name text-center m-2">姓名: {{user.name}}</div>
-        <div class="user-nickname text-center m-2">暱稱: {{user.nickName}}</div>
+      <div class="user-data bg-white shadow rounded">
+        <div class="user-name text-center m-2">
+          <h5>姓名: {{user.name}}</h5>
+        </div>
+        <div class="user-nickname text-center m-2">
+          <h5>暱稱: {{user.nickName}}</h5>
+        </div>
         <div class="user-class text-center m-2">
+          <h5>參與課程</h5>
           {{#each user.AttendClasses}}
-            {{this.Class.name}}
-            <br>
+          {{this.Class.name}}
+          <br>
           {{/each}}
         </div>
         <div class="self-introduction text-center m-2">
-          自我介紹
+          <h5>自我介紹</h5>
           <div>
-            {{user.introduction}}
+            <p>{{user.introduction}}</p>
           </div>
         </div>
       </div>

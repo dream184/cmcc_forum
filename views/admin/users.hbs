@@ -18,19 +18,19 @@
       <tbody>
         {{#each users}}
         <tr>
-          <th scope="row" class="p-1">
+          <th scope="row" class="p-1 col-2">
             {{this.name}}
           </th>    
-          <td class="p-1">
+          <td class="p-1 col-2">
             {{this.nickName}}
           </td>
-          <td class="p-1">
+          <td class="p-1 col-2">
             {{this.email}}
           </td>
-          <td class="p-1">
+          <td class="p-1 col-2">
             {{this.Authority.name}}
           </td>
-          <td class="p-1">
+          <td class="p-1 col-2">
             <a href="/admin/users/{{this.id}}/edit" class="btn btn-primary p-1">編輯</a>
           </td>
         </tr>
