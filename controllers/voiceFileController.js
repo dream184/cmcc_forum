@@ -11,7 +11,7 @@ const Feedback = db.Feedback
 const AttendClass = db.AttendClass
 const googleDrive = require('./google_drive_method')
 const Op = require('sequelize').Op
-const pageLimit = 5
+const pageLimit = 15
 
 dayjs.locale('zh-tw') 
 dayjs.extend(utc)
@@ -65,16 +65,33 @@ const voiceFileController = {
       })
   },
   getNoFeedbackVoicefiles: (req, res) => {
-    return VoiceFile.findAll({
+    let offset = 0
+    if (req.query.page) {
+      offset = (req.query.page - 1) * pageLimit
+    }
+
+    return VoiceFile.findAndCountAll({
+      offset: offset,
+      limit: pageLimit,
       where: { isFeedbackedBy: {[Op.is]: false} },
       raw: true,
       nest: true,
       include: [User, Homework, Class]
     })
-      .then((voicefiles) => {
+      .then((result) => {
+        const page = Number(req.query.page) || 1
+        const pages = Math.ceil(result.count / pageLimit)
+        const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
+        const prev = page - 1 < 1 ? 1 : page - 1
+        const next = page + 1 > pages ? pages : page + 1
+        const data = result.rows
         return res.render('admin/nofeedbackvoicefiles', {
-          voicefiles: voicefiles,
-          layout: 'admin'
+          voicefiles: data,
+          layout: 'admin',
+          page: page,
+          totalPage: totalPage,
+          prev: prev,
+          next: next
         })
       }).catch((err) => console.log(err))
   },
