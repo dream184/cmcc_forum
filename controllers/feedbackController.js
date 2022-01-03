@@ -15,8 +15,6 @@ const feedbackController = {
       ]
     })
       .then((voicefile) => {
-        console.log(req.user)
-        console.log(voicefile.Feedbacks)
         return res.render('feedbacks', {
           layout: 'main',
           voicefile: voicefile.toJSON(),
@@ -102,7 +100,6 @@ const feedbackController = {
       ]
     })
       .then((voicefile) => {
-        console.log(voicefile.toJSON())
         return res.render('admin/feedback', {
           layout: 'admin',
           voicefile: voicefile.toJSON(),
@@ -112,7 +109,6 @@ const feedbackController = {
   },
   postAdminFeedback: (req, res) => {
     const { ranking, feedback } = req.body
-    console.log(req.params.id)
     if (!ranking) {
       req.flash('error_messages', '必須選擇星星數')
       return res.redirect('back')

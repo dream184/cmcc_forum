@@ -11,6 +11,7 @@ const Feedback = db.Feedback
 const AttendClass = db.AttendClass
 const googleDrive = require('./google_drive_method')
 const Op = require('sequelize').Op
+const pageLimit = 5
 
 dayjs.locale('zh-tw') 
 dayjs.extend(utc)
@@ -18,52 +19,50 @@ dayjs.extend(timezone)
 
 const voiceFileController = {
   getVoiceFiles: (req, res) => {
-    return VoiceFile.findAll({   
-      raw: true,
-      nest: true,
-      order: [['createdAt', 'DESC']],
-      include: [
-        User,
-        Homework,
-        Class
-      ]
-    })
-      .then((voicefiles) => {
-        return res.render('admin/voicefiles', {
-          voicefiles: voicefiles,
-          layout: 'admin'
-        })
-      })
-  },
-  getVoiceFilesByOrder: (req, res) => {
-    const order = req.params.orderby
-    console.log(order)
-    function orderby(order) {
-      if (order === 'date-asc') return [['createdAt', 'ASC']]
-      if (order === 'date-desc') return [['createdAt', 'DESC']]
-      if (order === 'classes') return [['ClassId', 'DESC']]
-      if (order === 'homeworks') return [['HomeworkId', 'DESC']]
-      if (order === 'authors') return [['UserId', 'DESC']]
+    let offset = 0
+    let order = req.params.orderby || 'date-desc'
+    const orderBy = {
+      'date-asc': [['createdAt', 'ASC']],
+      'date-desc': [['createdAt', 'DESC']],
+      'classes': [['ClassId', 'DESC']],
+      'homeworks': [['HomeworkId', 'DESC']],
+      'authors': [['UserId', 'DESC']]
     }
-    return VoiceFile.findAll({
+    if (req.query.page) {
+      offset = (req.query.page - 1) * pageLimit
+    }
+    if (req.query.order) {
+      order = req.query.order
+    }
+    return VoiceFile.findAndCountAll({   
+      offset: offset,
+      limit: pageLimit,
       raw: true,
       nest: true,
-      order: orderby(order),
+      order: orderBy[order],
       include: [
         User,
         Homework,
         Class
       ]
     })
-      .then((voicefiles) => {
-        console.log(voicefiles)
+      .then((result) => {
+        const page = Number(req.query.page) || 1
+        const pages = Math.ceil(result.count / pageLimit)
+        const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
+        const prev = page - 1 < 1 ? 1 : page - 1
+        const next = page + 1 > pages ? pages : page + 1
+        const data = result.rows
         return res.render('admin/voicefiles', {
-          voicefiles: voicefiles,
-          layout: 'admin'
+          voicefiles: data,
+          layout: 'admin',
+          order: order,
+          page: page,
+          totalPage: totalPage,
+          prev: prev,
+          next: next
         })
       })
-
-
   },
   getNoFeedbackVoicefiles: (req, res) => {
     return VoiceFile.findAll({
@@ -73,7 +72,6 @@ const voiceFileController = {
       include: [User, Homework, Class]
     })
       .then((voicefiles) => {
-        console.log(voicefiles)
         return res.render('admin/nofeedbackvoicefiles', {
           voicefiles: voicefiles,
           layout: 'admin'

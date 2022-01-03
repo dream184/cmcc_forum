@@ -13,12 +13,36 @@ const Homework = db.Homework
 const rootFolderId = process.env.GOOGLE_ROOT_FOLDER_ID
 const classImgFolderId = process.env.GOOGLE_CLASS_IMAGE_FOLDER_ID
 const homeworkImgFolderId = process.env.GOOGLE_HOMEWORK_IMAGE_FOLDER_ID
+const pageLimit = 15
 
 const adminController = {
   getClasses: (req, res) => {
-    Class.findAll({ raw: true })
-      .then((classes) => {
-        return res.render('admin/classes', { classes: classes, layout: 'admin'})
+    let offset = 0
+    if (req.query.page) {
+      offset = (req.query.page - 1) * pageLimit
+    }
+
+    Class.findAndCountAll({
+      offset: offset,
+      limit: pageLimit
+    })
+      .then((result) => {
+        const page = Number(req.query.page) || 1
+        const pages = Math.ceil(result.count / pageLimit)
+        const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
+        const prev = page - 1 < 1 ? 1 : page - 1
+        const next = page + 1 > pages ? pages : page + 1
+        const data = result.rows.map(r => ({
+          ...r.dataValues
+        }))
+        return res.render('admin/classes', {
+          classes: data,
+          layout: 'admin',
+          page: page,
+          totalPage: totalPage,
+          prev: prev,
+          next: next
+        })
       })
   },
   createClass: (req, res) => {

@@ -8,6 +8,7 @@ const Class = db.Class
 const bcrypt = require('bcryptjs')
 const googleDrive = require('./google_drive_method')
 const avatarImgFolderId = process.env.GOOGLE_USER_AVATAR_IMAGE_FOLDER_ID
+const pageLimit = 15
 
 const userController = {
   signInPage: (req, res) => {
@@ -50,13 +51,33 @@ const userController = {
     return res.redirect('/classes')
   },
   getUsers: (req, res) => {
-    User.findAll({
+    let offset = 0
+    if (req.query.page) {
+      offset = (req.query.page - 1) * pageLimit
+    }
+
+    User.findAndCountAll({
+      offset: offset,
+      limit: pageLimit,
       raw: true,
       nest: true,
       include: [Authority]
     })
-      .then((users) => {
-        return res.render('admin/users', { users: users, layout: 'admin' })
+      .then((result) => {     
+        const page = Number(req.query.page) || 1
+        const pages = Math.ceil(result.count / pageLimit)
+        const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
+        const prev = page - 1 < 1 ? 1 : page - 1
+        const next = page + 1 > pages ? pages : page + 1
+        const data = result.rows
+        return res.render('admin/users', {
+          users: data,
+          layout: 'admin',
+          page: page,
+          totalPage: totalPage,
+          prev: prev,
+          next: next
+        })
       })
   },
   profilePage: (req, res)  => {
