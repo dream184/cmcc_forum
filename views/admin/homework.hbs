@@ -18,7 +18,7 @@
       </thead>
 
       <tbody>
-        {{#each class.Homework}}
+        {{#each homework}}
         <tr>
           <th scope="row" class="p-1">
             {{this.name}}
@@ -37,7 +37,7 @@
           </th>
 
           <td class="p-1">
-            <a href="/admin/classes/{{../class.id}}/homeworks/{{this.id}}/edit" class="btn btn-success p-1">編輯</a>
+            <a href="/admin/classes/{{this.ClassId}}/homeworks/{{this.id}}/edit" class="btn btn-success p-1">編輯</a>
           </td>
           <td class="p-1">
             <form action="/admin/classes/{{../class.id}}/homeworks/{{this.id}}?_method=DELETE" method="POST">
@@ -48,5 +48,33 @@
         {{/each}}
       </tbody> 
     </table>
+    {{#unless homework}}
+    <div class="alert alert-info my-2" role="alert">
+      現在沒有作業<br />
+      趕快來新增第一個作業吧！
+    </div>
+    {{/unless}}
+  </div>
+  <div class="paginator-container">
+    <nav aria-label="Page navigation example" class="mx-auto my-2">
+      <ul class="pagination d-flex justify-content-center">
+        <li class="page-item">
+          <a class="page-link" href="/admin/classes/{{class.id}}/homeworks?page={{prev}}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {{#each totalPage}}
+        {{#if (equal this ../page)}}
+        <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
+        {{else}}
+        <li class="page-item"><a class="page-link" href="/admin/classes/{{../class.id}}/homeworks?page={{this}}">{{this}}</a></li>
+        {{/if}}
+        {{/each}}
+        <li class="page-item"><a class="page-link" href="/admin/classes/{{class.id}}/homeworks?page={{next}}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </section>

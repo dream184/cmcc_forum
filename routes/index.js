@@ -50,6 +50,7 @@ module.exports = (app, passport) => {
   app.post('/classes/:id/homeworks/:id/uploadVoiceFile', authenticated, upload.single('voiceFile'), voiceFileController.postVoiceFile)
   app.delete('/classes/:id/homeworks/:id/voicefiles/:id', authenticated, voiceFileController.deleteVoiceFile)
 
+  app.get('/favorites', authenticated, favoriteController.getFavoriteVoicefiles)
   app.post('/favorite/:id', authenticated, favoriteController.addFavoriteVoicefile)
   app.delete('/favorite/:id', authenticated, favoriteController.removeFavoriteVoicefile)
 

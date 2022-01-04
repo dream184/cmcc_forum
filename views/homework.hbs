@@ -24,7 +24,7 @@ audio {
 </style>
 
 {{>message}}
-<div class="banner mb-2" style="background-color:#F0F0F0;">
+<div class="banner mb-2" style="background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
   <div class="row m-auto">
     <div class="col-12 col-md-5 d-flex align-items-center">
       <div class="image-container d-flex justify-content-center p-2">
@@ -36,13 +36,13 @@ audio {
       </div>
     </div>
     
-    <div class="col-12 col-md-7">
+    <div class="col-12 col-md-7 position-relative">
       <div class="banner-content p-3">  
         <h3 class="text-center">{{homework.Class.name}}  {{homework.name}}</h3>
         <p class="p-2">
           <pre style="white-space: pre-wrap;">{{homework.description}}</pre>
         </p>
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-end position-absolute" style="bottom: 15px; right: 15px;">
           <span>上傳截止日：{{dayjs homework.expiredTime}}</span>
         </div>
       </div>

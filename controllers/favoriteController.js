@@ -1,13 +1,24 @@
 const db = require('../models')
 const Favorite = db.Favorite
 const Voicefile = db.Voicefile
+const User = db.User
+const Class = db.Class
+const Homework = db.Homework
 
 const favoriteController = {
-  getFavorites: (req, res) => {
-    Favorite.findAll()
+  getFavoriteVoicefiles: (req, res) => {
+    Favorite.findAll({
+      raw: true,
+      nest: true,
+      where: {UserId: req.user.id},
+      include: [
+        { model: Voicefile, include: [User, Class, Homework] },
+        User] 
+    })
       .then((favorites) => {
-        return res.render('')
+        return res.render('favorite', { favorites: favorites })
       })
+      .catch(err => console.log(err))
   },
   addFavoriteVoicefile: (req, res) => {
     const voicefileId = req.params.id

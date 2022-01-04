@@ -159,6 +159,11 @@ const voiceFileController = {
           req.flash('success_messages', '已成功刪除音檔')
           return res.redirect('back')
         })
+        .catch((err) => {
+          req.flash('error_messages', '無法刪除音檔')
+          return res.redirect('back')
+          console.log(err)
+        })
     })   
   }
 }

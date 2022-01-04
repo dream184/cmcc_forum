@@ -21,10 +21,10 @@ const adminController = {
     if (req.query.page) {
       offset = (req.query.page - 1) * pageLimit
     }
-
     Class.findAndCountAll({
       offset: offset,
-      limit: pageLimit
+      limit: pageLimit,
+      order: [['createdAt', 'DESC']]
     })
       .then((result) => {
         const page = Number(req.query.page) || 1
@@ -181,15 +181,39 @@ const adminController = {
     })
   },
   getHomeworks: (req, res) => {
-    return Class.findOne({
-      where: { id: req.params.id },
-      include: [Homework]
-    })
+    let offset = 0
+    if (req.query.page) {
+      offset = (req.query.page - 1) * pageLimit
+    }
+    return Class.findByPk(req.params.id)
       .then((selectedClass) => {
-        return res.render('admin/homework', {
-          class: selectedClass.toJSON(),
-          layout: 'admin'
+        return Homework.findAndCountAll({
+          offset: offset,
+          limit: pageLimit,
+          where: { ClassId: req.params.id },
+          include: [Class]
         })
+          .then((result) => {
+            console.log(result)
+            const page = Number(req.query.page) || 1
+            const pages = Math.ceil(result.count / pageLimit)
+            const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
+            const prev = page - 1 < 1 ? 1 : page - 1
+            const next = page + 1 > pages ? pages : page + 1
+            const data = result.rows.map(r => ({
+              ...r.dataValues
+            }))
+            console.log(data)
+            return res.render('admin/homework', {
+              homework: data,
+              class: selectedClass.toJSON(),
+              layout: 'admin',
+              page: page,
+              totalPage: totalPage,
+              prev: prev,
+              next: next
+            })
+          })
       })
   },
   createHomework: (req, res) => {

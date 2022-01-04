@@ -46,29 +46,36 @@
         {{/each}}
       </tbody> 
     </table>
+    {{#unless classes}}
+    <div class="alert alert-info my-2" role="alert">
+      現在沒有班級<br />
+      趕快來新增第一個班級吧！
+    </div>
+    {{/unless}}
+  </div>
+
+  <div class="paginator-container">
+    <nav aria-label="Page navigation example" class="mt-2">
+      <ul class="pagination d-flex justify-content-center">
+        <li class="page-item">
+          <a class="page-link" href="/admin/classes?page={{prev}}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {{#each totalPage}}
+        {{#if (equal this ../page)}}
+        <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
+        {{else}}
+        <li class="page-item"><a class="page-link" href="/admin/classes?page={{this}}">{{this}}</a></li>
+        {{/if}}
+        {{/each}}
+        <li class="page-item"><a class="page-link" href="/admin/classes?page={{next}}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </section>
 
 
-<nav aria-label="Page navigation example" class="mx-auto my-2">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="/admin/classes?page={{prev}}" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    {{#each totalPage}}
-    {{#if (equal this ../page)}}
-    <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
-    {{else}}
-    <li class="page-item"><a class="page-link"
-        href="/admin/classes?page={{this}}">{{this}}</a></li>
-    {{/if}}
-    {{/each}}
-    <li class="page-item"><a class="page-link" href="/admin/classes?page={{next}}"
-        aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>

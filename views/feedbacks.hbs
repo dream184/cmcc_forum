@@ -90,6 +90,13 @@
         </div>
       </div>
       <br>
+      {{#unless voicefile.Feedbacks}}
+      <div class="alert alert-info" role="alert">
+        現在沒有任何回饋<br />
+        成為第一個回饋者吧！
+      </div>
+      {{/unless}}
+
       {{#each voicefile.Feedbacks}}
       <div class="card bg-light text-dark m-auto" style="max-width: 720px;">
         <div class="feedback row no-gutters">

@@ -29,6 +29,7 @@
         <div class="dropdown-menu dropdown-menu-right">
           {{#if user}}
           <a href="/profile"><button class="dropdown-item text-center" type="button">個人檔案</button></a>
+          <a href="/favorites"><button class="dropdown-item text-center" type="button">收藏清單</button></a>
           <a href="/"><button class="dropdown-item text-center" type="button">前台</button></a>
           <a href="/logout"><button class="dropdown-item text-center" type="button">登出</button></a>
           {{else}}
@@ -41,7 +42,7 @@
   </nav>
 
   <body style="background-color:#F0F0F0;">
-    <div class="row w-100 p-0 m-0">
+    <div class="row w-100 p-0 m-0" style="min-height: 85vh;">
       <section class="sidebar-section col-12 col-md-3 bg-white">
         <div class="sidebar-img text-center w-100 p-1">
           {{#if user.googleImageId}}
@@ -84,8 +85,8 @@
     
   </body>
   <footer class="position-static">
-    <div class="footer-copyright text-center py-3" style="background-color: #F5F5F5;">© 2021 Copyright
-      <a href="https://cmcc.com.tw/" class="text-Dark">澄意文創 © 2021</a>
+    <div class="footer-copyright text-center py-3" style="background-color: #F5F5F5;">© 2022 Copyright
+      <a href="https://cmcc.com.tw/" class="text-Dark">澄意文創 © 2022</a>
     </div>
   </footer>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
