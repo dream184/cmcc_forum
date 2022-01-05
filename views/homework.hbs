@@ -11,6 +11,11 @@ audio {
   width:100%;
 }
 
+.author-img {
+  width: 70px;
+  height: 70px;
+}
+
 @media screen and (min-width: 768px) {
   .upload-file-container {
     position: relative;
@@ -21,6 +26,7 @@ audio {
     right:33%;
   }
 }
+
 </style>
 
 {{>message}}
@@ -79,14 +85,18 @@ audio {
                 <button type="submit" class="close" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
-              </form>
-              
+              </form>     
             </div>
-          
+     
             <div class="row m-auto" style="background-color: #fff; border-radius:15px;">
               <div class="col-6">
-                <div class="author-img d-flex justify-content-center p-1">
+                <div class="author-img d-flex justify-content-center p-1 m-auto">
+                  {{#if this.User.googleImageId}}
+                  <img src="https://drive.google.com/uc?export=view&id={{this.User.googleImageId}}" alt="" class="author-avatar-image"
+                    style="clip-path: circle(35%);">
+                  {{else}}
                   <i class="fas fa-user-circle text-secondary" style="font-size: 35px;"></i>
+                  {{/if}}
                 </div>
               </div>
               <div class="col-6 d-flex justify-content-center">
@@ -116,7 +126,7 @@ audio {
               <div class="col-12">
                 <hr class="m-1"/>
                 <div class="feedback-button d-flex justify-content-around">
-                  {{#if this.Likes}}
+                  {{#if (includes ../userLikesArr this.id)}}
                   <form action="/like/{{this.id}}?_method=DELETE" method="POST">
                     <button type="submit" class="thumb btn"><i class="fas fa-thumbs-up text-primary"></i> 收回讚</button>
                   </form>
@@ -126,7 +136,7 @@ audio {
                   </form>
                   {{/if}}
 
-                  {{#if this.Favorites}}
+                  {{#if (includes ../userFavoritesArr this.id)}}
                   <form action="/favorite/{{this.id}}?_method=DELETE" method="POST">
                     <button type="submit" class="btn btn-white"><i class="fas fa-heart text-danger"></i> 取消收藏</button>
                   </form>

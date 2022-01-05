@@ -15,5 +15,8 @@ module.exports = {
   },
   equal: function (a, b) {
     return a === b
+  },
+  includes: function (arr, element) {
+    return arr.includes(element)
   }
 }

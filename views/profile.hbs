@@ -16,7 +16,7 @@
   <div class="d-flex justify-content-around position-relative" style="bottom: -50%;">
     <div class="avatar">
       {{#if user.googleImageId}}
-        <img src="https://drive.google.com/uc?export=view&id={{user.googleImageId}}" alt="avatar" style="width: 150px">
+        <img src="https://drive.google.com/uc?export=view&id={{user.googleImageId}}" alt="avatar" style="width: 150px; clip-path: circle(35%);">
       {{else}}
         <img src="/image/logo.jpg" style="width: 150px">
       {{/if}}
@@ -34,19 +34,30 @@
           <h5>姓名: {{user.name}}</h5>
         </div>
         <div class="user-nickname text-center m-2">
+          {{#if user.nickName}}
           <h5>暱稱: {{user.nickName}}</h5>
+          {{else}}
+          <h5>暱稱: 尚未填寫</h5>
+          {{/if}}
         </div>
         <div class="user-class text-center m-2">
           <h5>參與課程</h5>
           {{#each user.AttendClasses}}
-          {{this.Class.name}}
+            {{this.Class.name}}
           <br>
           {{/each}}
+          {{#unless user.AttendClasses}}
+            尚無加入任何課程
+          {{/unless}}
         </div>
         <div class="self-introduction text-center m-2">
           <h5>自我介紹</h5>
           <div>
+            {{#if user.introduction}}
             <p>{{user.introduction}}</p>
+            {{else}}
+            尚未填寫
+            {{/if}}
           </div>
         </div>
       </div>

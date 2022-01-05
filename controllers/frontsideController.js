@@ -35,12 +35,17 @@ const frontsideController = {
       where: {id: req.params.id},
       include: [
         Class, 
-        { model: VoiceFile, include: [User, Like, Favorite] }
+        { model: VoiceFile, include: [User] }
       ]
     })
       .then((homework) => {
+        const user = req.user
+        const userFavoritesArr = user.Favorites.map(e => e.VoicefileId)
+        const userLikesArr = user.Likes.map(e => e.VoicefileId)
         return res.render('homework', { 
           homework: homework.toJSON(),
+          userFavoritesArr: userFavoritesArr,
+          userLikesArr: userLikesArr
         })
       })
   }

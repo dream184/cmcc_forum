@@ -88,7 +88,7 @@ const feedbackController = {
       return feedback.destroy().then(() => {    
         req.flash('success_messages', '已經成功刪除回饋')
         return res.redirect('back')
-      })    
+      })
     })
   },
   getAdminFeedbacks: (req, res) => {
