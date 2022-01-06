@@ -49,8 +49,13 @@
               <div class="container-audio d-flex justify-content-center">
                 <audio controls class="w-100">
                   <source src="https://docs.google.com/uc?export=download&id={{this.Voicefile.googleFileId}}"
+                      type="audio/mp4">
+                  <source src="https://docs.google.com/uc?export=download&id={{this.Voicefile.googleFileId}}"
                     type="audio/mpeg">
-                  Your browser dose not Support the audio Tag
+                  <source src="https://docs.google.com/uc?export=download&id={{this.Voicefile.googleFileId}}"
+                    type="audio/ogg">  
+                  您的瀏覽器不支援 audio tag，請點選下面網址收聽音檔
+                  <a href="https://docs.google.com/uc?export=download&id={{this.Voicefile.googleFileId}}">音檔連結</a>
                 </audio>
               </div>
             </div>
