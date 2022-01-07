@@ -7,30 +7,30 @@
     <table class="users-table bg-white w-100">
       <thead class="thead-dark bg-info bg-gradient w-100">
         <tr class="w-100 text-white">
-          <th scope="col-3" class="p-1">使用者</th>
-          <th scope="col-3" class="p-1">暱稱</th>
-          <th scope="col-3" class="p-1">Email</th>
-          <th scope="col-3" class="p-1">目前權限</th>
-          <th scope="col-3" class="p-1">*</th>
+          <th scope="col-4" class="p-1">Email</th>
+          <th scope="col-2" class="p-1">使用者</th>
+          <th scope="col-2" class="p-1">暱稱</th>
+          <th scope="col-2" class="p-1">目前權限</th>
+          <th scope="col-2" class="p-1">*</th>
         </tr>
       </thead>
 
       <tbody>
         {{#each users}}
         <tr>
-          <th scope="row" class="p-1 col-2">
-            {{this.name}}
-          </th>    
-          <td class="p-1 col-2">
-            {{this.nickName}}
-          </td>
-          <td class="p-1 col-2">
+          <th scope="row" class="col-4 p-1">
             {{this.email}}
           </td>
-          <td class="p-1 col-2">
+          <td class="col-2 p-1">
+            {{this.name}}
+          </th>    
+          <td class="col-2 p-1">
+            {{this.nickName}}
+          </td>      
+          <td class="col-2 p-1">
             {{this.Authority.name}}
           </td>
-          <td class="p-1 col-2">
+          <td class="col-2 p-1">
             <a href="/admin/users/{{this.id}}/edit" class="btn btn-primary p-1">編輯</a>
           </td>
         </tr>
