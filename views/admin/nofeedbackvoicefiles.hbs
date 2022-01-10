@@ -8,10 +8,11 @@
     <table class="voicefiles-table bg-white w-100">
       <thead class="thead-dark bg-info bg-gradient w-100">
         <tr class="w-100 text-white">
-          <th scope="col-4" class="p-1">作業</th>
-          <th scope="col-4" class="p-1">群組</th>
-          <th scope="col-4" class="p-1">發布人</th>
-          <th scope="col-4" class="p-1">*</th>
+          <th scope="col" class="col-2 text-nowrap p-1">作業</th>
+          <th scope="col" class="col-2 text-nowrap p-1">群組</th>
+          <th scope="col" class="col-2 text-nowrap p-1">發布人</th>
+          <th scope="col" class="col-2 text-nowrap col-2 text-nowrap p-1">評論</th>
+          <th scope="col" class="col-2 text-nowrap p-1">點評</th>
         </tr>
       </thead>
 
@@ -22,15 +23,19 @@
             {{this.Homework.name}}
           </th>
 
-          <td class="col-2 p-1">
+          <td class="p-1">
             {{this.Class.name}}
           </td>
 
-          <td class="col-2 p-1">
+          <td class="p-1">
             {{this.User.name}}
           </td>
 
-          <td class="col-2 p-1">
+          <td class="p-1">
+            <a href="/admin/voicefiles/{{this.id}}/feedbacks" class="btn btn-success">查看</a>
+          </td>
+
+          <td class="p-1">
 
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal"

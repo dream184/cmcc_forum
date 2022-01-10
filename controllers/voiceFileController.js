@@ -12,6 +12,7 @@ const AttendClass = db.AttendClass
 const googleDrive = require('./google_drive_method')
 const Op = require('sequelize').Op
 const pageLimit = 15
+const sequelize = require('sequelize')
 
 dayjs.locale('zh-tw') 
 dayjs.extend(utc)
@@ -73,12 +74,13 @@ const voiceFileController = {
     return VoiceFile.findAndCountAll({
       offset: offset,
       limit: pageLimit,
-      where: { isFeedbackedBy: {[Op.is]: false} },
+      where: { isFeedbackedBy: {[Op.eq]: false} },
       raw: true,
       nest: true,
       include: [User, Homework, Class]
     })
       .then((result) => {
+
         const page = Number(req.query.page) || 1
         const pages = Math.ceil(result.count / pageLimit)
         const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
