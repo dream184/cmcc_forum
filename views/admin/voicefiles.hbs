@@ -20,39 +20,39 @@
     <table class="voicefiles-table bg-white w-100">
       <thead class="thead-dark bg-info bg-gradient w-100">
         <tr class="w-100 text-white">
-          <th scope="col" class="col-2 text-nowrap p-1">作業</th>
-          <th scope="col" class="col-2 text-nowrap p-1">日期</th>
-          <th scope="col" class="col-2 text-nowrap p-1">群組</th>
-          <th scope="col" class="col-2 text-nowrap p-1">發布人</th>
-          <th scope="col" class="col-2 text-nowrap p-1">評論</th>
-          <th scope="col" class="col-2 text-nowrap p-1">點評</th>
+          <th scope="col" class="col-2 text-nowrap p-1" style="width: 15%;">作業</th>
+          <th scope="col" class="col-2 text-nowrap p-1" style="width: 15%;">日期</th>
+          <th scope="col" class="col-2 text-nowrap p-1" style="width: 25%;">群組</th>
+          <th scope="col" class="col-2 text-nowrap p-1" style="width: 15%;">發布人</th>
+          <th scope="col" class="col-2 text-nowrap p-1" style="width: 15%;">評論</th>
+          <th scope="col" class="col-2 text-nowrap p-1" style="width: 15%;">點評</th>
         </tr>
       </thead>
     
       <tbody>
         {{#each voicefiles}}
         <tr>
-          <th scope="row" class="p-1">
+          <th scope="col" class="col p-1" style="width: 15%;">
             {{this.Homework.name}}
           </th>
 
-          <td class="p-1">
+          <td class="col p-1" style="width: 15%;">
             {{dayjs this.createdAt}}
           </td>
     
-          <td class="p-1">
+          <td class="col p-1" style="width: 25%;">
             {{this.Class.name}}
           </td>
 
-          <td class="p-1">
+          <td class="col p-1" style="width: 15%;">
             {{this.User.name}}
           </td>
 
-          <td class="p-1">
+          <td class="col p-1" style="width: 15%;">
             <a href="/admin/voicefiles/{{this.id}}/feedbacks" class="btn btn-success">查看</a>
           </td>
 
-          <td class="p-1">
+          <td class="col p-1" style="width: 15%;">
 
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mentorFeedbackVoicefile{{this.id}}">
