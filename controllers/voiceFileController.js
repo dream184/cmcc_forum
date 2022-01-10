@@ -154,18 +154,24 @@ const voiceFileController = {
   },
   deleteVoiceFile: (req, res) => {
     return VoiceFile.findByPk(req.params.id).then((voicefile) => {
-      voicefile.destroy().then(() => {
-        googleDrive.deleteFile(voicefile.googleFileId)
-      })
-        .then(() => {
-          req.flash('success_messages', '已成功刪除音檔')
+      return User.findByPk(voicefile.UserId).then((user) => {
+        if (user.id !== req.user.id) {
+          req.flash('error_messages', '您不是作者本人，無法刪除音檔')
           return res.redirect('back')
+        }
+        voicefile.destroy().then(() => {
+          googleDrive.deleteFile(voicefile.googleFileId)
         })
-        .catch((err) => {
-          req.flash('error_messages', '無法刪除音檔')
-          return res.redirect('back')
-          console.log(err)
-        })
+          .then(() => {
+            req.flash('success_messages', '已成功刪除音檔')
+            return res.redirect('back')
+          })
+          .catch((err) => {
+            req.flash('error_messages', '無法刪除音檔')
+            console.log(err)
+            return res.redirect('back')
+          })
+      })    
     })   
   }
 }
