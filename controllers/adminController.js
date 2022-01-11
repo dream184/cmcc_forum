@@ -8,6 +8,8 @@ dayjs.extend(timezone)
 
 const db = require('../models')
 const googleDrive = require('./google_drive_method.js')
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const Class = db.Class
 const Homework = db.Homework
 const rootFolderId = process.env.GOOGLE_ROOT_FOLDER_ID
@@ -71,24 +73,22 @@ const adminController = {
         if(name !== selectedClass.name) {
           googleDrive.renameFile(name, selectedClass.googleFolderId)
         }
-        googleDrive.deleteFile(selectedClass.image)
-        googleDrive.uploadImage(file, name, classImgFolderId).then((uploadedId) => {
-          googleDrive.becomePublic(uploadedId).then((publicImage) => {
-            return selectedClass.update({
-              name: name,
-              isPublic: isPublic,
-              image: publicImage.id
-            })
-              .then(() => {
-                req.flash('success_messages', '班級更新成功')
-                return res.redirect('/admin/classes')
-              })
-              .catch((error) => {
-                req.flash('error_messages', '班級更新失敗')
-                console.log(error)
-                return res.redirect('back')
-              })  
+        imgur.setClientID(IMGUR_CLIENT_ID)
+        imgur.upload(file.path, (err, img) => {
+          return selectedClass.update({
+            name: name,
+            isPublic: isPublic,
+            image: file ? img.data.link : null
           })
+            .then(() => {
+              req.flash('success_messages', '班級更新成功')
+              return res.redirect('/admin/classes')
+            })
+            .catch((error) => {
+              req.flash('error_messages', '班級更新失敗')
+              console.log(error)
+              return res.redirect('back')
+            }) 
         })
       })
     } else {
@@ -124,15 +124,17 @@ const adminController = {
       req.flash('error_messages', '必須選擇作業狀態')
       return res.redirect('back')
     }
-
+    
     if (file) {
-      googleDrive.uploadImage(file, name, classImgFolderId).then((uploadedId) => {
-        return googleDrive.becomePublic(uploadedId).then((publicImage) => {
-          return googleDrive.createFolder(name, rootFolderId).then((folder) => {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        console.log(img)
+        return googleDrive.createFolder(name, rootFolderId).then((folder) => {
+          console.log(folder)
             Class.create({
               name: name,
               isPublic: isPublic,
-              image: publicImage.id,
+              image: file ? img.data.link : null,
               googleFolderId: folder.id
             })
               .then(() => {
@@ -145,14 +147,13 @@ const adminController = {
                 return res.redirect('back')
               })
           })
-        })
       })
     } else {
       return googleDrive.createFolder(name, rootFolderId).then((folder) => {
         return Class.create({
           name: name,
           isPublic: isPublic,
-          image: '',
+          image: null,
           googleFolderId: folder.id
         })
           .then(() => {
