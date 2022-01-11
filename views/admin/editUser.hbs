@@ -14,8 +14,8 @@
         <div class="card mb-3 mx-auto">
           <div class="row no-gutters">
             <div class="col-md-4 d-flex justify-content-center align-items-center">
-              {{#if user.googleImageId}}
-              <img src="https://drive.google.com/uc?export=view&id={{user.googleImageId}}" alt="avatar" style="width: 150px">
+              {{#if user.image}}
+              <img src="{{user.image}}" alt="avatar" style="width: 150px">
               {{else}}
               <img src="/image/logo.jpg" style="width: 150px">
               {{/if}}
@@ -42,8 +42,8 @@
         <div class="card mb-3 mx-auto">
           <div class="row no-gutters">
             <div class="col-md-4 d-flex justify-content-center align-items-center">
-              {{#if user.googleImageId}}
-              <img src="https://drive.google.com/uc?export=view&id={{user.googleImageId}}" alt="avatar" style="width: 150px">
+              {{#if user.image}}
+              <img src="{{user.image}}" alt="avatar" style="width: 150px">
               {{else}}
               <img src="/image/logo.jpg" style="width: 150px">
               {{/if}}

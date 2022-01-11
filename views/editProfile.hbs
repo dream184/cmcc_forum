@@ -1,8 +1,8 @@
 <div class="banner bg-secondary position-relative" style="height: 150px; margin-bottom: 90px; background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);">
   <div class="d-flex justify-content-around position-relative" style="bottom: -50%;">
     <div class="avatar">
-      {{#if user.googleImageId}}
-        <img src="https://drive.google.com/uc?export=view&id={{user.googleImageId}}" alt="avatar" style="width: 150px">
+      {{#if user.image}}
+        <img src="{{user.image}}" alt="avatar" style="width: 150px">
       {{else}}
         <img src="/image/logo.jpg" style="width: 150px">
       {{/if}}

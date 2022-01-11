@@ -121,8 +121,8 @@ audio {
             <div class="row m-auto" style="background-color: #fff; border-radius:15px;">
               <div class="col-6">
                 <div class="author-img d-flex justify-content-center p-1 m-auto">
-                  {{#if this.User.googleImageId}}
-                  <img src="https://drive.google.com/uc?export=view&id={{this.User.googleImageId}}" alt="" class="author-avatar-image"
+                  {{#if this.User.image}}
+                  <img src="{{this.User.image}}" class="author-avatar-image"
                     style="clip-path: circle(35%);">
                   {{else}}
                   <i class="fas fa-user-circle text-secondary" style="font-size: 35px;"></i>

@@ -45,8 +45,8 @@
     <div class="row w-100 p-0 m-0" style="min-height: 85vh;">
       <section class="sidebar-section col-12 col-md-3 bg-white">
         <div class="sidebar-img text-center w-100 p-1">
-          {{#if user.googleImageId}}
-          <img src="https://drive.google.com/uc?export=view&id={{user.googleImageId}}" alt="avatar" style="width: 150px">
+          {{#if user.image}}
+          <img src="{{user.image}}" alt="avatar" style="width: 150px">
           {{else}}
           <img src="/image/logo.jpg" style="width: 150px">
           {{/if}}

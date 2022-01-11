@@ -148,8 +148,8 @@
             <div>
               <div class="feedback-image-container">
                 <div class="feedback-name d-flex justify-content-center align-items-center p-1">
-                  {{#if this.User.googleImageId}}
-                  <img src="https://drive.google.com/uc?export=view&id={{this.User.googleImageId}}" alt="avatar" style="width: 50px">
+                  {{#if this.User.image}}
+                  <img src="{{this.User.image}}" alt="avatar" style="clip-path: circle(35%); width: 75px">
                   {{else}}
                   <img src="/image/logo.jpg" style="width: 50px">
                   {{/if}}
