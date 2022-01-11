@@ -13,8 +13,6 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const Class = db.Class
 const Homework = db.Homework
 const rootFolderId = process.env.GOOGLE_ROOT_FOLDER_ID
-const classImgFolderId = process.env.GOOGLE_CLASS_IMAGE_FOLDER_ID
-const homeworkImgFolderId = process.env.GOOGLE_HOMEWORK_IMAGE_FOLDER_ID
 const pageLimit = 15
 
 const adminController = {
@@ -248,24 +246,23 @@ const adminController = {
     }
     
     if (file) {
-      googleDrive.uploadImage(file, name, homeworkImgFolderId).then((uploadedId) => {
-        return googleDrive.becomePublic(uploadedId).then((publicImage) => {
-          return Class.findByPk(classId).then((selectedClass) => {
-            return googleDrive.createFolder(name, selectedClass.googleFolderId).then((folder) => {
-              Homework.create({
-                name: name,
-                isPublic: isPublic,
-                image: publicImage.id,
-                description: description,
-                googleFolderId: folder.id,
-                expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss'),
-                ClassId: classId
-              })
-                .then(() => {
-                  return res.redirect(`/admin/classes/${classId}/homeworks`)
-                })
-                .catch((error) => console.log(error))
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        return Class.findByPk(classId).then((selectedClass) => {
+          return googleDrive.createFolder(name, selectedClass.googleFolderId).then((folder) => {
+            Homework.create({
+              name: name,
+              isPublic: isPublic,
+              image: file ? img.data.link : null,
+              description: description,
+              googleFolderId: folder.id,
+              expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss'),
+              ClassId: classId
             })
+              .then(() => {
+                return res.redirect(`/admin/classes/${classId}/homeworks`)
+              })
+              .catch((error) => console.log(error))
           })
         })
       })
@@ -275,7 +272,7 @@ const adminController = {
           return Homework.create({
             name: name,
             isPublic: isPublic,
-            image: '',
+            image: null,
             description: description,
             googleFolderId: folder.id,
             expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss'),
@@ -319,26 +316,25 @@ const adminController = {
         if(name !== homework.name) {
           googleDrive.renameFile(name, homework.googleFolderId)
         }
-        googleDrive.deleteFile(homework.image)
-        googleDrive.uploadImage(file, name, homeworkImgFolderId).then((uploadedId) => {
-          googleDrive.becomePublic(uploadedId).then((publicImage) => {
-            return homework.update({
-              name: name,
-              isPublic: isPublic,
-              image: publicImage.id,
-              description: description,
-              expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss')
-            })
-              .then(() => {
-                req.flash('success_messages', '作業更新成功')
-                return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
-              })
-              .catch((error) => {
-                console.log(error)
-                req.flash('error_messages', '更新失敗')
-                return res.redirect('back')
-              })  
+
+        imgur.setClientID(IMGUR_CLIENT_ID)
+        imgur.upload(file.path, (err, img) => { 
+          return homework.update({
+            name: name,
+            isPublic: isPublic,
+            image: file ? img.data.link : null,
+            description: description,
+            expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss')
           })
+            .then(() => {
+              req.flash('success_messages', '作業更新成功')
+              return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
+            })
+            .catch((error) => {
+              console.log(error)
+              req.flash('error_messages', '更新失敗')
+              return res.redirect('back')
+            })  
         })
       })
     } else {
