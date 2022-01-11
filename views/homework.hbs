@@ -20,6 +20,10 @@ audio {
   width: 100%;
 }
 
+.modal-backdrop {
+  z-index: 0;
+}
+
 @media screen and (min-width: 768px) {
   .upload-file-container {
     position: relative;
@@ -85,11 +89,33 @@ audio {
         <div class="posts-section">
           <div class="post position-relative p-1">   
             <div class="delete-homework" style="position: absolute; right: 20px; top: 10px; z-index:1;">
-              <form action="/classes/{{../homework.Class.id}}/homeworks/{{../homework.id}}/voicefiles/{{this.id}}?_method=DELETE" method="POST">
-                <button type="submit" class="close" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </form>     
+              <!-- Button trigger modal -->
+              <button type="button" class="close" aria-label="Close" data-toggle="modal" data-target="#Modal-{{this.id}}">
+                <span aria-hidden="true">&times;</span>
+              </button> 
+              
+              <!-- Modal -->
+              <div class="modal fade" id="Modal-{{this.id}}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalLabel">確定刪除</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      您確定要刪除音檔作業嗎?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary p-1" data-dismiss="modal">關閉</button>
+                      <form action="/classes/{{../homework.Class.id}}/homeworks/{{../homework.id}}/voicefiles/{{this.id}}?_method=DELETE" method="POST">
+                        <button type="submit" class="btn btn-light p-1 border-danger text-danger">刪除</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>   
             </div>
      
             <div class="row m-auto" style="background-color: #fff; border-radius:15px;">
@@ -160,35 +186,6 @@ audio {
                 </div>
                 <hr class="m-1"/>
               </div>
-              {{#if feedback}}
-              <div class="col-12">
-                <div class="feedback-area">
-                  <div class="post-feedback d-flex">  
-                    <div class="user-image">
-                      <i class="fas fa-user-circle text-secondary" style="font-size: 35px;"></i>
-                    </div>
-                    <div class="feedback-content m-2 p-1 border">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequuntur repellendus explicabo fugiat. Unde id facere perspiciatis, ullam magnam nihil qui sunt suscipit, velit nemo soluta dolorem non exercitationem ab?
-                    </div>
-                  </div>
-                </div>
-
-              </div>    
-              
-              <div class="col-12">
-                <div class="feedback-area">
-                  <div class="post-feedback d-flex">  
-                    <div class="user-image">
-                      <i class="fas fa-user-circle text-secondary" style="font-size: 35px;"></i>
-                    </div>
-                    <div class="feedback-content m-2 p-1 border">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing
-                    </div>
-                  </div>
-                </div>
-              </div> 
-              {{/if}}
-
             </div>      
           </div>
         </div>

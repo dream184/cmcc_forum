@@ -37,9 +37,49 @@
             </div>
             <div class="voicefile-button-container">
               <div class="voicefile-button d-flex justify-content-center p-1">
-                <form action="/favorite/{{this.Voicefile.id}}?_method=DELETE" method="POST">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-white border border-danger text-danger mx-1 p-1" data-toggle="modal" data-target="#favoriteModal-{{this.id}}">
+                  取消收藏
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="favoriteModal-{{this.id}}" tabindex="-1" aria-labelledby="favoriteModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="favoriteModalLabel">確認取消收藏?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        您確定要取消收藏嗎?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                        <form action="/favorite/{{this.Voicefile.id}}?_method=DELETE" method="POST">
+                          <button type="submit" class="btn btn-white border border-danger text-danger mx-1 p-1">取消收藏</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                {{!-- <form action="/favorite/{{this.Voicefile.id}}?_method=DELETE" method="POST">
                   <button type="submit" class="btn btn-white border border-danger text-danger mx-1 p-1">取消收藏</button>
-                </form>
+                </form> --}}
                 <a href="/classes/{{this.Voicefile.Class.id}}/homeworks/{{this.Voicefile.Homework.id}}/voicefiles/{{this.Voicefile.id}}/feedbacks" class="btn btn-success p-1">查看回饋</a>
               </div>
             </div>

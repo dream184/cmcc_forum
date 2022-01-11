@@ -40,16 +40,16 @@
           <td class="p-1">
 
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-light p-1 border-danger text-danger" data-toggle="modal" data-target="#exampleModal">
+            <button type="button" class="btn btn-light p-1 border-danger text-danger" data-toggle="modal" data-target="#Modal-{{this.id}}">
               刪除
             </button>
 
             <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="Modal-{{this.id}}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">確認刪除?</h5>
+                    <h5 class="modal-title" id="ModalLabel">確認刪除?</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
