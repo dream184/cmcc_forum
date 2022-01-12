@@ -64,33 +64,12 @@
     </div>
     <div class="class-voicefile-container col-12 col-md-9">
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">課程一覽</a>
-        <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">音檔管理</a>
+        <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">音檔管理</a>
+        <a class="nav-link" id="nav-class-tab" data-toggle="tab" href="#nav-class" role="tab" aria-controls="nav-class" aria-selected="false">課程一覽</a>
       </div>
       <div class="tab-content bg-white" id="nav-tabContent">
         <div class="tab-pane fade show active p-3" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-          {{#each user.AttendClasses}}
-          <div class="card mb-3 p-3 mb-2 bg-light text-dark mx-auto mb-3" style="max-width: 720px;">
-            <a href="/classes/{{this.Class.id}}">      
-              <div class="class row no-gutters">
-                <div class="col-md-4 d-flex align-items-center">
-                  <img class="w-100" src="{{this.Class.image}}">
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">{{this.Class.name}}</h5>
-                    <p class="card-text"><small class="text-muted">加入日期：{{dayjs this.Class.createdAt}}</small></p>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          {{/each}}
-        </div>
-
-        <div class="tab-pane fade p-3" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-          
-          <h3 class="text-center">所有音檔</h3>
+          <h3 class="text-center" id="test">所有音檔</h3>
           <hr />
           {{#each voicefiles}}
             <div class="card bg-light text-dark m-auto" style="max-width: 720px;">
@@ -99,13 +78,13 @@
 
                   <div class="voicefile-class">
                     <div class="voicefile-name d-flex justify-content-center align-items-center p-1">
-                      <span>{{this.Homework.Class.name}}</span>
+                      <span>{{this.Homework.dataValues.Class.name}}</span>
                     </div>
                   </div>
                   
                   <div class="voicefile-homework">
                     <div class="voicefile-name d-flex justify-content-center align-items-center p-1">
-                      <span>{{this.Homework.name}}</span>
+                      <span>{{this.Homework.dataValues.name}}</span>
                     </div>
                   </div>
                   
@@ -117,7 +96,7 @@
 
                   <div class="voicefile-feedback">
                     <div class="upload-time d-flex justify-content-center p-1">
-                      <a href="/classes/{{this.Homework.Class.id}}/homeworks/{{this.Homework.id}}/voicefiles/{{this.id}}/feedbacks">查看回饋</a>
+                      <a href="/classes/{{this.ClassId}}/homeworks/{{this.HomeworkId}}/voicefiles/{{this.id}}/feedbacks">查看回饋</a>
                     </div>
                   </div>
 
@@ -143,9 +122,50 @@
             <br>
           {{/each}}
         </div>
+
+        <div class="tab-pane fade p-3" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab">
+          {{#each user.AttendClasses}}
+          <div class="card mb-3 p-3 mb-2 bg-light text-dark mx-auto mb-3" style="max-width: 720px;">
+            <a href="/classes/{{this.Class.id}}">      
+              <div class="class row no-gutters">
+                <div class="col-md-4 d-flex align-items-center">
+                  <img class="w-100" src="{{this.Class.image}}">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{this.Class.name}}</h5>
+                    <p class="card-text"><small class="text-muted">加入日期：{{dayjs this.Class.createdAt}}</small></p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          {{/each}}
+        </div>
+ 
+      </div>
+      <div class="paginator-container">
+        <nav aria-label="Page navigation example" class="mt-2">
+          <ul class="pagination d-flex justify-content-center">
+            <li class="page-item">
+              <a class="page-link" href="/profile?page={{prev}}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            {{#each totalPage}}
+            {{#if (equal this ../page)}}
+            <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
+            {{else}}
+            <li class="page-item"><a class="page-link" href="/profile?page={{this}}">{{this}}</a></li>
+            {{/if}}
+            {{/each}}
+            <li class="page-item"><a class="page-link" href="/profile?page={{next}}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
-  
 </div>
-

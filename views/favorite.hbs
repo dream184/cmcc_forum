@@ -22,17 +22,17 @@
           <div class="col-md-4 d-flex flex-column">
             <div class="voicefile-user-container">
               <div class="voicefile-user d-flex justify-content-center align-items-center p-1">
-                <span>{{this.Voicefile.User.name}}</span>
+                <span>{{this.Voicefile.dataValues.User.dataValues.name}}</span>
               </div>
             </div>
             <div class="voicefile-class-container">
               <div class="voicefile-class d-flex justify-content-center align-items-center p-1">
-                <span>{{this.Voicefile.Class.name}}</span>
+                <span>{{this.Voicefile.dataValues.Class.dataValues.name}}</span>
               </div>
             </div>
             <div class="voicefile-homework-container">
               <div class="voicefile-homework d-flex justify-content-center align-items-center p-1">
-                <span>{{this.Voicefile.Homework.name}}</span>
+                <span>{{this.Voicefile.dataValues.Homework.dataValues.name}}</span>
               </div>
             </div>
             <div class="voicefile-button-container">
@@ -57,7 +57,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                        <form action="/favorite/{{this.Voicefile.id}}?_method=DELETE" method="POST">
+                        <form action="/favorite/{{this.Voicefile.dataValues.id}}?_method=DELETE" method="POST">
                           <button type="submit" class="btn btn-white border border-danger text-danger mx-1 p-1">取消收藏</button>
                         </form>
                       </div>
@@ -68,7 +68,7 @@
                 {{!-- <form action="/favorite/{{this.Voicefile.id}}?_method=DELETE" method="POST">
                   <button type="submit" class="btn btn-white border border-danger text-danger mx-1 p-1">取消收藏</button>
                 </form> --}}
-                <a href="/classes/{{this.Voicefile.Class.id}}/homeworks/{{this.Voicefile.Homework.id}}/voicefiles/{{this.Voicefile.id}}/feedbacks" class="btn btn-success p-1">查看回饋</a>
+                <a href="/classes/{{this.Voicefile.dataValues.Class.dataValues.id}}/homeworks/{{this.Voicefile.dataValues.Homework.dataValues.id}}/voicefiles/{{this.Voicefile.dataValues.id}}/feedbacks" class="btn btn-success p-1">查看回饋</a>
               </div>
             </div>
           </div>
@@ -76,14 +76,14 @@
             <div class="card-body">
               <div class="container-audio d-flex justify-content-center">
                 <audio controls class="w-100" preload="none">
-                  <source src="https://docs.google.com/uc?export=open&id={{this.Voicefile.googleFileId}}"
+                  <source src="https://docs.google.com/uc?export=open&id={{this.Voicefile.dataValues.googleFileId}}"
                       type="audio/mp4">
-                  <source src="https://docs.google.com/uc?export=open&id={{this.Voicefile.googleFileId}}"
+                  <source src="https://docs.google.com/uc?export=open&id={{this.Voicefile.dataValues.googleFileId}}"
                     type="audio/mpeg">
-                  <source src="https://docs.google.com/uc?export=open&id={{this.Voicefile.googleFileId}}"
+                  <source src="https://docs.google.com/uc?export=open&id={{this.Voicefile.dataValues.googleFileId}}"
                     type="audio/ogg">  
                   您的瀏覽器不支援 audio tag，請點選下面網址收聽音檔
-                  <a href="https://docs.google.com/uc?export=open&id={{this.Voicefile.googleFileId}}">音檔連結</a>
+                  <a href="https://docs.google.com/uc?export=open&id={{this.Voicefile.dataValues.googleFileId}}">音檔連結</a>
                 </audio>
               </div>
             </div>
@@ -95,4 +95,27 @@
 
     </div>
   </div>
+</div>
+
+<div class="paginator-container">
+  <nav aria-label="Page navigation example" class="mt-2">
+    <ul class="pagination d-flex justify-content-center">
+      <li class="page-item">
+        <a class="page-link" href="/favorites?page={{prev}}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {{#each totalPage}}
+      {{#if (equal this ../page)}}
+      <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
+      {{else}}
+      <li class="page-item"><a class="page-link" href="/favorites?page={{this}}">{{this}}</a></li>
+      {{/if}}
+      {{/each}}
+      <li class="page-item"><a class="page-link" href="/favorites?page={{next}}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 </div>

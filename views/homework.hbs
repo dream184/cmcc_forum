@@ -80,15 +80,15 @@ audio {
           </form>
         </div>
       </div>
-
     </div>
 
-    {{#if homework.Voicefiles}} 
+    {{#if voicefiles}} 
       <div class="posts-container col-12 col-md-8">
-        {{#each homework.Voicefiles}}
+        {{#each voicefiles}}
         <div class="posts-section">
           <div class="post position-relative p-1">   
             <div class="delete-homework" style="position: absolute; right: 20px; top: 10px; z-index:1;">
+              {{#if (equal this.UserId ../user.id)}}
               <!-- Button trigger modal -->
               <button type="button" class="close" aria-label="Close" data-toggle="modal" data-target="#Modal-{{this.id}}">
                 <span aria-hidden="true">&times;</span>
@@ -115,14 +115,16 @@ audio {
                     </div>
                   </div>
                 </div>
-              </div>   
+              </div>
+              {{/if}} 
             </div>
+              
      
             <div class="row m-auto" style="background-color: #fff; border-radius:15px;">
               <div class="col-6">
-                <div class="author-img d-flex justify-content-center p-1 m-auto">
-                  {{#if this.User.image}}
-                  <img src="{{this.User.image}}" class="author-avatar-image"
+                <div class="author-img d-flex justify-content-center align-items-center p-1 m-auto">
+                  {{#if this.User.dataValues.image}}
+                  <img src="{{this.User.dataValues.image}}" class="author-avatar-image"
                     style="clip-path: circle(35%);">
                   {{else}}
                   <i class="fas fa-user-circle text-secondary" style="font-size: 35px;"></i>
@@ -135,8 +137,8 @@ audio {
                 </div>
               </div>
               <div class="col-6 d-flex justify-content-center">
-                <div class="author-name d-flex justify-content-center p-1">
-                  <h4>{{this.User.name}}</h4>
+                <div class="author-name d-flex justify-content-center align-items-center p-1">
+                  <h4>{{this.User.dataValues.name}}</h4>
                 </div>
               </div>
               <div class="col-6 d-flex justify-content-center align-items-center">
@@ -203,3 +205,26 @@ audio {
     {{/if}}
   </div>
 </div>
+
+<div class="paginator-container">
+    <nav aria-label="Page navigation example" class="mt-2">
+      <ul class="pagination d-flex justify-content-center">
+        <li class="page-item">
+          <a class="page-link" href="/classes/{{homework.Class.id}}/homeworks/{{homework.id}}?page={{prev}}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {{#each totalPage}}
+        {{#if (equal this ../page)}}
+        <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
+        {{else}}
+        <li class="page-item"><a class="page-link" href="/classes/{{../homework.Class.id}}/homeworks/{{../homework.id}}?page={{this}}">{{this}}</a></li>
+        {{/if}}
+        {{/each}}
+        <li class="page-item"><a class="page-link" href="/classes/{{homework.Class.id}}/homeworks/{{homework.id}}?page={{next}}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
