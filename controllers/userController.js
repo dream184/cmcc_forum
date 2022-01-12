@@ -10,6 +10,7 @@ const googleDrive = require('./google_drive_method')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const pageLimit = 10
+const nodemailer = require("nodemailer")
 
 const userController = {
   signInPage: (req, res) => {

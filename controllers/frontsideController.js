@@ -39,10 +39,7 @@ const frontsideController = {
 
     return Homework.findOne({
       where: {id: req.params.id},
-      include: [
-        Class, 
-        // { model: VoiceFile, include: [User] }
-      ]
+      include: [Class]
     })
       .then((homework) => {
         VoiceFile.findAndCountAll({
