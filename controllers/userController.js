@@ -10,9 +10,117 @@ const googleDrive = require('./google_drive_method')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const pageLimit = 10
-const nodemailer = require("nodemailer")
+const nodemailer = require('../config/email.js')
+const redis = require('redis')
+const client = redis.createClient();
+const crypto = require('crypto')
+
+async function redisConnect () {
+  client.on('error', (err) => console.log('Redis Client Error', err));
+  await client.connect();
+}
+redisConnect()
 
 const userController = {
+  resetPasswordPage: (req, res) => {
+    const { email, token } = req.query
+
+    client.get(`RESET_PASSWORD:${email}`)
+      .then((dataJSON) => {
+        const dataObject = JSON.parse(dataJSON)
+        if (!dataJSON) {
+          req.flash('error_messages', '重置密碼無效或逾期')
+          console.log('重置密碼無效或逾期')
+          return res.redirect('/signin')
+        }
+        if (dataObject.token !== token) {
+          req.flash('error_messages', '該Token無效，請重新申請')
+          console.log('該Token無效')
+          return res.redirect('/signin')
+        }
+        req.flash('success_messages', '您現在可以重置密碼')
+        return User.findOne({ where: { email: email } })
+          .then((user) => {
+            return res.render('resetPassword', {
+              user: user.toJSON(),
+              token: token
+            })
+          })
+      })
+  },
+  resetPassword: (req, res) => {
+    const { email, token, password, passwordCheck } = req.body
+    console.log('email:', req.body)
+
+    client.get(`RESET_PASSWORD:${email}`)
+      .then((dataJSON) => {
+        const dataObject = JSON.parse(dataJSON)
+        if (!dataJSON) {
+          req.flash('error_messages', '重置密碼無效或逾期')
+          console.log('重置密碼無效或逾期')
+          return res.redirect('/signin')
+        }
+        if (dataObject.token !== token) {
+          req.flash('error_messages', '該Token無效，請重新申請')
+          console.log('該Token無效')
+          return res.redirect('/signin')
+        }
+        if (password !== passwordCheck) {
+          req.flash('error_messages', '兩次密碼輸入不同，請重新確認')
+          return res.redirect('back')
+        }
+        if (password.trim().length === 0) {
+          req.flash('error_messages', '密碼不得為空')
+          return res.redirect('back')
+        }
+        return User.findOne({ where: { email: email } })
+          .then((user) => {
+            return user.update({
+              password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
+            })
+              .then(() => {
+                req.flash('success_messages', '已成功更新密碼')
+                return res.redirect('/signin')
+              })
+          })
+      })
+  },
+  forgotPasswordPage: (req, res) => {
+    return res.render('forgotPassword')
+  },
+  submitForgetPassword: (req, res) => {
+    const { email } = req.body;
+    return User.findOne({ where: { email: email } })
+      .then((user) => {
+        if (!user) {
+          req.flash('error_messages', '該用戶不存在')
+          return res.redirect('back')
+        }
+
+        const token = crypto.randomBytes(32).toString('hex')
+        const item = JSON.stringify({ email, token })
+        const subject = 'cmcc-forum 重設密碼'
+        const mailContent = `
+          <h1>1234</h1>
+          <a href="http://localhost:3000/resetPassword?email=${email}&token=${token}">按此重設密碼</a>
+        `
+        return client.set(`RESET_PASSWORD:${email}`, item, {
+          EX: 300,
+          NX: false
+        })
+          .then((result) => {
+            return client.get(`RESET_PASSWORD:${item.email}`)
+              .then((value) => {
+                console.log('redis_value', value)
+                return nodemailer.send(email, subject, mailContent)
+                  .then(() => {
+                    req.flash('success_messages', '已成功寄出密碼重置信件到您的信箱')
+                    return res.redirect('/signin')
+                  })
+              })  
+          })
+      })  
+  },
   signInPage: (req, res) => {
     return res.render('signin')
   },
@@ -184,6 +292,10 @@ const userController = {
     }
     if (password.length < 6) {
       req.flash('error_messages', '密碼長度至少6碼')
+      return res.redirect('back')
+    }
+    if (password.trim().length === 0) {
+      req.flash('error_messages', '密碼不得為空')
       return res.redirect('back')
     }
     return User.findByPk(req.params.id)

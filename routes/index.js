@@ -68,6 +68,10 @@ module.exports = (app, passport) => {
   app.post('/signup', userController.signUp)
   app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signin)
   app.get('/logout', authenticated, userController.logout)
+  app.get('/forgotPassword', userController.forgotPasswordPage)
+  app.post('/forgotPassword', userController.submitForgetPassword)
+  app.get('/resetPassword', userController.resetPasswordPage)
+  app.post('/resetPassword', userController.resetPassword)
 
   app.get('/profile', authenticated, userController.profilePage)
   app.get('/profile/edit', authenticated, userController.editProfile)

@@ -13,9 +13,9 @@ async function send(mailTo, subject, mailContent) {
 
     let info = await transporter.sendMail({
       from: '"cmcc-forum" <shibao0184@gmail.com>',
-      to: `${mailTo}`,
-      subject: `${subject}`,
-      html: `${mailContent}`,
+      to: mailTo,
+      subject: subject,
+      html: mailContent,
     });
     console.log("Message sent: %s", info.messageId);
   } catch {

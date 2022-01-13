@@ -5,11 +5,15 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 var favicon = require('serve-favicon')
 const flash = require('connect-flash')
+const redis = require('redis')
+const client = redis.createClient();
 const hbsHelpers = require('./config/handlebars-helpers')
 const passport = require('./config/passport')
 const path = require('path')
 const app = express()
+
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+
 const port = process.env.PORT || 3000
 
 if (process.env.NODE_ENV !== 'production') {

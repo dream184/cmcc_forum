@@ -3,5 +3,6 @@ temp/
 
 .DS_Store
 .env
+dump.rdb
 
 package-lock
