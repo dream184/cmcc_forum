@@ -12,8 +12,13 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const pageLimit = 10
 const nodemailer = require('../config/email.js')
 const redis = require('redis')
-const client = redis.createClient();
 const crypto = require('crypto')
+
+if (process.env.NODE_ENV !== 'production') {
+  const client = redis.createClient();
+} else {
+  const client = redis.createClient({url: process.env.REDIS_URL})
+}
 
 async function redisConnect () {
   client.on('error', (err) => console.log('Redis Client Error', err));
