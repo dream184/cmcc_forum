@@ -13,6 +13,7 @@ const pageLimit = 10
 const nodemailer = require('../config/email.js')
 const redis = require('redis')
 const crypto = require('crypto')
+const expireTime = 300
 
 const client = (process.env.NODE_ENV !== 'production') ? redis.createClient() : redis.createClient({url: process.env.REDIS_URL})
 
@@ -102,11 +103,14 @@ const userController = {
         const item = JSON.stringify({ email, token })
         const subject = 'cmcc-forum 重設密碼'
         const mailContent = `
-          <h1>1234</h1>
-          <a href="http://localhost:3000/resetPassword?email=${email}&token=${token}">按此重設密碼</a>
+          <h1>cmcc-forum 密碼重設信</h1>
+          <p>請使用此驗證信重設您的帳戶: ${user.email}</p>
+          <p><a href="https://cmcc-forum.herokuapp.com/resetPassword?email=${email}&token=${token}">按此重設密碼</a></p>
+          <p>請注意，如果超過五分鐘，則必須重新申請重設密碼</p>
+          
         `
         return client.set(`RESET_PASSWORD:${email}`, item, {
-          EX: 300,
+          EX: expireTime,
           NX: false
         })
           .then((result) => {
