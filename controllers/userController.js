@@ -14,11 +14,7 @@ const nodemailer = require('../config/email.js')
 const redis = require('redis')
 const crypto = require('crypto')
 
-if (process.env.NODE_ENV !== 'production') {
-  const client = redis.createClient();
-} else {
-  const client = redis.createClient({url: process.env.REDIS_URL})
-}
+const client = (process.env.NODE_ENV !== 'production') ? redis.createClient() : redis.createClient({url: process.env.REDIS_URL})
 
 async function redisConnect () {
   client.on('error', (err) => console.log('Redis Client Error', err));
