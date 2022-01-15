@@ -8,6 +8,10 @@ const flash = require('connect-flash')
 const redis = require('redis')
 const client = redis.createClient();
 const hbsHelpers = require('./config/handlebars-helpers')
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const passport = require('./config/passport')
 const path = require('path')
 const app = express()
@@ -16,9 +20,7 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 const port = process.env.PORT || 3000
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
+
 
 app.engine('hbs', exphbs.engine({
   defaultLayout: 'main',

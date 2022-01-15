@@ -44,6 +44,14 @@ module.exports = (app, passport) => {
   app.put('/admin/voicefiles/:id/feedbacks/:id', feedbackController.putAdminFeedback)
   app.get('/admin/voicefiles/:orderby', authenticated, voiceFileController.getVoiceFiles)
 
+  app.get('/auth/facebook', passport.authenticate('facebook', {
+    scope: ['email', 'public_profile']
+  }))
+  app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/users/login'
+  }))
+
   app.get('/classes', authenticated, frontsideController.getClasses)
   app.get('/classes/:id', authenticated, frontsideController.getHomeworks)
   app.get('/classes/:id/homeworks/:id', authenticated, frontsideController.getHomework)
