@@ -12,16 +12,13 @@ const hbsHelpers = require('./config/handlebars-helpers')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
+
 const passport = require('./config/passport')
 const path = require('path')
 const app = express()
-
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
-
 const port = process.env.PORT || 3000
 
-
-
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.engine('hbs', exphbs.engine({
   defaultLayout: 'main',
   extname: '.hbs',
@@ -33,7 +30,6 @@ app.use(flash())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(express.static('public'))
-
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -47,7 +43,6 @@ app.use((req, res, next) => {
   res.locals.user = req.user
   next()
 })
-
 
 app.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`)

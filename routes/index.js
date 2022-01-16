@@ -51,6 +51,13 @@ module.exports = (app, passport) => {
     successRedirect: '/',
     failureRedirect: '/users/login'
   }))
+  app.get('/auth/google', passport.authenticate('google', {
+    scope: ['email', 'profile']
+  }))
+  app.get('/auth/google/callback', passport.authenticate('google', {
+    successRedirect: '/',
+    failureRedirect: '/users/login'
+  }))
 
   app.get('/classes', authenticated, frontsideController.getClasses)
   app.get('/classes/:id', authenticated, frontsideController.getHomeworks)
