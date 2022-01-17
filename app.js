@@ -5,16 +5,12 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 var favicon = require('serve-favicon')
 const flash = require('connect-flash')
-const redis = require('redis')
-const client = redis.createClient();
 const hbsHelpers = require('./config/handlebars-helpers')
-
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 const routes = require('./routes')
-
 const passport = require('./config/passport')
 const path = require('path')
 const app = express()
@@ -45,11 +41,10 @@ app.use((req, res, next) => {
   res.locals.user = req.user
   next()
 })
+app.use(routes)
 
 app.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`)
 })
-// require('./routes')(app, passport)
-app.use(routes)
 
 module.exports = app

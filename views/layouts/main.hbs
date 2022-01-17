@@ -30,7 +30,12 @@
           {{#if user}}
           <a href="/user/profile"><button class="dropdown-item text-center" type="button">個人檔案</button></a>
           <a href="/favorites"><button class="dropdown-item text-center" type="button">收藏清單</button></a>
+          {{#if (equal user.AuthorityId 4)}}
           <a href="/admin/classes" class=" d-block"><button class="dropdown-item text-center" type="button">後台</button></a>
+          {{/if}}
+          {{#if (equal user.AuthorityId 3)}}
+          <a href="/admin/voicefiles" class=" d-block"><button class="dropdown-item text-center" type="button">後台</button></a>
+          {{/if}}
           <a href="/user/logout"><button class="dropdown-item text-center" type="button">登出</button></a>
           {{else}}
           <a href="/user/signin"><button class="dropdown-item text-center" type="button">登入</button></a>

@@ -27,15 +27,10 @@
           <i class="fas fa-user-circle text-white" style="font-size: 35px;"></i>
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-          {{#if user}}
           <a href="/user/profile"><button class="dropdown-item text-center" type="button">個人檔案</button></a>
           <a href="/favorites"><button class="dropdown-item text-center" type="button">收藏清單</button></a>
           <a href="/"><button class="dropdown-item text-center" type="button">前台</button></a>
           <a href="/user/logout"><button class="dropdown-item text-center" type="button">登出</button></a>
-          {{else}}
-          <a href="/user/signin"><button class="dropdown-item text-center" type="button">登入</button></a>
-          <a href="/admin/classes" class=" d-block"><button class="dropdown-item text-center" type="button">後台</button></a>
-          {{/if}}
         </div>
       </div>
     </div>
@@ -54,11 +49,10 @@
             <span class="d-block mt-2">{{user.nickName}}，您好</span>
           {{else}}
             <span class="d-block mt-2">親愛的，您好</span>
-          {{/if}}
-
-          
+          {{/if}}    
         </div>
         <hr />
+        {{#if (equal user.AuthorityId 4)}}
         <a href="/admin/classes">
           <div class="manage-classes text-center p-2">
             <span class="font-weight-bold">管理所有班級</span>
@@ -69,6 +63,7 @@
             <span class="font-weight-bold">管理使用者權限</span>
           </div>
         </a>
+        {{/if}}
         <a href="/admin/voicefiles">
           <div class="manage-classes text-center p-2">
             <span class="font-weight-bold">瀏覽所有學員音檔</span>

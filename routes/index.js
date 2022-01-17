@@ -14,13 +14,12 @@ const authenticated = (req, res, next) => {
   }
   res.redirect('/user/signin')
 }
-
-router.use('/admin', authenticated, admin)
 router.use('/auth', auth)
+router.use('/user', user)
+router.use('/admin', authenticated, admin)
 router.use('/classes', authenticated, voiceClass)
 router.use('/favorites', authenticated, favorite)
 router.use('/like', authenticated, like)
-router.use('/user', user)
 router.use('/', authenticated, home)
 
 module.exports = router

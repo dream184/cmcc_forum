@@ -30,16 +30,7 @@
           <div class="col-md-8">
             <div class="card-body">
               <div class="container-audio d-flex justify-content-center">
-                <audio controls preload="none">
-                  <source src="https://docs.google.com/uc?export=open&id={{feedback.Voicefile.googleFileId}}"
-                    type="audio/mp4">
-                  <source src="https://docs.google.com/uc?export=open&id={{feedback.Voicefile.googleFileId}}"
-                    type="audio/mpeg">
-                  <source src="https://docs.google.com/uc?export=open&id={{feedback.Voicefile.googleFileId}}"
-                    type="audio/ogg">      
-                  您的瀏覽器不支援 audio tag，請點選下面網址收聽音檔
-                  <a href="https://docs.google.com/uc?export=open&id={{feedback.Voicefile.googleFileId}}">音檔連結</a>
-                </audio>
+                <iframe src="https://drive.google.com/file/d/{{feedback.Voicefile.googleFileId}}/preview" width="100%" height="65" class="bg bg-white"></iframe>
               </div>
             </div>
           </div>
@@ -53,7 +44,12 @@
             <div>
               <div class="feedback-image-container">
                 <div class="feedback-name d-flex justify-content-center align-items-center p-1">
-                  <img src="https://drive.google.com/uc?export=view&id={{feedback.User.googleImageId}}" style="width: 50px; height: 50px;">
+                  {{#if feedback.User.image}}
+                  <img src="{{feedback.User.image}}" class="author-avatar-image"
+                    style="clip-path: circle(35%); width: 80px">
+                  {{else}}
+                  <i class="fas fa-user-circle text-secondary" style="font-size: 35px;"></i>
+                  {{/if}}
                 </div>
               </div>
               <div class="feedback-user-container">

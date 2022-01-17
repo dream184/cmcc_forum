@@ -164,7 +164,7 @@ const userController = {
   logout: (req, res) => {
     req.flash('success_messages', '成功登出')
     req.logout()
-    return res.redirect('/classes')
+    return res.redirect('/user/signin')
   },
   getUsers: (req, res) => {
     let offset = 0
@@ -258,7 +258,6 @@ const userController = {
       imgur.upload(file.path, (err, img) => {
         return User.findByPk(req.params.id)
           .then((user) => {
-            googleDrive.deleteFile(user.googleImageId)
             return user.update({
               name: name,
               nickName: nickname,
