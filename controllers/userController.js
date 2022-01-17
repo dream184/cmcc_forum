@@ -52,7 +52,6 @@ const userController = {
   },
   resetPassword: (req, res) => {
     const { email, token, password, passwordCheck } = req.body
-    console.log('email:', req.body)
 
     client.get(`RESET_PASSWORD:${email}`)
       .then((dataJSON) => {
@@ -75,6 +74,11 @@ const userController = {
           req.flash('error_messages', '密碼不得為空')
           return res.redirect('back')
         }
+        if (password.length < 6) {
+          req.flash('error_messages', '密碼長度至少6碼')
+          return res.redirect('back')
+        }
+
         return User.findOne({ where: { email: email } })
           .then((user) => {
             return user.update({
@@ -136,26 +140,34 @@ const userController = {
     if(req.body.passwordCheck !== req.body.password) {
       req.flash('error_messages', '兩次密碼輸入不相同')
       return res.redirect('/user/signup')
-    } else {
-      User.findOne({ where: { email: req.body.email }})
-        .then(user => {
-          if(user) {
-            req.flash('error_messages', '您已經註冊過了')
-            return res.redirect('/user/signup')
-          } else {
-            User.create({
-              name: req.body.name,
-              email: req.body.email,
-              password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
-            })
-              .then(user => {
-                req.flash('success_messages', '成功註冊帳號')
-                return res.redirect('/user/signin')
-              })
-              .catch(err => console.log(err))
-          }
-        })
+    } 
+    if (req.body.password.length < 6) {
+      req.flash('error_messages', '密碼長度至少6碼')
+      return res.redirect('back')
     }
+    if (req.body.password.trim().length === 0) {
+      req.flash('error_messages', '密碼不得為空')
+      return res.redirect('back')
+    }
+
+    return User.findOne({ where: { email: req.body.email }})
+      .then(user => {
+        if(user) {
+          req.flash('error_messages', '您已經註冊過了')
+          return res.redirect('/user/signup')
+        } else {
+          User.create({
+            name: req.body.name,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
+          })
+            .then(user => {
+              req.flash('success_messages', '成功註冊帳號')
+              return res.redirect('/user/signin')
+            })
+            .catch(err => console.log(err))
+        }
+      })
   },
   signin: (req, res) => {
     req.flash('success_messages', '成功登入')
@@ -172,7 +184,7 @@ const userController = {
       offset = (req.query.page - 1) * pageLimit
     }
 
-    User.findAndCountAll({
+    return User.findAndCountAll({
       offset: offset,
       limit: pageLimit,
       raw: true,
