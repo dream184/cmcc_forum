@@ -73,7 +73,7 @@
                   <div class="modal-body">
                     <div class="col-12">
                       <div class="container-audio d-flex justify-content-center">
-                        <audio controls preload="none">
+                        {{!-- <audio controls preload="none">
                           <source src="https://docs.google.com/uc?export=open&id={{this.googleFileId}}" type="audio/mp4">
                           <source src="https://docs.google.com/uc?export=open&id={{this.googleFileId}}"
                             type="audio/mpeg">
@@ -81,7 +81,8 @@
                             type="audio/ogg">
                           您的瀏覽器不支援 audio tag，請點選下面網址收聽音檔
                           <a href="https://docs.google.com/uc?export=open&id={{this.googleFileId}}">音檔連結</a>
-                        </audio>
+                        </audio> --}}
+                        <iframe src="https://drive.google.com/file/d/{{this.googleFileId}}/preview" width="100%" height="65" class="bg bg-white"></iframe>
                       </div>
                     </div>
                     
@@ -133,6 +134,7 @@
     </div>
     {{/unless}}
   </div>
+  {{#if totalPage}}
   <div class="paginator-container">
     <nav aria-label="Page navigation example" class="mx-auto my-2">
       <ul class="pagination d-flex justify-content-center">
@@ -157,5 +159,6 @@
       </ul>
     </nav>
   </div>
+  {{/if}}
 </section>
   

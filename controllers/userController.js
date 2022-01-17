@@ -33,12 +33,12 @@ const userController = {
         if (!dataJSON) {
           req.flash('error_messages', '重置密碼無效或逾期')
           console.log('重置密碼無效或逾期')
-          return res.redirect('/signin')
+          return res.redirect('/user/signin')
         }
         if (dataObject.token !== token) {
           req.flash('error_messages', '該Token無效，請重新申請')
           console.log('該Token無效')
-          return res.redirect('/signin')
+          return res.redirect('/user/signin')
         }
         req.flash('success_messages', '您現在可以重置密碼')
         return User.findOne({ where: { email: email } })
@@ -60,12 +60,12 @@ const userController = {
         if (!dataJSON) {
           req.flash('error_messages', '重置密碼無效或逾期')
           console.log('重置密碼無效或逾期')
-          return res.redirect('/signin')
+          return res.redirect('/user/signin')
         }
         if (dataObject.token !== token) {
           req.flash('error_messages', '該Token無效，請重新申請')
           console.log('該Token無效')
-          return res.redirect('/signin')
+          return res.redirect('/user/signin')
         }
         if (password !== passwordCheck) {
           req.flash('error_messages', '兩次密碼輸入不同，請重新確認')
@@ -82,7 +82,7 @@ const userController = {
             })
               .then(() => {
                 req.flash('success_messages', '已成功更新密碼')
-                return res.redirect('/signin')
+                return res.redirect('/user/signin')
               })
           })
       })
@@ -120,7 +120,7 @@ const userController = {
                 return nodemailer.send(email, subject, mailContent)
                   .then(() => {
                     req.flash('success_messages', '已成功寄出密碼重置信件到您的信箱')
-                    return res.redirect('/signin')
+                    return res.redirect('/user/signin')
                   })
               })  
           })
@@ -135,23 +135,22 @@ const userController = {
   signUp: (req, res) => {
     if(req.body.passwordCheck !== req.body.password) {
       req.flash('error_messages', '兩次密碼輸入不相同')
-      return res.redirect('/signup')
+      return res.redirect('/user/signup')
     } else {
       User.findOne({ where: { email: req.body.email }})
         .then(user => {
           if(user) {
             req.flash('error_messages', '您已經註冊過了')
-            return res.redirect('/signup')
+            return res.redirect('/user/signup')
           } else {
             User.create({
               name: req.body.name,
               email: req.body.email,
-              password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null),
-              AuthorityId: 4
+              password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
             })
               .then(user => {
                 req.flash('success_messages', '成功註冊帳號')
-                return res.redirect('/signin')
+                return res.redirect('/user/signin')
               })
               .catch(err => console.log(err))
           }
@@ -235,10 +234,8 @@ const userController = {
               totalPage: totalPage,
               prev: prev,
               next: next
-            })
-            
-          })
-          
+            })   
+          })  
       })
       .catch(err => console.log(err))
   },

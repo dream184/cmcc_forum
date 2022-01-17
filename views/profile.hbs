@@ -22,7 +22,7 @@
       {{/if}}
     </div>
     <div class="edit-profile my-auto">
-      <a href="/profile/edit" class="btn btn-success">編輯個人檔案</a>
+      <a href="/user/profile/edit" class="btn btn-success">編輯個人檔案</a>
     </div>
   </div>
 </div>
@@ -121,6 +121,12 @@
             </div>
             <br>
           {{/each}}
+
+          {{#unless voicefiles}}
+            <div class="alert alert-info my-2" role="alert">
+              您尚未上傳任何音檔!
+            </div>
+          {{/unless}}
         </div>
 
         <div class="tab-pane fade p-3" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab">
@@ -128,8 +134,12 @@
           <div class="card mb-3 p-3 mb-2 bg-light text-dark mx-auto mb-3" style="max-width: 720px;">
             <a href="/classes/{{this.Class.id}}">      
               <div class="class row no-gutters">
-                <div class="col-md-4 d-flex align-items-center">
+                <div class="col-md-4 d-flex justify-content-center">
+                  {{#if this.Class.image}}
                   <img class="w-100" src="{{this.Class.image}}">
+                  {{else}}
+                  <img class="default-image" src="/image/logo.jpg" style="height: 155px;">
+                  {{/if}}
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
@@ -141,14 +151,20 @@
             </a>
           </div>
           {{/each}}
+          {{#unless user.AttendClasses}}
+            <div class="alert alert-info my-2" role="alert">
+              您尚未加入任何課程!
+            </div>
+          {{/unless}}   
         </div>
- 
       </div>
+
+      {{#if totalPage}}
       <div class="paginator-container">
         <nav aria-label="Page navigation example" class="mt-2">
           <ul class="pagination d-flex justify-content-center">
             <li class="page-item">
-              <a class="page-link" href="/profile?page={{prev}}" aria-label="Previous">
+              <a class="page-link" href="/user/profile?page={{prev}}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
@@ -156,16 +172,17 @@
             {{#if (equal this ../page)}}
             <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
             {{else}}
-            <li class="page-item"><a class="page-link" href="/profile?page={{this}}">{{this}}</a></li>
+            <li class="page-item"><a class="page-link" href="/user/profile?page={{this}}">{{this}}</a></li>
             {{/if}}
             {{/each}}
-            <li class="page-item"><a class="page-link" href="/profile?page={{next}}" aria-label="Next">
+            <li class="page-item"><a class="page-link" href="/user/profile?page={{next}}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
           </ul>
         </nav>
       </div>
+      {{/if}}
     </div>
   </div>
 </div>

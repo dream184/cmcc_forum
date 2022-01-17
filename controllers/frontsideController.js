@@ -4,7 +4,6 @@ const Homework = db.Homework
 const VoiceFile = db.Voicefile
 const User = db.User
 const Like = db.Like
-const Favorite = db.Favorite
 const pageLimit = 10
 
 const frontsideController = {
@@ -42,8 +41,7 @@ const frontsideController = {
       include: [Class]
     })
       .then((homework) => {
-        VoiceFile.findAndCountAll({
-         
+        VoiceFile.findAndCountAll({   
           where: { HomeworkId: homework.id },
           include: [User],
           offset: offset,
@@ -62,7 +60,6 @@ const frontsideController = {
             const user = req.user
             const userFavoritesArr = user.Favorites.map(e => e.VoicefileId)
             const userLikesArr = user.Likes.map(e => e.VoicefileId)
-            console.log(data)
             return res.render('homework', { 
               homework: homework.toJSON(),
               voicefiles: data,
@@ -74,6 +71,7 @@ const frontsideController = {
               next: next
             })
           })
+          .catch(err => console.log(err))
       })
   }
 }

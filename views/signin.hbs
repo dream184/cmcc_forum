@@ -1,6 +1,6 @@
 <div class="form-container mt-5">
   <div class="bg-white col-12 col-md-7 border rounded shadow p-3 m-auto">
-    <form class="form-signin" action="/signin" method="POST" style="width: 100%;">
+    <form class="form-signin" action="/user/signin" method="POST" style="width: 100%;">
       {{>message}}
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">請登入帳號密碼</h1>
@@ -20,7 +20,7 @@
       <a href="/auth/facebook" class="btn btn-lg btn-light btn-block text-muted"><i class="fab fa-facebook text-primary"></i> Facebook 登入</a>
       <a href="/auth/google" class="btn btn-lg btn-light btn-block text-muted"><i class="fab fa-google text-primary"></i> Google 登入</a>
       <div class="text-center">
-        <p class="m-2"><a href="/forgotPassword">忘記密碼</a> | 還沒註冊會員嗎？請先<a href="/signup">註冊</a></p>
+        <p class="m-2"><a href="/user/forgotPassword">忘記密碼</a> | 還沒註冊會員嗎？請先<a href="/user/signup">註冊</a></p>
       </div>
     </form>
   </div>

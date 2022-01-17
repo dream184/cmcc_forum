@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Voicefile.init({
     name: DataTypes.STRING,
     googleFileId: DataTypes.STRING,
-    favoriteCount: DataTypes.INTEGER,
+    likeCount: DataTypes.INTEGER,
     isPublic: DataTypes.BOOLEAN,
     HomeworkId: DataTypes.INTEGER,
     mimeType: DataTypes.STRING,

@@ -57,7 +57,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                        <form action="/favorite/{{this.Voicefile.dataValues.id}}?_method=DELETE" method="POST">
+                        <form action="/favorites/{{this.Voicefile.dataValues.id}}?_method=DELETE" method="POST">
                           <button type="submit" class="btn btn-white border border-danger text-danger mx-1 p-1">取消收藏</button>
                         </form>
                       </div>
@@ -65,7 +65,7 @@
                   </div>
                 </div>
 
-                {{!-- <form action="/favorite/{{this.Voicefile.id}}?_method=DELETE" method="POST">
+                {{!-- <form action="/favorites/{{this.Voicefile.id}}?_method=DELETE" method="POST">
                   <button type="submit" class="btn btn-white border border-danger text-danger mx-1 p-1">取消收藏</button>
                 </form> --}}
                 <a href="/classes/{{this.Voicefile.dataValues.Class.dataValues.id}}/homeworks/{{this.Voicefile.dataValues.Homework.dataValues.id}}/voicefiles/{{this.Voicefile.dataValues.id}}/feedbacks" class="btn btn-success p-1">查看回饋</a>
@@ -75,7 +75,7 @@
           <div class="col-md-8 d-flex align-items-center">
             <div class="card-body">
               <div class="container-audio d-flex justify-content-center">
-                <audio controls class="w-100" preload="none">
+                {{!-- <audio controls class="w-100" preload="none">
                   <source src="https://docs.google.com/uc?export=open&id={{this.Voicefile.dataValues.googleFileId}}"
                       type="audio/mp4">
                   <source src="https://docs.google.com/uc?export=open&id={{this.Voicefile.dataValues.googleFileId}}"
@@ -84,7 +84,8 @@
                     type="audio/ogg">  
                   您的瀏覽器不支援 audio tag，請點選下面網址收聽音檔
                   <a href="https://docs.google.com/uc?export=open&id={{this.Voicefile.dataValues.googleFileId}}">音檔連結</a>
-                </audio>
+                </audio> --}}
+                <iframe src="https://drive.google.com/file/d/{{this.Voicefile.dataValues.googleFileId}}/preview" width="100%" height="65" class="bg bg-white"></iframe>
               </div>
             </div>
           </div>
@@ -96,7 +97,7 @@
     </div>
   </div>
 </div>
-
+{{#if totalPage}}
 <div class="paginator-container">
   <nav aria-label="Page navigation example" class="mt-2">
     <ul class="pagination d-flex justify-content-center">
@@ -119,3 +120,4 @@
     </ul>
   </nav>
 </div>
+{{/if}}

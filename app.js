@@ -9,9 +9,11 @@ const redis = require('redis')
 const client = redis.createClient();
 const hbsHelpers = require('./config/handlebars-helpers')
 
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
+const routes = require('./routes')
 
 const passport = require('./config/passport')
 const path = require('path')
@@ -47,6 +49,7 @@ app.use((req, res, next) => {
 app.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`)
 })
-require('./routes')(app, passport)
+// require('./routes')(app, passport)
+app.use(routes)
 
 module.exports = app

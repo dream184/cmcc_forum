@@ -14,4 +14,9 @@
     </div>
   </a>
   {{/each}}
+  {{#unless classes}}
+  <div class="alert alert-info my-2" role="alert">
+    現在尚無任何班級!
+  </div>
+  {{/unless}}
 </div>
