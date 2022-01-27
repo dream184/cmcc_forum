@@ -3,7 +3,6 @@ const Class = db.Class
 const Homework = db.Homework
 const VoiceFile = db.Voicefile
 const User = db.User
-const Like = db.Like
 const pageLimit = 10
 
 const frontsideController = {

@@ -7,12 +7,10 @@ const VoiceFile = db.Voicefile
 const Homework = db.Homework
 const Class = db.Class
 const User = db.User
-const Feedback = db.Feedback
 const AttendClass = db.AttendClass
 const googleDrive = require('./google_drive_method')
 const Op = require('sequelize').Op
 const pageLimit = 15
-const sequelize = require('sequelize')
 
 dayjs.locale('zh-tw') 
 dayjs.extend(utc)

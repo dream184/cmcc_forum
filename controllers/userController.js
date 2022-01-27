@@ -6,7 +6,6 @@ const Homework = db.Homework
 const Authority = db.Authority
 const Class = db.Class
 const bcrypt = require('bcryptjs')
-const googleDrive = require('./google_drive_method')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const pageLimit = 10
@@ -26,7 +25,6 @@ redisConnect()
 const userController = {
   resetPasswordPage: (req, res) => {
     const { email, token } = req.query
-
     client.get(`RESET_PASSWORD:${email}`)
       .then((dataJSON) => {
         const dataObject = JSON.parse(dataJSON)
@@ -109,9 +107,8 @@ const userController = {
         const mailContent = `
           <h1>cmcc-forum 密碼重設信</h1>
           <p>請使用此驗證信重設您的帳戶: ${user.email}</p>
-          <p><a href="https://cmcc-forum.herokuapp.com/resetPassword?email=${email}&token=${token}">按此重設密碼</a></p>
+          <p><a href="https://cmcc-forum.herokuapp.com/user/resetPassword?email=${email}&token=${token}">按此重設密碼</a></p>
           <p>請注意，如果超過五分鐘，則必須重新申請重設密碼</p>
-          
         `
         return client.set(`RESET_PASSWORD:${email}`, item, {
           EX: expireTime,
