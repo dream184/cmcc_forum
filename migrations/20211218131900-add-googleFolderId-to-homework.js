@@ -2,13 +2,13 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn('Homework', 'googleFolderId', {
+    await queryInterface.addColumn('Homeworks', 'googleFolderId', {
       type: Sequelize.STRING,
       allowNull: false
     })
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('Homework', 'googleFolderId')
+    await queryInterface.removeColumn('Homeworks', 'googleFolderId')
   }
 };

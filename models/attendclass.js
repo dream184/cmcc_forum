@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'AttendClass',
+    tableName: 'AttendClasses'
   });
   return AttendClass;
 };

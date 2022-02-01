@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.changeColumn('Homework', 'ClassId', {
+    await queryInterface.changeColumn('Homeworks', 'ClassId', {
       type: Sequelize.INTEGER,
       allowNull: false,
       references: {
@@ -12,7 +12,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.changeColumn('Homework', 'ClassId', {
+    await queryInterface.changeColumn('Homeworks', 'ClassId', {
       type: Sequelize.INTEGER,
       allowNull: true
     })

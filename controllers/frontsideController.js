@@ -28,6 +28,7 @@ const frontsideController = {
       .then((selectedClass) => {
         return res.render('homeworks', { class: selectedClass.toJSON() })
       })
+      .catch(err => console.log(err))
   },
   getHomework: (req, res) => {
     let offset = 0

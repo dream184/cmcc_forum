@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Voicefile',
+    tableName: 'Voicefiles',
   });
   return Voicefile;
 };

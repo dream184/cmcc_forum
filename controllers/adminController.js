@@ -49,9 +49,13 @@ const adminController = {
     return res.render('admin/createClass', {layout: 'admin'})
   },
   editClass: (req, res) => {
-    return Class.findByPk(req.params.id).then((selectedClass) => {
-      return res.render('admin/editClass', { class: selectedClass.toJSON(), layout: 'admin' })
-    })
+    return Class.findByPk(req.params.id)
+      .then((selectedClass) => {
+        return res.render('admin/editClass', {
+          class: selectedClass.toJSON(),
+          layout: 'admin'
+        })
+      })
   },
   putClass: (req, res) => {
     const { file } = req
@@ -126,57 +130,59 @@ const adminController = {
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (err, img) => {
-        console.log(img)
-        return googleDrive.createFolder(name, rootFolderId).then((folder) => {
-          console.log(folder)
-            Class.create({
-              name: name,
-              isPublic: isPublic,
-              image: file ? img.data.link : null,
-              googleFolderId: folder.id
-            })
-              .then(() => {
-                req.flash('success_messages', '班級已經成功建立！')
-                return res.redirect('/admin/classes')
+        return googleDrive.createFolder(name, rootFolderId)
+          .then((folder) => {
+              Class.create({
+                name: name,
+                isPublic: isPublic,
+                image: file ? img.data.link : null,
+                googleFolderId: folder.id
               })
-              .catch((error) => {
-                req.flash('error_messages', '班級無法建立！')
-                console.log(error)
-                return res.redirect('back')
-              })
+                .then(() => {
+                  req.flash('success_messages', '班級已經成功建立！')
+                  return res.redirect('/admin/classes')
+                })
+                .catch((error) => {
+                  req.flash('error_messages', '班級無法建立！')
+                  console.log(error)
+                  return res.redirect('back')
+                })
           })
       })
     } else {
-      return googleDrive.createFolder(name, rootFolderId).then((folder) => {
-        return Class.create({
-          name: name,
-          isPublic: isPublic,
-          image: null,
-          googleFolderId: folder.id
-        })
-          .then(() => {
-            req.flash('success_messages', '班級已經成功建立！')
-            return res.redirect('/admin/classes')
+      return googleDrive.createFolder(name, rootFolderId)
+        .then((folder) => {
+          return Class.create({
+            name: name,
+            isPublic: isPublic,
+            image: null,
+            googleFolderId: folder.id
           })
-          .catch((error) => console.log(error))
-      })
+            .then(() => {
+              req.flash('success_messages', '班級已經成功建立！')
+              return res.redirect('/admin/classes')
+            })
+            .catch((error) => console.log(error))
+        })
     }
   },
   removeClass: (req, res) => {
-    return Class.findByPk(req.params.id).then((selectedClass) => {
-      selectedClass.destroy().then(() => {
-        googleDrive.deleteFile(selectedClass.googleFolderId)
-        googleDrive.deleteFile(selectedClass.image)
-      })
-        .then(() => {
-          req.flash('success_messages', '班級已經成功被刪除！')
-          return res.redirect('/admin/classes')
-        })
-        .catch((error) => {
-          req.flash('error_messages', '無法刪除')
-          console.log(error)
-          return res.redirect('back')
-        })  
+    return Class.findByPk(req.params.id)
+      .then((selectedClass) => {
+        selectedClass.destroy()
+          .then(() => {
+            googleDrive.deleteFile(selectedClass.googleFolderId)
+            googleDrive.deleteFile(selectedClass.image)
+          })
+          .then(() => {
+            req.flash('success_messages', '班級已經成功被刪除！')
+            return res.redirect('/admin/classes')
+          })
+          .catch((error) => {
+            req.flash('error_messages', '無法刪除')
+            console.log(error)
+            return res.redirect('back')
+          })  
     })
   },
   getHomeworks: (req, res) => {
@@ -193,7 +199,6 @@ const adminController = {
           include: [Class]
         })
           .then((result) => {
-            console.log(result)
             const page = Number(req.query.page) || 1
             const pages = Math.ceil(result.count / pageLimit)
             const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
@@ -248,51 +253,54 @@ const adminController = {
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (err, img) => {
-        return Class.findByPk(classId).then((selectedClass) => {
-          return googleDrive.createFolder(name, selectedClass.googleFolderId).then((folder) => {
-            Homework.create({
+        return Class.findByPk(classId)
+          .then((selectedClass) => {
+            return googleDrive.createFolder(name, selectedClass.googleFolderId)
+              .then((folder) => {
+                Homework.create({
+                  name: name,
+                  isPublic: isPublic,
+                  image: file ? img.data.link : null,
+                  description: description,
+                  googleFolderId: folder.id,
+                  expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss'),
+                  ClassId: classId
+                })
+                  .then(() => {
+                    return res.redirect(`/admin/classes/${classId}/homeworks`)
+                  })
+                  .catch((error) => console.log(error))
+              })
+          })
+      })
+    } else {
+      Class.findByPk(req.params.id).then((selectedClass) => {
+        return googleDrive.createFolder(name, selectedClass.googleFolderId)
+          .then((folder) => {
+            return Homework.create({
               name: name,
               isPublic: isPublic,
-              image: file ? img.data.link : null,
+              image: null,
               description: description,
               googleFolderId: folder.id,
-              expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss'),
-              ClassId: classId
+              expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss'),
+              ClassId: req.params.id
             })
               .then(() => {
                 return res.redirect(`/admin/classes/${classId}/homeworks`)
               })
               .catch((error) => console.log(error))
           })
-        })
-      })
-    } else {
-      Class.findByPk(req.params.id).then((selectedClass) => {
-        return googleDrive.createFolder(name, selectedClass.googleFolderId).then((folder) => {
-          return Homework.create({
-            name: name,
-            isPublic: isPublic,
-            image: null,
-            description: description,
-            googleFolderId: folder.id,
-            expiredTime: dayjs(expiredTime, "Asia/Taipei",).format('YYYY/MM/DD HH:mm:ss'),
-            ClassId: req.params.id
-          })
-            .then(() => {
-              return res.redirect(`/admin/classes/${classId}/homeworks`)
-            })
-            .catch((error) => console.log(error))
-        })
-      })
-      
+      }) 
     }
   },
   editHomework: (req, res) => {
-    return Homework.findByPk(req.params.id).then((homework) => {
-      const homeworkJSON = homework.toJSON()
-      homeworkJSON.expiredTime = dayjs(homeworkJSON.expiredTime).format('YYYY-MM-DD')
-      return res.render('admin/editHomework', { homework: homeworkJSON, layout: 'admin' })
-    })
+    return Homework.findByPk(req.params.id)
+      .then((homework) => {
+        const homeworkJSON = homework.toJSON()
+        homeworkJSON.expiredTime = dayjs(homeworkJSON.expiredTime).format('YYYY-MM-DD')
+        return res.render('admin/editHomework', { homework: homeworkJSON, layout: 'admin' })
+      })
   },
   putHomework: (req, res) => {
     const { file } = req
@@ -312,17 +320,41 @@ const adminController = {
     }
 
     if(file) {
-      return Homework.findByPk(req.params.id).then((homework) => {
-        if(name !== homework.name) {
-          googleDrive.renameFile(name, homework.googleFolderId)
-        }
+      return Homework.findByPk(req.params.id)
+        .then((homework) => {
+          if(name !== homework.name) {
+            googleDrive.renameFile(name, homework.googleFolderId)
+          }
 
-        imgur.setClientID(IMGUR_CLIENT_ID)
-        imgur.upload(file.path, (err, img) => { 
+          imgur.setClientID(IMGUR_CLIENT_ID)
+          imgur.upload(file.path, (err, img) => { 
+            return homework.update({
+              name: name,
+              isPublic: isPublic,
+              image: file ? img.data.link : null,
+              description: description,
+              expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss')
+            })
+              .then(() => {
+                req.flash('success_messages', '作業更新成功')
+                return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
+              })
+              .catch((error) => {
+                console.log(error)
+                req.flash('error_messages', '更新失敗')
+                return res.redirect('back')
+              })  
+          })
+        })
+    } else {
+      return Homework.findByPk(req.params.id)
+        .then((homework) => {
+          if(name !== homework.name) {
+            googleDrive.renameFile(name, homework.googleFolderId)
+          }
           return homework.update({
             name: name,
             isPublic: isPublic,
-            image: file ? img.data.link : null,
             description: description,
             expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss')
           })
@@ -334,48 +366,27 @@ const adminController = {
               console.log(error)
               req.flash('error_messages', '更新失敗')
               return res.redirect('back')
-            })  
+            }) 
         })
-      })
-    } else {
-      return Homework.findByPk(req.params.id).then((homework) => {
-        if(name !== homework.name) {
-          googleDrive.renameFile(name, homework.googleFolderId)
-        }
-        return homework.update({
-          name: name,
-          isPublic: isPublic,
-          description: description,
-          expiredTime: dayjs(expiredTime, "Asia/Taipei").format('YYYY/MM/DD HH:mm:ss')
-        })
+    }
+  },
+  deleteHomework: (req, res) => {
+    return Homework.findByPk(req.params.id)
+      .then((homework) => {
+        homework.destroy()
           .then(() => {
-            req.flash('success_messages', '作業更新成功')
+            googleDrive.deleteFile(homework.googleFolderId)
+            googleDrive.deleteFile(homework.image)
+          })
+          .then(() => {
+            req.flash('success_messages', '作業已經成功被刪除')
             return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
           })
           .catch((error) => {
+            req.flash('error_messages', '無法刪除')
             console.log(error)
-            req.flash('error_messages', '更新失敗')
             return res.redirect('back')
-          }) 
-      })
-    }
-
-  },
-  deleteHomework: (req, res) => {
-    return Homework.findByPk(req.params.id).then((homework) => {
-      homework.destroy().then(() => {
-        googleDrive.deleteFile(homework.googleFolderId)
-        googleDrive.deleteFile(homework.image)
-      })
-        .then(() => {
-          req.flash('success_messages', '作業已經成功被刪除')
-          return res.redirect(`/admin/classes/${homework.ClassId}/homeworks`)
-        })
-        .catch((error) => {
-          req.flash('error_messages', '無法刪除')
-          console.log(error)
-          return res.redirect('back')
-        })
+          })
     })
   }
 

@@ -78,7 +78,6 @@ const voiceFileController = {
       include: [User, Homework, Class]
     })
       .then((result) => {
-
         const page = Number(req.query.page) || 1
         const pages = Math.ceil(result.count / pageLimit)
         const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
@@ -100,55 +99,60 @@ const voiceFileController = {
     const now = dayjs()
     const nowTW = dayjs(now, "Asia/Taipei").valueOf()
 
-    return Homework.findOne({
-      where: {id: req.params.id },
-      include: [Class, VoiceFile]
-    }).then((homework) => {
+    if (!file) {
+      res.flash('error_messages', '未選上傳音檔，上傳失敗')
+      return res.redirect('back')
+    }
+
+    return Promise.all([
+      Homework.findOne({
+        where: { id: req.params.id },
+        include: [ Class, VoiceFile ]
+      }),
       User.findByPk(req.user.id, {
-        include: [AttendClass],
-      }).then((user) => {
+        include: [ AttendClass ],
+      })
+    ])
+      .then(([homework, user]) => {
         const AttendClasses = user.AttendClasses
         const AttendClassArr = AttendClasses.map(e => e.ClassId)
+        const homeworkJSON = homework.toJSON()
+        const filename = `${homework.Class.name}_${homework.name}_${req.user.name}`
+
         if (!AttendClassArr.includes(homework.ClassId)) {
           req.flash('error_messages', '您未加入此班級，無法上傳')
           return res.redirect('back')
         }
+        if (homework.expiredTime < nowTW) {
+          req.flash('error_messages', '已過繳交期限，無法上傳')
+          return res.redirect('back')
+        }
+        return googleDrive.uploadVoiceFile(file, filename, homeworkJSON.googleFolderId)
+          .then((googleFileId) => {
+            return googleDrive.becomePublic(googleFileId)
+              .then((result) => {
+                const { id, name, mimeType } = result
+                return VoiceFile.create({
+                  name: name,
+                  googleFileId: id,
+                  mimeType: mimeType,
+                  HomeworkId: homework.id,
+                  isPublic: true,
+                  UserId: req.user.id,
+                  ClassId: homeworkJSON.Class.id
+                })
+                  .then((voiceFile) => {
+                    req.flash('success_messages', '音檔上傳成功！')
+                    return res.redirect('back')
+                  })
+                  .catch((error) => {
+                    req.flash('error_messages', '未選上傳音檔，上傳失敗')
+                    console.log(error)
+                    return res.redirect('back')
+                  })
+              })
+          })   
       })
-      const homeworkJSON = homework.toJSON()
-      const filename = `${homework.Class.name}_${homework.name}_${req.user.name}`
-      if (homework.expiredTime < nowTW) {
-        req.flash('error_messages', '已過繳交期限，無法上傳')
-        return res.redirect('back')
-      }
-
-      if (file) {
-        googleDrive.uploadVoiceFile(file, filename, homeworkJSON.googleFolderId).then((googleFileId) => {
-          googleDrive.becomePublic(googleFileId).then((result) => {
-            const { id, name, mimeType } = result
-            return VoiceFile.create({
-              name: name,
-              googleFileId: id,
-              mimeType: mimeType,
-              HomeworkId: homework.id,
-              isPublic: true,
-              UserId: req.user.id,
-              ClassId: homeworkJSON.Class.id
-            })
-              .then((voiceFile) => {
-                req.flash('success_messages', '音檔上傳成功！')
-                return res.redirect('back')
-              })
-              .catch((error) => {
-                req.flash('error_messages', '未選上傳音檔，上傳失敗')
-                return res.redirect('back')
-              })
-          })
-        })   
-      } else {
-        res.flash('error_messages', '未選上傳音檔，上傳失敗')
-        return res.redirect('back')
-      }
-    })
   },
   deleteVoiceFile: (req, res) => {
     return VoiceFile.findByPk(req.params.id).then((voicefile) => {
