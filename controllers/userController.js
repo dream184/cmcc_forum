@@ -332,7 +332,7 @@ const userController = {
     }
     return User.findByPk(req.params.id)
       .then((user) => {
-        user.update({AuthorityId: authority})
+        return user.update({AuthorityId: authority})
           .then(() => {
             req.flash('success_messages', '已修改權限!')
             return res.redirect('back')
@@ -354,7 +354,7 @@ const userController = {
         })
           .then((selectedClasses) => {
             return res.render('admin/editUser', { 
-              user: user.toJSON(),
+              userData: user.toJSON(),
               class: selectedClasses,
               layout: 'admin'
             })
