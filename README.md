@@ -60,28 +60,35 @@
 
 ## 安裝與執行步驟 (installation and execution)
 1. 打開你的 terminal，Clone 此專案至本機電腦
-`git clone https://github.com/dream184/alphacamp2-3_HW_restaurant`
+`git clone git@github.com:dream184/cmcc_forum.git`
 2. 開啟終端機(Terminal)，進入存放此專案的資料夾
-`cd restaurantList`
+`cd cmcc_forum`
 3. 安裝 npm 套件
 `在 Terminal 輸入 npm install 指令`
-4. 安裝 nodemon 套件
-`在 Terminal 輸入 npm install nodemon 指令`
+4. 完成建立資料庫，並完成資料庫遷移
+`在 Terminal 輸入 npx sequelize db:create`
+`接著輸入 npx sequelize db:migrate`
 5. 設定環境變數
-`將根目錄的.env.example改成.env`
+`將根目錄的.env.example改成.env，並填入環境變數`
 6. 建立種子資料
 `npm run seed`
-7. 啟動伺服器，執行 app.js 檔案
+7. 安裝 Redis 後，並啟動 Redis Server
+`在 Terminal 輸入 npm install redis 指令，接著輸入 redis-server 啟動 redis`
+8. 啟動伺服器，執行 app.js 檔案
 `在 Terminal 輸入 nodemon app.js 指令`
-8. 當 terminal 出現以下字樣，表示伺服器與資料庫已啟動並成功連結
+9. 當 terminal 出現以下字樣，表示伺服器與資料庫已啟動並成功連結
 `Express is listening on http://localhost:3000`
-9. 輸入 SEED_USER 帳號密碼即可登入
-    name: 'user1'
-    email: 'user1@example.com'
+10. 輸入 SEED_USER 帳號密碼即可登入
+    name: 'admin'
+    email: 'admin@cmcc-forum.com'
     password: '12345678'
 
-    name: 'user1'
-    email: 'user2@example.com'
+    name: 'student'
+    email: 'student@cmcc-forum.com'
+    password: '12345678'
+
+    name: 'mentor'
+    email: 'mentor@cmcc-forum.com'
     password: '12345678'
 
 ## Contributor - 專案開發人員
