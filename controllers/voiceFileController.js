@@ -1,20 +1,8 @@
-const dayjs = require('dayjs')
-require('dayjs/locale/zh-tw')
-var utc = require('dayjs/plugin/utc')
-var timezone = require('dayjs/plugin/timezone')
-const db = require('../models')
-const VoiceFile = db.Voicefile
-const Homework = db.Homework
-const Class = db.Class
-const User = db.User
-const AttendClass = db.AttendClass
-const googleDrive = require('./google_drive_method')
+const { Voicefile, Homework, Class, User, AttendClass } = require('../models')
+const googleDrive = require('../helpers/googleDriveHelpers')
 const Op = require('sequelize').Op
 const pageLimit = 15
-
-dayjs.locale('zh-tw') 
-dayjs.extend(utc)
-dayjs.extend(timezone)
+const { dayjs } = require('../helpers/dayjsHelpers')
 
 const voiceFileController = {
   getVoiceFiles: (req, res) => {
@@ -33,7 +21,7 @@ const voiceFileController = {
     if (req.query.order) {
       order = req.query.order
     }
-    return VoiceFile.findAndCountAll({   
+    return Voicefile.findAndCountAll({   
       offset: offset,
       limit: pageLimit,
       raw: true,
@@ -69,7 +57,7 @@ const voiceFileController = {
       offset = (req.query.page - 1) * pageLimit
     }
 
-    return VoiceFile.findAndCountAll({
+    return Voicefile.findAndCountAll({
       offset: offset,
       limit: pageLimit,
       where: { isFeedbackedBy: {[Op.eq]: false} },
@@ -107,7 +95,7 @@ const voiceFileController = {
     return Promise.all([
       Homework.findOne({
         where: { id: req.params.id },
-        include: [ Class, VoiceFile ]
+        include: [ Class, Voicefile ]
       }),
       User.findByPk(req.user.id, {
         include: [ AttendClass ],
@@ -132,7 +120,7 @@ const voiceFileController = {
             return googleDrive.becomePublic(googleFileId)
               .then((result) => {
                 const { id, name, mimeType } = result
-                return VoiceFile.create({
+                return Voicefile.create({
                   name: name,
                   googleFileId: id,
                   mimeType: mimeType,
@@ -141,7 +129,7 @@ const voiceFileController = {
                   UserId: req.user.id,
                   ClassId: homeworkJSON.Class.id
                 })
-                  .then((voiceFile) => {
+                  .then((voicefile) => {
                     req.flash('success_messages', '音檔上傳成功！')
                     return res.redirect('back')
                   })
@@ -155,7 +143,7 @@ const voiceFileController = {
       })
   },
   deleteVoiceFile: (req, res) => {
-    return VoiceFile.findByPk(req.params.id).then((voicefile) => {
+    return Voicefile.findByPk(req.params.id).then((voicefile) => {
       return User.findByPk(voicefile.UserId).then((user) => {
         if (user.id !== req.user.id) {
           req.flash('error_messages', '您不是作者本人，無法刪除音檔')

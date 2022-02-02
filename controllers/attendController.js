@@ -1,6 +1,4 @@
-const db = require('../models')
-const AttendClass = db.AttendClass
-const User = db.User
+const { AttendClass, User } = require('../models')
 
 const attendController = {
   deleteAttendClass: (req, res) => {

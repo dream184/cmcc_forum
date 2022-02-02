@@ -1,19 +1,10 @@
-const dayjs = require('dayjs')
-require('dayjs/locale/zh-tw')
-var utc = require('dayjs/plugin/utc')
-var timezone = require('dayjs/plugin/timezone')
-dayjs.locale('zh-tw') 
-dayjs.extend(utc)
-dayjs.extend(timezone)
-
-const db = require('../models')
-const googleDrive = require('./google_drive_method.js')
+const { Class, Homework, } = require('../models')
+const googleDrive = require('../helpers/googleDriveHelpers.js')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
-const Class = db.Class
-const Homework = db.Homework
 const rootFolderId = process.env.GOOGLE_ROOT_FOLDER_ID
 const pageLimit = 15
+const { dayjs } = require('../helpers/dayjsHelpers')
 
 const adminController = {
   getClasses: (req, res) => {
@@ -267,6 +258,7 @@ const adminController = {
                   ClassId: classId
                 })
                   .then(() => {
+                    req.flash('success_messages', '已成功建立作業')
                     return res.redirect(`/admin/classes/${classId}/homeworks`)
                   })
                   .catch((error) => console.log(error))
@@ -287,6 +279,7 @@ const adminController = {
               ClassId: req.params.id
             })
               .then(() => {
+                req.flash('success_messages', '已成功建立作業')
                 return res.redirect(`/admin/classes/${classId}/homeworks`)
               })
               .catch((error) => console.log(error))

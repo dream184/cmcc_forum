@@ -1,13 +1,8 @@
-const db = require('../models')
-const Feedback = db.Feedback
-const User = db.User
-const VoiceFile = db.Voicefile
-const Homework = db.Homework
-const Class = db.Class
+const { Feedback, User, Voicefile, Homework, Class } = require('../models')
 
 const feedbackController = {
   getFeedbacks: (req, res) => {
-    return VoiceFile.findByPk(req.params.id, {
+    return Voicefile.findByPk(req.params.id, {
       include: [
         User,
         { model: Feedback, include: [User] },
@@ -43,7 +38,7 @@ const feedbackController = {
   editFeedback: (req, res) => {
     return Feedback.findByPk(req.params.id, {
       include: [User,
-        { model: VoiceFile, include: [Homework, User] }
+        { model: Voicefile, include: [Homework, User] }
       ]
     })
       .then((feedback) => {
@@ -62,7 +57,7 @@ const feedbackController = {
     const { feedback } = req.body
     return Feedback.findByPk(req.params.id, {
       include: [User,
-        { model: VoiceFile, include: [Homework, User] }
+        { model: Voicefile, include: [Homework, User] }
       ]
     })
       .then((feedback) => {
@@ -92,7 +87,7 @@ const feedbackController = {
     })
   },
   getAdminFeedbacks: (req, res) => {
-    return VoiceFile.findByPk(req.params.id, {
+    return Voicefile.findByPk(req.params.id, {
       include: [
         User,
         { model: Feedback, include: [User] },
@@ -118,7 +113,7 @@ const feedbackController = {
       return res.redirect('back')
     }
 
-    return VoiceFile.findByPk(req.params.id)
+    return Voicefile.findByPk(req.params.id)
       .then((voicefile) => {
         return voicefile.update({ isFeedbackedBy: req.user.id })
           .then(() => {
@@ -139,7 +134,7 @@ const feedbackController = {
   editAdminFeedback: (req, res) => {
     return Feedback.findByPk(req.params.id, {
       include: [User,
-        { model: VoiceFile, include: [Homework, User] }
+        { model: Voicefile, include: [Homework, User] }
       ]
     })
       .then((feedback) => {
@@ -166,7 +161,7 @@ const feedbackController = {
     return Feedback.findByPk(req.params.id, {
       include: [
         User,
-        { model: VoiceFile, include: [Homework, User] }
+        { model: Voicefile, include: [Homework, User] }
       ]
     })
       .then((feedback) => {

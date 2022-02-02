@@ -1,6 +1,4 @@
-const db = require('../models')
-const Like = db.Like
-const VoiceFile = db.Voicefile
+const { Like, Voicefile } = require('../models')
 
 const likeController = {
   addLike: (req, res) => {
@@ -19,7 +17,7 @@ const likeController = {
         VoicefileId: voicefileId,
         UserId: req.user.id
       }).then((like) => {    
-        return VoiceFile.findByPk(voicefileId).then((voicefile) => {
+        return Voicefile.findByPk(voicefileId).then((voicefile) => {
           return voicefile.update({ likeCount: voicefile.likeCount + 1 }).then((result) => {
             req.flash('success_messages', '已成功按讚')
             return res.redirect('back')
@@ -38,7 +36,7 @@ const likeController = {
       }
     }).then((like) => {
       return like.destroy().then(() => {
-        return VoiceFile.findByPk(voicefileId).then((voicefile) => {
+        return Voicefile.findByPk(voicefileId).then((voicefile) => {
           return voicefile.update({ likeCount: voicefile.likeCount - 1 }).then((result) => {
             req.flash('success_messages', '已成功收回讚')
             return res.redirect('back')

@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 var favicon = require('serve-favicon')
 const flash = require('connect-flash')
-const hbsHelpers = require('./config/handlebars-helpers')
+const hbsHelpers = require('./helpers/handlebarsHelpers')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()

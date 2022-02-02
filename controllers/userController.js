@@ -1,15 +1,9 @@
-const db = require('../models')
-const User = db.User
-const VoiceFile = db.Voicefile
-const AttendClass = db.AttendClass
-const Homework = db.Homework
-const Authority = db.Authority
-const Class = db.Class
+const { User, Voicefile, AttendClass, Homework, Authority, Class } = require('../models')
 const bcrypt = require('bcryptjs')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const pageLimit = 10
-const nodemailer = require('../config/email.js')
+const nodemailer = require('../helpers/nodemailerHelper.js')
 const redis = require('redis')
 const crypto = require('crypto')
 const expireTime = 300
@@ -216,7 +210,7 @@ const userController = {
       ]
     })
       .then((user) => {
-        return VoiceFile.findAndCountAll({
+        return Voicefile.findAndCountAll({
           offset: offset,
           limit: pageLimit,
           where: { UserId: user.id },

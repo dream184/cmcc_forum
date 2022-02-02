@@ -1,7 +1,7 @@
 'use strict';
 require('dotenv').config()
 const rootFolderId = process.env.GOOGLE_ROOT_FOLDER_ID
-const googleDrive = require('../controllers/google_drive_method.js')
+const googleDrive = require('../helpers/googleDriveHelpers.js')
 const { SEED_CLASSES, SEED_HOMEWORKS, file } = require('./sample/seed-data.js')
 
 module.exports = {

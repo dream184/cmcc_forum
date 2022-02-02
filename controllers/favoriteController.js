@@ -1,9 +1,4 @@
-const db = require('../models')
-const Favorite = db.Favorite
-const Voicefile = db.Voicefile
-const User = db.User
-const Class = db.Class
-const Homework = db.Homework
+const { Favorite, Voicefile, User, Class, Homework } = require('../models')
 const pageLimit = 10
 
 const favoriteController = {

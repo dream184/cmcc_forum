@@ -3,11 +3,7 @@ const LocalStrategy = require('passport-local')
 const FacebookStrategy = require('passport-facebook').Strategy
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy
 const bcrypt = require('bcryptjs')
-const db = require('../models')
-const User = db.User
-const Authority = db.Authority
-const Favorite = db.Favorite
-const Like = db.Like
+const { User, Authority, Favorite, Like } = require('../models')
 
 passport.use(new LocalStrategy(
   {

@@ -1,8 +1,4 @@
-const db = require('../models')
-const Class = db.Class
-const Homework = db.Homework
-const VoiceFile = db.Voicefile
-const User = db.User
+const { Class, Homework, Voicefile, User } = require('../models')
 const pageLimit = 10
 
 const frontsideController = {
@@ -41,7 +37,7 @@ const frontsideController = {
       include: [Class]
     })
       .then((homework) => {
-        VoiceFile.findAndCountAll({   
+        Voicefile.findAndCountAll({   
           where: { HomeworkId: homework.id },
           include: [User],
           offset: offset,
