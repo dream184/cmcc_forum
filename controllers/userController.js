@@ -1,17 +1,12 @@
-const { User, Voicefile, AttendClass, Homework, Authority, Class } = require('../models')
 const bcrypt = require('bcryptjs')
+const crypto = require('crypto')
+const { User, Voicefile, AttendClass, Homework, Authority, Class } = require('../models')
 const { getOffset, getPagination } = require('../helpers/paginationHelper')
 const { imgurFileHandler } = require('../helpers/imgurFileHelper')
 const nodemailer = require('../helpers/nodemailerHelper.js')
-const redis = require('redis')
-const crypto = require('crypto')
-const expireTime = 300
-const client = (process.env.NODE_ENV !== 'production') ? redis.createClient() : redis.createClient({url: process.env.REDIS_URL})
+const { subject, mailContent } = require('../helpers/resetmailHelper')
+const { client, redisConnect } = require('../helpers/redisHelper')
 
-async function redisConnect () {
-  client.on('error', (err) => console.log('Redis Client Error', err));
-  await client.connect();
-}
 redisConnect()
 
 const userController = {
@@ -92,16 +87,10 @@ const userController = {
           req.flash('error_messages', '該用戶不存在')
           return res.redirect('back')
         }
-
+        const expireTime = 300
         const token = crypto.randomBytes(32).toString('hex')
         const item = JSON.stringify({ email, token })
-        const subject = 'cmcc-forum 重設密碼'
-        const mailContent = `
-          <h1>cmcc-forum 密碼重設信</h1>
-          <p>請使用此驗證信重設您的帳戶: ${user.email}</p>
-          <p><a href="https://cmcc-forum.herokuapp.com/user/resetPassword?email=${email}&token=${token}">按此重設密碼</a></p>
-          <p>請注意，如果超過五分鐘，則必須重新申請重設密碼</p>
-        `
+        
         return client.set(`RESET_PASSWORD:${email}`, item, {
           EX: expireTime,
           NX: false
@@ -110,7 +99,7 @@ const userController = {
             return client.get(`RESET_PASSWORD:${item.email}`)
               .then((value) => {
                 console.log('redis_value', value)
-                return nodemailer.send(email, subject, mailContent)
+                return nodemailer.send(email, subject, mailContent(user.email, token))
                   .then(() => {
                     req.flash('success_messages', '已成功寄出密碼重置信件到您的信箱')
                     return res.redirect('/user/signin')

@@ -22,4 +22,5 @@ async function send(mailTo, subject, mailContent) {
     console.error
   }
 }
+
 module.exports = { send }
