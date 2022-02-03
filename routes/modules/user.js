@@ -22,9 +22,9 @@ router.post('/forgotPassword', userController.submitForgetPassword)
 router.get('/resetPassword', userController.resetPasswordPage)
 router.post('/resetPassword', userController.resetPassword)
 
-router.get('/profile', authenticated, userController.profilePage)
+router.get('/profile', authenticated, userController.getProfile)
 router.get('/profile/edit', authenticated, userController.editProfile)
-router.put('/profile/:id', authenticated, upload.single('avatar'), userController.putUserProfile)
-router.put('/profile/:id/emailpassword', authenticated, userController.putUserEmailPassword)
+router.put('/profile/:id', authenticated, upload.single('avatar'), userController.putProfile)
+router.put('/profile/:id/emailpassword', authenticated, userController.putEmailPassword)
 
 module.exports = router
