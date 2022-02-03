@@ -27,7 +27,7 @@ const frontsideController = {
       .catch(err => console.log(err))
   },
   getHomework: (req, res) => {
-    const DEFAULT_LIMIT = 1
+    const DEFAULT_LIMIT = 10
     const page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || DEFAULT_LIMIT
     const offset = getOffset(limit, page)

@@ -10,7 +10,7 @@ const voiceFileController = {
     const page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || DEFAULT_LIMIT
     const offset = getOffset(limit, page)
-    let order = req.params.orderby || 'date-desc'
+    let order = req.query.orderby || 'date-desc'
     const orderBy = {
       'date-asc': [['createdAt', 'ASC']],
       'date-desc': [['createdAt', 'DESC']],
@@ -99,40 +99,41 @@ const voiceFileController = {
         return googleDrive.uploadVoiceFile(file, filename, homeworkJSON.googleFolderId)
           .then((googleFileId) => {
             return googleDrive.becomePublic(googleFileId)
-              .then((result) => {
-                const { id, name, mimeType } = result
-                return Voicefile.create({
-                  name: name,
-                  googleFileId: id,
-                  mimeType: mimeType,
-                  HomeworkId: homework.id,
-                  isPublic: true,
-                  UserId: req.user.id,
-                  ClassId: homeworkJSON.Class.id
-                })
-                  .then((voicefile) => {
-                    req.flash('success_messages', '音檔上傳成功！')
-                    return res.redirect('back')
-                  })
-                  .catch((error) => {
-                    req.flash('error_messages', '未選上傳音檔，上傳失敗')
-                    console.log(error)
-                    return res.redirect('back')
-                  })
-              })
-          })   
+          })
+          .then((result) => {
+            const { id, name, mimeType } = result
+            return Voicefile.create({
+              name: name,
+              googleFileId: id,
+              mimeType: mimeType,
+              HomeworkId: homework.id,
+              isPublic: true,
+              UserId: req.user.id,
+              ClassId: homeworkJSON.Class.id
+            })
+          })
+          .then(() => {
+            req.flash('success_messages', '音檔上傳成功！')
+            return res.redirect('back')
+          })
+          .catch((error) => {
+            req.flash('error_messages', '未選上傳音檔，上傳失敗')
+            console.log(error)
+            return res.redirect('back')
+          })
       })
   },
   deleteVoiceFile: (req, res) => {
-    return Voicefile.findByPk(req.params.id).then((voicefile) => {
-      return User.findByPk(voicefile.UserId).then((user) => {
-        if (user.id !== req.user.id) {
+    return Voicefile.findByPk(req.params.id)
+      .then((voicefile) => {
+        if (voicefile.UserId !== req.user.id) {
           req.flash('error_messages', '您不是作者本人，無法刪除音檔')
           return res.redirect('back')
         }
-        voicefile.destroy().then(() => {
-          googleDrive.deleteFile(voicefile.googleFileId)
-        })
+        return voicefile.destroy()
+          .then(() => {
+            return googleDrive.deleteFile(voicefile.googleFileId)
+          })
           .then(() => {
             req.flash('success_messages', '已成功刪除音檔')
             return res.redirect('back')
@@ -143,7 +144,6 @@ const voiceFileController = {
             return res.redirect('back')
           })
       })
-    })   
   }
 }
 
