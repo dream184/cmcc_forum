@@ -2,7 +2,7 @@ const { Voicefile, Homework, Class, User, AttendClass } = require('../models')
 const Op = require('sequelize').Op
 const googleDrive = require('../helpers/googleDriveHelpers')
 const { dayjs } = require('../helpers/dayjsHelpers')
-const { getOffset, getPagination } = require('../helpers/pagination-helper')
+const { getOffset, getPagination } = require('../helpers/paginationHelper')
 
 const voiceFileController = {
   getVoiceFiles: (req, res) => {

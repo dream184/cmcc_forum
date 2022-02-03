@@ -1,5 +1,5 @@
 const { Class, Homework, Voicefile, User } = require('../models')
-const { getOffset, getPagination } = require('../helpers/pagination-helper')
+const { getOffset, getPagination } = require('../helpers/paginationHelper')
 
 const frontsideController = {
   getClasses: (req, res) => {

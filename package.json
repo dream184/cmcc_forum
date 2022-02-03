@@ -21,7 +21,7 @@
     "express-handlebars": "^6.0.2",
     "express-session": "^1.17.2",
     "googleapis": "^92.0.0",
-    "imgur-node-api": "^0.1.0",
+    "imgur": "^1.0.2",
     "method-override": "^3.0.0",
     "multer": "^1.4.4",
     "mysql2": "^2.3.3",

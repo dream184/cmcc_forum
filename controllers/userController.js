@@ -1,13 +1,11 @@
 const { User, Voicefile, AttendClass, Homework, Authority, Class } = require('../models')
 const bcrypt = require('bcryptjs')
-const imgur = require('imgur-node-api')
-const { getOffset, getPagination } = require('../helpers/pagination-helper')
-const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+const { getOffset, getPagination } = require('../helpers/paginationHelper')
+const { imgurFileHandler } = require('../helpers/imgurFileHelper')
 const nodemailer = require('../helpers/nodemailerHelper.js')
 const redis = require('redis')
 const crypto = require('crypto')
 const expireTime = 300
-
 const client = (process.env.NODE_ENV !== 'production') ? redis.createClient() : redis.createClient({url: process.env.REDIS_URL})
 
 async function redisConnect () {
@@ -237,38 +235,23 @@ const userController = {
   putUserProfile: (req, res) => {
     const { name, nickname, introduction } = req.body
     const { file } = req
-
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, (err, img) => {
+    return imgurFileHandler(file)
+      .then((filePath) => {
         return User.findByPk(req.params.id)
           .then((user) => {
             return user.update({
               name: name,
               nickName: nickname,
               introduction: introduction,
-              image: file ? img.data.link : null
+              image: filePath || user.image
             })
           })
-            .then(() => {
-              req.flash('success_messages', '會員資料已更新')
-              return res.redirect('back')
-            })
-      })
-    } else {
-      return User.findByPk(req.params.id)
-        .then((user) => {
-          return user.update({
-            name: name,
-            nickName: nickname,
-            introduction: introduction
-          })
-        })
           .then(() => {
             req.flash('success_messages', '會員資料已更新')
             return res.redirect('back')
           })
-    } 
+          .catch(err => console.log(err))
+      })
   },
   putUserEmailPassword: (req, res) => {
     const { email, password, confirmPassword } = req.body

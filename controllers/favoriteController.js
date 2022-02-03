@@ -1,5 +1,5 @@
 const { Favorite, Voicefile, User, Class, Homework } = require('../models')
-const { getOffset, getPagination } = require('../helpers/pagination-helper')
+const { getOffset, getPagination } = require('../helpers/paginationHelper')
 
 const favoriteController = {
   getFavoriteVoicefiles: (req, res) => {
