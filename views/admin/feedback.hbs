@@ -176,7 +176,7 @@
               <p>
                 {{this.feedback}}
               </p>
-              {{#if (isAuthor this.User.id ../currentUser.id)}}
+              {{#if (isAuthor this.User.id ../user.id)}}
               <div class="feedback-button d-flex justify-content-end">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-light border-danger text-danger m-1" data-toggle="modal" data-target="#feedbackModal-{{this.id}}">

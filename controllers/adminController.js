@@ -1,9 +1,9 @@
 const { Class, Homework, } = require('../models')
 const googleDrive = require('../helpers/googleDriveHelpers.js')
-const rootFolderId = process.env.GOOGLE_ROOT_FOLDER_ID
 const { dayjs } = require('../helpers/dayjsHelpers')
 const { getOffset, getPagination } = require('../helpers/paginationHelper')
 const { imgurFileHandler } = require('../helpers/imgurFileHelper')
+const rootFolderId = process.env.GOOGLE_ROOT_FOLDER_ID
 
 const adminController = {
   getClasses: (req, res) => {

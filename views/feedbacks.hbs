@@ -127,7 +127,7 @@
                   <div class="author-img d-flex justify-content-center align-items-center p-1 m-auto">
                     {{#if this.User.image}}
                     <img src="{{this.User.image}}" class="author-avatar-image"
-                      style="clip-path: circle(35%);">
+                      style="clip-path: circle(35%); width: 70px;">
                     {{else}}
                     <i class="fas fa-user-circle text-secondary" style="font-size: 35px;"></i>
                     {{/if}}
@@ -155,7 +155,7 @@
               </p>
             </div>
             
-            {{#if (isAuthor this.User.id ../currentUser.id)}}
+            {{#if (isAuthor this.User.id ../user.id)}}
             <div class="feedback-button d-flex justify-content-end">
               <!-- Button trigger modal -->
               <button type="button" class="submit btn btn-light border-danger text-danger m-1" aria-label="Close" data-toggle="modal" data-target="#feedbackModal-{{this.id}}">
