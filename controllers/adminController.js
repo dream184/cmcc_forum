@@ -3,36 +3,28 @@ const googleDrive = require('../helpers/googleDriveHelpers.js')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const rootFolderId = process.env.GOOGLE_ROOT_FOLDER_ID
-const pageLimit = 15
 const { dayjs } = require('../helpers/dayjsHelpers')
+const { getOffset, getPagination } = require('../helpers/pagination-helper')
 
 const adminController = {
   getClasses: (req, res) => {
-    let offset = 0
-    if (req.query.page) {
-      offset = (req.query.page - 1) * pageLimit
-    }
+    const DEFAULT_LIMIT = 10
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || DEFAULT_LIMIT
+    const offset = getOffset(limit, page)
     Class.findAndCountAll({
-      offset: offset,
-      limit: pageLimit,
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
+      offset,
+      limit
     })
       .then((result) => {
-        const page = Number(req.query.page) || 1
-        const pages = Math.ceil(result.count / pageLimit)
-        const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
-        const prev = page - 1 < 1 ? 1 : page - 1
-        const next = page + 1 > pages ? pages : page + 1
         const data = result.rows.map(r => ({
           ...r.dataValues
         }))
         return res.render('admin/classes', {
           classes: data,
           layout: 'admin',
-          page: page,
-          totalPage: totalPage,
-          prev: prev,
-          next: next
+          pagination: getPagination(limit, page, result.count)
         })
       })
   },
@@ -123,21 +115,21 @@ const adminController = {
       imgur.upload(file.path, (err, img) => {
         return googleDrive.createFolder(name, rootFolderId)
           .then((folder) => {
-              Class.create({
-                name: name,
-                isPublic: isPublic,
-                image: file ? img.data.link : null,
-                googleFolderId: folder.id
+            Class.create({
+              name: name,
+              isPublic: isPublic,
+              image: file ? img.data.link : null,
+              googleFolderId: folder.id
+            })
+              .then(() => {
+                req.flash('success_messages', '班級已經成功建立！')
+                return res.redirect('/admin/classes')
               })
-                .then(() => {
-                  req.flash('success_messages', '班級已經成功建立！')
-                  return res.redirect('/admin/classes')
-                })
-                .catch((error) => {
-                  req.flash('error_messages', '班級無法建立！')
-                  console.log(error)
-                  return res.redirect('back')
-                })
+              .catch((error) => {
+                req.flash('error_messages', '班級無法建立！')
+                console.log(error)
+                return res.redirect('back')
+              })
           })
       })
     } else {
@@ -177,24 +169,19 @@ const adminController = {
     })
   },
   getHomeworks: (req, res) => {
-    let offset = 0
-    if (req.query.page) {
-      offset = (req.query.page - 1) * pageLimit
-    }
+    const DEFAULT_LIMIT = 10
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || DEFAULT_LIMIT
+    let offset = getOffset(limit, page)
     return Class.findByPk(req.params.id)
       .then((selectedClass) => {
         return Homework.findAndCountAll({
-          offset: offset,
-          limit: pageLimit,
+          offset,
+          limit,
           where: { ClassId: req.params.id },
           include: [Class]
         })
           .then((result) => {
-            const page = Number(req.query.page) || 1
-            const pages = Math.ceil(result.count / pageLimit)
-            const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
-            const prev = page - 1 < 1 ? 1 : page - 1
-            const next = page + 1 > pages ? pages : page + 1
             const data = result.rows.map(r => ({
               ...r.dataValues
             }))
@@ -203,10 +190,7 @@ const adminController = {
               homework: data,
               class: selectedClass.toJSON(),
               layout: 'admin',
-              page: page,
-              totalPage: totalPage,
-              prev: prev,
-              next: next
+              pagination: getPagination(limit, page, result.count)
             })
           })
       })
@@ -318,7 +302,6 @@ const adminController = {
           if(name !== homework.name) {
             googleDrive.renameFile(name, homework.googleFolderId)
           }
-
           imgur.setClientID(IMGUR_CLIENT_ID)
           imgur.upload(file.path, (err, img) => { 
             return homework.update({

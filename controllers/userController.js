@@ -1,8 +1,8 @@
 const { User, Voicefile, AttendClass, Homework, Authority, Class } = require('../models')
 const bcrypt = require('bcryptjs')
 const imgur = require('imgur-node-api')
+const { getOffset, getPagination } = require('../helpers/pagination-helper')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
-const pageLimit = 10
 const nodemailer = require('../helpers/nodemailerHelper.js')
 const redis = require('redis')
 const crypto = require('crypto')
@@ -170,40 +170,32 @@ const userController = {
     return res.redirect('/user/signin')
   },
   getUsers: (req, res) => {
-    let offset = 0
-    if (req.query.page) {
-      offset = (req.query.page - 1) * pageLimit
-    }
+    const DEFAULT_LIMIT = 10
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || DEFAULT_LIMIT
+    const offset = getOffset(limit, page)
 
     return User.findAndCountAll({
-      offset: offset,
-      limit: pageLimit,
+      offset,
+      limit,
       raw: true,
       nest: true,
       include: [Authority]
     })
       .then((result) => {     
-        const page = Number(req.query.page) || 1
-        const pages = Math.ceil(result.count / pageLimit)
-        const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
-        const prev = page - 1 < 1 ? 1 : page - 1
-        const next = page + 1 > pages ? pages : page + 1
         const data = result.rows
         return res.render('admin/users', {
           users: data,
           layout: 'admin',
-          page: page,
-          totalPage: totalPage,
-          prev: prev,
-          next: next
+          pagination: getPagination(limit, page, result.count)
         })
       })
   },
   profilePage: (req, res) => {
-    let offset = 0
-    if (req.query.page) {
-      offset = (req.query.page - 1) * pageLimit
-    }
+    const DEFAULT_LIMIT = 10
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || DEFAULT_LIMIT
+    const offset = getOffset(limit, page)
     return User.findByPk(req.user.id, {
       include: [
         { model: AttendClass, include: [Class] }
@@ -211,8 +203,8 @@ const userController = {
     })
       .then((user) => {
         return Voicefile.findAndCountAll({
-          offset: offset,
-          limit: pageLimit,
+          offset,
+          limit,
           where: { UserId: user.id },
           include: [{
             model: Homework,
@@ -220,23 +212,13 @@ const userController = {
           }],
         })
           .then((result) => {
-            const page = Number(req.query.page) || 1
-            const pages = Math.ceil(result.count / pageLimit)
-            const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
-            const prev = page - 1 < 1 ? 1 : page - 1
-            const next = page + 1 > pages ? pages : page + 1
             const data = result.rows.map(r => ({
               ...r.dataValues
             }))
-            console.log(data)
-
             return res.render('profile', { 
               user: user.toJSON(),
               voicefiles: data,
-              page: page,
-              totalPage: totalPage,
-              prev: prev,
-              next: next
+              pagination: getPagination(limit, page, result.count)
             })   
           })  
       })

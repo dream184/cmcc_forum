@@ -1,5 +1,5 @@
 const { Class, Homework, Voicefile, User } = require('../models')
-const pageLimit = 10
+const { getOffset, getPagination } = require('../helpers/pagination-helper')
 
 const frontsideController = {
   getClasses: (req, res) => {
@@ -27,10 +27,10 @@ const frontsideController = {
       .catch(err => console.log(err))
   },
   getHomework: (req, res) => {
-    let offset = 0
-    if (req.query.page) {
-      offset = (req.query.page - 1) * pageLimit
-    }
+    const DEFAULT_LIMIT = 1
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || DEFAULT_LIMIT
+    const offset = getOffset(limit, page)
 
     return Homework.findOne({
       where: {id: req.params.id},
@@ -40,16 +40,11 @@ const frontsideController = {
         Voicefile.findAndCountAll({   
           where: { HomeworkId: homework.id },
           include: [User],
-          offset: offset,
-          limit: pageLimit,
+          offset,
+          limit,
           order: [['createdAt', 'DESC']]
         })
           .then((result) => {
-            const page = Number(req.query.page) || 1
-            const pages = Math.ceil(result.count / pageLimit)
-            const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
-            const prev = page - 1 < 1 ? 1 : page - 1
-            const next = page + 1 > pages ? pages : page + 1
             const data = result.rows.map(r => ({
               ...r.dataValues
             }))
@@ -61,10 +56,7 @@ const frontsideController = {
               voicefiles: data,
               userFavoritesArr: userFavoritesArr,
               userLikesArr: userLikesArr,
-              page: page,
-              totalPage: totalPage,
-              prev: prev,
-              next: next
+              pagination: getPagination(limit, page, result.count)
             })
           })
           .catch(err => console.log(err))

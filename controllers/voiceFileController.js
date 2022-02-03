@@ -1,12 +1,15 @@
 const { Voicefile, Homework, Class, User, AttendClass } = require('../models')
-const googleDrive = require('../helpers/googleDriveHelpers')
 const Op = require('sequelize').Op
-const pageLimit = 15
+const googleDrive = require('../helpers/googleDriveHelpers')
 const { dayjs } = require('../helpers/dayjsHelpers')
+const { getOffset, getPagination } = require('../helpers/pagination-helper')
 
 const voiceFileController = {
   getVoiceFiles: (req, res) => {
-    let offset = 0
+    const DEFAULT_LIMIT = 10
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || DEFAULT_LIMIT
+    const offset = getOffset(limit, page)
     let order = req.params.orderby || 'date-desc'
     const orderBy = {
       'date-asc': [['createdAt', 'ASC']],
@@ -15,15 +18,9 @@ const voiceFileController = {
       'homeworks': [['HomeworkId', 'DESC']],
       'authors': [['UserId', 'DESC']]
     }
-    if (req.query.page) {
-      offset = (req.query.page - 1) * pageLimit
-    }
-    if (req.query.order) {
-      order = req.query.order
-    }
     return Voicefile.findAndCountAll({   
-      offset: offset,
-      limit: pageLimit,
+      offset,
+      limit,
       raw: true,
       nest: true,
       order: orderBy[order],
@@ -34,51 +31,35 @@ const voiceFileController = {
       ]
     })
       .then((result) => {
-        const page = Number(req.query.page) || 1
-        const pages = Math.ceil(result.count / pageLimit)
-        const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
-        const prev = page - 1 < 1 ? 1 : page - 1
-        const next = page + 1 > pages ? pages : page + 1
         const data = result.rows
         return res.render('admin/voicefiles', {
           voicefiles: data,
           layout: 'admin',
           order: order,
-          page: page,
-          totalPage: totalPage,
-          prev: prev,
-          next: next
+          pagination: getPagination(limit, page, result.count)
         })
       })
   },
   getNoFeedbackVoicefiles: (req, res) => {
-    let offset = 0
-    if (req.query.page) {
-      offset = (req.query.page - 1) * pageLimit
-    }
+    const DEFAULT_LIMIT = 10
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || DEFAULT_LIMIT
+    const offset = getOffset(limit, page)
 
     return Voicefile.findAndCountAll({
-      offset: offset,
-      limit: pageLimit,
+      offset,
+      limit,
       where: { isFeedbackedBy: {[Op.eq]: false} },
       raw: true,
       nest: true,
       include: [User, Homework, Class]
     })
       .then((result) => {
-        const page = Number(req.query.page) || 1
-        const pages = Math.ceil(result.count / pageLimit)
-        const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
-        const prev = page - 1 < 1 ? 1 : page - 1
-        const next = page + 1 > pages ? pages : page + 1
         const data = result.rows
         return res.render('admin/nofeedbackvoicefiles', {
           voicefiles: data,
           layout: 'admin',
-          page: page,
-          totalPage: totalPage,
-          prev: prev,
-          next: next
+          pagination: getPagination(limit, page, result.count)
         })
       }).catch((err) => console.log(err))
   },

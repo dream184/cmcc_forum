@@ -1,36 +1,28 @@
 const { Favorite, Voicefile, User, Class, Homework } = require('../models')
-const pageLimit = 10
+const { getOffset, getPagination } = require('../helpers/pagination-helper')
 
 const favoriteController = {
   getFavoriteVoicefiles: (req, res) => {
-    let offset = 0
-    if (req.query.page) {
-      offset = (req.query.page - 1) * pageLimit
-    }
-    Favorite.findAndCountAll({
-      offset: offset,
-      limit: pageLimit,
+    const DEFAULT_LIMIT = 10
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || DEFAULT_LIMIT
+    let offset = getOffset(limit, page)
+    return Favorite.findAndCountAll({
+      offset,
+      limit,
       where: {UserId: req.user.id},
       include: [
         { model: Voicefile, include: [User, Class, Homework] },
         User
-      ] 
+      ]
     })
       .then((result) => {
-        const page = Number(req.query.page) || 1
-        const pages = Math.ceil(result.count / pageLimit)
-        const totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
-        const prev = page - 1 < 1 ? 1 : page - 1
-        const next = page + 1 > pages ? pages : page + 1
         const data = result.rows.map(r => ({
           ...r.dataValues
         }))
         return res.render('favorite', {
           favorites: data,
-          page: page,
-          totalPage: totalPage,
-          prev: prev,
-          next: next
+          pagination: getPagination(limit, page, result.count)
         })
       })
       .catch(err => console.log(err))
