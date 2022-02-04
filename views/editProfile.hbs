@@ -28,11 +28,11 @@
         </div>
         <div class="user-class text-center m-2">
           <h5>參與課程</h5>
-          {{#each user.AttendClasses}}
-            {{this.Class.name}}
+          {{#each user.AttendedClasses}}
+            {{this.name}}
           <br>
           {{/each}}
-          {{#unless user.AttendClasses}}
+          {{#unless user.AttendedClasses}}
           尚無加入任何課程
           {{/unless}}
         </div>

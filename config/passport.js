@@ -3,7 +3,7 @@ const LocalStrategy = require('passport-local')
 const FacebookStrategy = require('passport-facebook').Strategy
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy
 const bcrypt = require('bcryptjs')
-const { User, Authority, Favorite, Voicefile } = require('../models')
+const { User, Authority, Class, Voicefile } = require('../models')
 
 passport.use(new LocalStrategy(
   {
@@ -82,7 +82,8 @@ passport.deserializeUser((id, done) => {
     include: [
       Authority,
       { model: Voicefile, as: 'FavoritedVoicefiles' },
-      { model: Voicefile, as: 'LikedVoicefiles' }
+      { model: Voicefile, as: 'LikedVoicefiles' },
+      { model: Class, as: 'AttendedClasses' }
     ]
   })
     .then(user => {

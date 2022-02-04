@@ -6,10 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model { 
     static associate(models) {
       User.belongsTo(models.Authority)
-      User.hasMany(models.AttendClass)
       User.hasMany(models.Voicefile)
       User.hasMany(models.Feedback)
-      User.hasMany(models.Favorite)
       User.belongsToMany(models.Voicefile, {
         through: models.Like,
         foreignKey: 'UserId',
@@ -19,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         through: models.Favorite,
         foreignKey: 'UserId',
         as: 'FavoritedVoicefiles'
+      })
+      User.belongsToMany(models.Class, {
+        through: models.AttendClass,
+        foreignKey: 'UserId',
+        as: 'AttendedClasses'
       })
     }
   };

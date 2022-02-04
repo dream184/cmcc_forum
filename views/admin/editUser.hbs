@@ -26,8 +26,8 @@
                 <h6>暱稱：{{userData.nickName}}<h6>
                 <h6>權限：{{userData.Authority.name}}</h6>
                 <h6>參與課程：</h6>
-                {{#each userData.AttendClasses}}
-                <h6>{{this.Class.name}}</h6>
+                {{#each userData.AttendedClasses}}
+                <h6>{{this.name}}</h6>
                 {{/each}}             
                 <h6>Email: {{userData.email}}</h6>
                 <h6>加入日期：{{dayjs userData.createdAt}}</h6>
@@ -58,9 +58,9 @@
                       <label class="mr-sm-2 sr-only" for="authoritySelect">Preference</label>
                       <select class="custom-select mr-sm-2" id="authoritySelect" name="authority">
                         <option selected disabled>選擇...</option>
-                        <option value="1">user</option>
-                        <option value="3">mentor</option>
-                        <option value="4">admin</option>
+                        <option value="1" {{#if (equal userData.Authority.id 1)}}selected{{/if}}>user</option>
+                        <option value="3" {{#if (equal userData.Authority.id 3)}}selected{{/if}}>mentor</option>
+                        <option value="4" {{#if (equal userData.Authority.id 4)}}selected{{/if}}>admin</option>
                       </select>
                     </div>
                     <div class="col-auto my-1">
@@ -72,9 +72,9 @@
                 <hr />
 
                 <h6>已加入班級：</h6>
-                {{#each userData.AttendClasses}}
+                {{#each userData.AttendedClasses}}
                 <div class="shadow-sm bg-white d-flex justify-content-between mb-2">          
-                  <span>{{this.Class.name}}</span> 
+                  <span>{{this.name}}</span> 
 
 
                   <!-- Button trigger modal -->

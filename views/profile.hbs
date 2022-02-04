@@ -42,11 +42,11 @@
         </div>
         <div class="user-class text-center m-2">
           <h5>參與課程</h5>
-          {{#each user.AttendClasses}}
-            {{this.Class.name}}
+          {{#each user.AttendedClasses}}
+            {{this.name}}
           <br>
           {{/each}}
-          {{#unless user.AttendClasses}}
+          {{#unless user.AttendedClasses}}
             尚無加入任何課程
           {{/unless}}
         </div>
@@ -78,7 +78,7 @@
 
                   <div class="voicefile-class">
                     <div class="voicefile-name d-flex justify-content-center align-items-center p-1">
-                      <span>{{this.Homework.dataValues.Class.name}}</span>
+                      <span>{{this.Homework.Class.name}}</span>
                     </div>
                   </div>
                   
@@ -130,28 +130,28 @@
         </div>
 
         <div class="tab-pane fade p-3" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab">
-          {{#each user.AttendClasses}}
+          {{#each user.AttendedClasses}}
           <div class="card mb-3 p-3 mb-2 bg-light text-dark mx-auto mb-3" style="max-width: 720px;">
-            <a href="/classes/{{this.Class.id}}">      
+            <a href="/classes/{{this.id}}">      
               <div class="class row no-gutters">
                 <div class="col-md-4 d-flex justify-content-center">
-                  {{#if this.Class.image}}
-                  <img class="w-100" src="{{this.Class.image}}">
+                  {{#if this.image}}
+                  <img class="w-100" src="{{this.image}}">
                   {{else}}
                   <img class="default-image" src="/image/logo.jpg" style="height: 155px;">
                   {{/if}}
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
-                    <h5 class="card-title">{{this.Class.name}}</h5>
-                    <p class="card-text"><small class="text-muted">加入日期：{{dayjs this.Class.createdAt}}</small></p>
+                    <h5 class="card-title">{{this.name}}</h5>
+                    <p class="card-text"><small class="text-muted">加入日期：{{dayjs this.createdAt}}</small></p>
                   </div>
                 </div>
               </div>
             </a>
           </div>
           {{/each}}
-          {{#unless user.AttendClasses}}
+          {{#unless user.AttendedClasses}}
             <div class="alert alert-info my-2" role="alert">
               您尚未加入任何課程!
             </div>

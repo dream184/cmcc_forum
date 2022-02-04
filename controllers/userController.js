@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const crypto = require('crypto')
-const { User, Voicefile, AttendClass, Homework, Authority, Class } = require('../models')
+const { User, Voicefile, Homework, Authority, Class } = require('../models')
 const { getOffset, getPagination } = require('../helpers/paginationHelper')
 const { imgurFileHandler } = require('../helpers/imgurFileHelper')
 const nodemailer = require('../helpers/nodemailerHelper.js')
@@ -157,28 +157,22 @@ const userController = {
     const page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || DEFAULT_LIMIT
     const offset = getOffset(limit, page)
-
-    return Promise.all([
-      User.findByPk(req.user.id, {
-        include: [{ model: AttendClass, include: [Class] }]
-      }),
-      Voicefile.findAndCountAll({
-        offset,
-        limit,
-        where: { UserId: req.user.id },
-        include: [{
-          model: Homework,
-          include: [Class]
-        }],
-      })
-    ])
-      .then(([user, voicefiles]) => {
-        const data = voicefiles.rows.map(r => ({
-          ...r.dataValues
-        }))
+    const user = { ...req.user }
+    return Voicefile.findAndCountAll({
+      offset,
+      limit,
+      where: { UserId: req.user.id },
+      include: [{
+        model: Homework,
+        include: [Class]
+      }],
+      raw: true,
+      nest: true
+    })
+      .then((voicefiles) => {
         return res.render('profile', { 
-          user: user.toJSON(),
-          voicefiles: data,
+          user,
+          voicefiles: voicefiles.rows,
           pagination: getPagination(limit, page, voicefiles.count)
         })
       })
@@ -187,10 +181,11 @@ const userController = {
   editProfile: (req, res) => {
     return User.findByPk(req.user.id, {
       include: [
-        { model: AttendClass, include: [Class] }
+        { model: Class, as: 'AttendedClasses' }
       ]
     })
       .then((user) => {
+        console.log(user)
         return res.render('editProfile', { user: user.toJSON() })
       })
       .catch(err => console.log(err))
@@ -268,10 +263,11 @@ const userController = {
     return User.findByPk(req.params.id, {
       include: [
         Authority,
-        { model: AttendClass, include: [Class] },
+        { model: Class, as: 'AttendedClasses' },
       ]
     })
       .then((user) => {
+        console.log(user.toJSON())
         return Class.findAll({
           raw: true,
           limit: 10,

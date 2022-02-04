@@ -1,4 +1,4 @@
-const { AttendClass, User } = require('../models')
+const { AttendClass, User, Class } = require('../models')
 
 const attendController = {
   addAttendClass: (req, res) => {
@@ -8,11 +8,13 @@ const attendController = {
     }
 
     return User.findByPk(req.params.id, {
-      include: [AttendClass]
+      include: [{
+        model: Class, as: 'AttendedClasses' 
+      }]
     })
       .then((user) => {
-        const attendClassArr = user.AttendClasses
-        const attendClassIdArr = attendClassArr.map(e => e.ClassId)
+        const attendClassArr = user.AttendedClasses
+        const attendClassIdArr = attendClassArr.map(e => e.id)
 
         if (attendClassIdArr.includes(Number(req.body.ClassId))) {
           req.flash('error_messages', '班級重覆，無法加入該班級')
@@ -49,7 +51,6 @@ const attendController = {
         return res.redirect('back')
       })
   }
-  
 }
 
 module.exports = attendController

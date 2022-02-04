@@ -5,8 +5,6 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class AttendClass extends Model {
     static associate(models) {
-      AttendClass.belongsTo(models.Class)
-      AttendClass.belongsTo(models.User)
     }
   };
   AttendClass.init({
