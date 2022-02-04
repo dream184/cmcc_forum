@@ -8,6 +8,9 @@ module.exports = {
   dayjs: function (time) {
     return dayjs(time).tz("Asia/Taipei").format('YYYY/MM/DD HH:mm')
   },
+  dayjsFormat2: function (time) {
+    return dayjs(time).format('YYYY-MM-DD')
+  },
   rankingStar: function (number) {
     const star = '<i class="fas fa-star text-warning"></i>'
     return star.repeat(number)
