@@ -10,29 +10,29 @@
         <h3 class="text-center mb-0">收藏音檔</h3>
       </div>
       <hr />
-      {{#unless favorites}}
+      {{#unless favoritedVoicefiles}}
       <div class="alert alert-info" role="alert">
         現在沒有任何收藏<br />
         趕快把喜歡的音檔加入收藏吧！
       </div>
       {{/unless}}
-      {{#each favorites}}
+      {{#each favoritedVoicefiles}}
       <div class="card bg-light text-dark m-auto" style="max-width: 720px;">    
         <div class="voicefile row no-gutters">
           <div class="col-md-4 d-flex flex-column">
             <div class="voicefile-user-container">
               <div class="voicefile-user d-flex justify-content-center align-items-center p-1">
-                <span>{{this.Voicefile.dataValues.User.dataValues.name}}</span>
+                <span>{{this.User.dataValues.name}}</span>
               </div>
             </div>
             <div class="voicefile-class-container">
               <div class="voicefile-class d-flex justify-content-center align-items-center p-1">
-                <span>{{this.Voicefile.dataValues.Class.dataValues.name}}</span>
+                <span>{{this.Class.dataValues.name}}</span>
               </div>
             </div>
             <div class="voicefile-homework-container">
               <div class="voicefile-homework d-flex justify-content-center align-items-center p-1">
-                <span>{{this.Voicefile.dataValues.Homework.dataValues.name}}</span>
+                <span>{{this.Homework.dataValues.name}}</span>
               </div>
             </div>
             <div class="voicefile-button-container">
@@ -57,7 +57,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                        <form action="/favorites/{{this.Voicefile.dataValues.id}}?_method=DELETE" method="POST">
+                        <form action="/favorites/{{this.id}}?_method=DELETE" method="POST">
                           <button type="submit" class="btn btn-white border border-danger text-danger mx-1 p-1">取消收藏</button>
                         </form>
                       </div>
@@ -68,7 +68,7 @@
                 {{!-- <form action="/favorites/{{this.Voicefile.id}}?_method=DELETE" method="POST">
                   <button type="submit" class="btn btn-white border border-danger text-danger mx-1 p-1">取消收藏</button>
                 </form> --}}
-                <a href="/classes/{{this.Voicefile.dataValues.Class.dataValues.id}}/homeworks/{{this.Voicefile.dataValues.Homework.dataValues.id}}/voicefiles/{{this.Voicefile.dataValues.id}}/feedbacks" class="btn btn-success p-1">查看回饋</a>
+                <a href="/classes/{{this.Class.dataValues.id}}/homeworks/{{this.Homework.dataValues.id}}/voicefiles/{{this.id}}/feedbacks" class="btn btn-success p-1">查看回饋</a>
               </div>
             </div>
           </div>
@@ -85,7 +85,7 @@
                   您的瀏覽器不支援 audio tag，請點選下面網址收聽音檔
                   <a href="https://docs.google.com/uc?export=open&id={{this.Voicefile.dataValues.googleFileId}}">音檔連結</a>
                 </audio> --}}
-                <iframe src="https://drive.google.com/file/d/{{this.Voicefile.dataValues.googleFileId}}/preview" width="100%" height="65" class="bg bg-white"></iframe>
+                <iframe src="https://drive.google.com/file/d/{{this.googleFileId}}/preview" width="100%" height="65" class="bg bg-white"></iframe>
               </div>
             </div>
           </div>

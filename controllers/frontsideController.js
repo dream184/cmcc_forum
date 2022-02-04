@@ -47,7 +47,7 @@ const frontsideController = {
               ...r.dataValues
             }))
             const user = req.user
-            const userFavoritesArr = user.Favorites.map(e => e.VoicefileId)
+            const userFavoritesArr = user.FavoritedVoicefiles.map(e => e.id)
             const userLikesArr = user.LikedVoicefiles.map(e => e.id)
             return res.render('homework', { 
               homework: homework.toJSON(),

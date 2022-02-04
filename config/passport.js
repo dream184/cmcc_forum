@@ -81,7 +81,7 @@ passport.deserializeUser((id, done) => {
   User.findByPk(id, {
     include: [
       Authority,
-      Favorite,
+      { model: Voicefile, as: 'FavoritedVoicefiles' },
       { model: Voicefile, as: 'LikedVoicefiles' }
     ]
   })

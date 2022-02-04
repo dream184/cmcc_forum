@@ -10,11 +10,15 @@ module.exports = (sequelize, DataTypes) => {
       Voicefile.belongsTo(models.User)
       Voicefile.hasMany(models.Feedback)
       Voicefile.hasMany(models.Favorite)
-      // Voicefile.hasMany(models.Like)
       Voicefile.belongsToMany(models.User, {
         through: models.Like,
         foreinKey: 'VoicefileId',
         as: 'LikedUsers'
+      })
+      Voicefile.belongsToMany(models.User, {
+        through: models.Favorite,
+        foreinKey: 'VoicefileId',
+        as: 'FavoritedUsers'
       })
     }
   };

@@ -5,8 +5,6 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Like extends Model {
     static associate(models) {
-      // Like.belongsTo(models.User)
-      // Like.belongsTo(models.Voicefile)
     }
   };
   Like.init({
