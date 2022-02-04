@@ -8,9 +8,7 @@ const frontsideController = {
       raw: true 
     })
       .then((classes) => {
-        return res.render('index', {
-          classes: classes
-        })
+        return res.render('index', { classes })
       })
   },
   getHomeworks: (req, res) => {
@@ -50,7 +48,7 @@ const frontsideController = {
             }))
             const user = req.user
             const userFavoritesArr = user.Favorites.map(e => e.VoicefileId)
-            const userLikesArr = user.Likes.map(e => e.VoicefileId)
+            const userLikesArr = user.LikedVoicefiles.map(e => e.id)
             return res.render('homework', { 
               homework: homework.toJSON(),
               voicefiles: data,

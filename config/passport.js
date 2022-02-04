@@ -3,7 +3,7 @@ const LocalStrategy = require('passport-local')
 const FacebookStrategy = require('passport-facebook').Strategy
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy
 const bcrypt = require('bcryptjs')
-const { User, Authority, Favorite, Like } = require('../models')
+const { User, Authority, Favorite, Voicefile } = require('../models')
 
 passport.use(new LocalStrategy(
   {
@@ -79,7 +79,11 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   User.findByPk(id, {
-    include: [Authority, Favorite, Like]
+    include: [
+      Authority,
+      Favorite,
+      { model: Voicefile, as: 'LikedVoicefiles' }
+    ]
   })
     .then(user => {
       user = user.toJSON()
