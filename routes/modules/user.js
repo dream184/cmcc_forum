@@ -4,13 +4,7 @@ const passport = require('../../config/passport')
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 const userController = require('../../controllers/userController.js')
-
-const authenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next()
-  }
-  res.redirect('/user/signin')
-}
+const { authenticated } = require('../../middlewares/auth.js')
 
 router.get('/signin', userController.signInPage)
 router.get('/signup', userController.signUpPage)

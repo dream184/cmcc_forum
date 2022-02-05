@@ -7,13 +7,8 @@ const favorite = require('./modules/favorite')
 const like = require('./modules/like')
 const user = require('./modules/user')
 const home = require('./modules/home')
+const { authenticated } = require('../middlewares/auth.js')
 
-const authenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next()
-  }
-  res.redirect('/user/signin')
-}
 router.use('/auth', auth)
 router.use('/user', user)
 router.use('/admin', authenticated, admin)

@@ -7,31 +7,7 @@ const attendController = require('../../controllers/attendController.js')
 const voiceFileController = require('../../controllers/voiceFileController')
 const userController = require('../../controllers/userController.js')
 const feedbackController = require('../../controllers/feedbackController.js')
-
-const authenticatedMentorAndAdmin = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    const mentorId = 3
-    const adminId = 4
-    if (req.user.AuthorityId === mentorId || req.user.AuthorityId === adminId) {
-      return next()
-    }
-    req.flash('error_messages', '您沒有權限進行此操作!')
-    res.redirect('/admin/voicefiles')
-  }
-  res.redirect('/user/signin')
-}
-
-const authenticatedAdmin = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    const adminId = 4
-    if (req.user.AuthorityId === adminId) {
-      return next()
-    }
-    req.flash('error_messages', '您沒有權限進行此操作!')
-    res.redirect('/admin/voicefiles')
-  }
-  res.redirect('/user/signin')
-}
+const { authenticatedMentorAndAdmin, authenticatedAdmin } = require('../../middlewares/auth.js')
 
 router.get('/classes', authenticatedAdmin, adminController.getClasses)
 router.get('/classes/create', authenticatedAdmin, adminController.createClass)
