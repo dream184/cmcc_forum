@@ -3,9 +3,12 @@ const Op = require('sequelize').Op
 const googleDrive = require('../helpers/googleDriveHelpers')
 const { dayjs } = require('../helpers/dayjsHelpers')
 const { getOffset, getPagination } = require('../helpers/paginationHelper')
+const { search } = require('../helpers/searchHelper')
 
 const voiceFileController = {
   getVoiceFiles: (req, res) => {
+    const type = req.query.type
+    const keyword = req.query.keyword
     const DEFAULT_LIMIT = 10
     const page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || DEFAULT_LIMIT
@@ -18,26 +21,34 @@ const voiceFileController = {
       'homeworks': [['HomeworkId', 'DESC']],
       'authors': [['UserId', 'DESC']]
     }
-    return Voicefile.findAndCountAll({   
-      offset,
-      limit,
-      raw: true,
-      nest: true,
-      order: orderBy[order],
-      include: [
-        User,
-        Homework,
-        Class
-      ]
-    })
-      .then((result) => {
-        const data = result.rows
-        return res.render('admin/voicefiles', {
-          voicefiles: data,
-          layout: 'admin',
-          order: order,
-          pagination: getPagination(limit, page, result.count)
+    search(type, keyword)
+      .then((searchResults) => {
+        const where = type ? searchResults : {}
+        Voicefile.findAndCountAll({
+          offset,
+          limit,
+          raw: true,
+          nest: true,
+          order: orderBy[order],
+          include: [
+            User,
+            Homework,
+            Class
+          ],
+          where: where
         })
+          .then((result) => {
+            const data = result.rows
+            return res.render('admin/voicefiles', {
+              voicefiles: data,
+              layout: 'admin',
+              order: order,
+              type,
+              keyword,
+              pagination: getPagination(limit, page, result.count)
+            })
+          })
+          .catch((err) => console.log(err))
       })
   },
   getNoFeedbackVoicefiles: (req, res) => {
@@ -79,12 +90,14 @@ const voiceFileController = {
         include: [ Class, Voicefile ]
       }),
       User.findByPk(req.user.id, {
-        include: [ AttendClass ],
+        include: [{
+          model: Class, as: 'AttendedClasses'
+        }]
       })
     ])
       .then(([homework, user]) => {
-        const AttendClasses = user.AttendClasses
-        const AttendClassArr = AttendClasses.map(e => e.ClassId)
+        const AttendClasses = user.AttendedClasses
+        const AttendClassArr = AttendClasses.map(e => e.id)
         const homeworkJSON = homework.toJSON()
         const filename = `${homework.Class.name}_${homework.name}_${req.user.name}`
 

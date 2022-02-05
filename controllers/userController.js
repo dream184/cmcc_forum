@@ -6,6 +6,7 @@ const { imgurFileHandler } = require('../helpers/imgurFileHelper')
 const nodemailer = require('../helpers/nodemailerHelper.js')
 const { subject, mailContent } = require('../helpers/resetmailHelper')
 const { client, redisConnect } = require('../helpers/redisHelper')
+const Op = require('sequelize').Op
 
 redisConnect()
 
@@ -242,19 +243,23 @@ const userController = {
     const page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || DEFAULT_LIMIT
     const offset = getOffset(limit, page)
-
+    const keyword = req.query.keyword
+    const where = keyword ? { name: { [Op.substring]: keyword }} : {}
+    
     return User.findAndCountAll({
       offset,
       limit,
       raw: true,
       nest: true,
-      include: [Authority]
+      include: [Authority],
+      where: where
     })
       .then((result) => {     
         const data = result.rows
         return res.render('admin/users', {
           users: data,
           layout: 'admin',
+          keyword,
           pagination: getPagination(limit, page, result.count)
         })
       })
@@ -267,7 +272,6 @@ const userController = {
       ]
     })
       .then((user) => {
-        console.log(user.toJSON())
         return Class.findAll({
           raw: true,
           limit: 10,

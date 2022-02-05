@@ -8,13 +8,29 @@
           選擇排序
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-          <a href="/admin/voicefiles?orderby=date-asc" class="dropdown-item"> 依日期：從舊到新</a>
-          <a href="/admin/voicefiles?orderby=date-desc" class="dropdown-item">依日期：從新到舊</a>
-          <a href="/admin/voicefiles?orderby=classes" class="dropdown-item">依班級</a>
-          <a href="/admin/voicefiles?orderby=homeworks" class="dropdown-item">依作業排序</a>
-          <a href="/admin/voicefiles?orderby=authors" class="dropdown-item">依發布人排序</a>
+          <a href="/admin/voicefiles?orderby=date-asc&type={{type}}&keyword={{keyword}}" class="dropdown-item"> 依日期：從舊到新</a>
+          <a href="/admin/voicefiles?orderby=date-desc&type={{type}}&keyword={{keyword}}" class="dropdown-item">依日期：從新到舊</a>
+          <a href="/admin/voicefiles?orderby=classes&type={{type}}&keyword={{keyword}}" class="dropdown-item">依班級</a>
+          <a href="/admin/voicefiles?orderby=homeworks&type={{type}}&keyword={{keyword}}" class="dropdown-item">依作業排序</a>
+          <a href="/admin/voicefiles?orderby=authors&type={{type}}&keyword={{keyword}}" class="dropdown-item">依發布人排序</a>
         </div>
       </div>
+    </div>
+    <div class="d-flex justify-content-center">
+      <form class="form-inline" action="/admin/voicefiles" method="get">
+        <div class="form-group mb-2">
+          <label for="search-bar" class="sr-only">請輸入使用者名字</label>
+          <input type="text" class="form-control" id="search-bar" name="keyword" placeholder="輸入使用者">
+        </div>
+        <div class="form-group mb-2">
+          <select class="custom-select" name="type">
+            <option value="author" {{#if (equal type 'author')}}selected{{/if}}>依發布人</option>
+            <option value="class" {{#if (equal type 'class')}}selected{{/if}}>依班級</option>
+            <option value="homework" {{#if (equal type 'homework')}}selected{{/if}}>依作業排序</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">搜尋</button>
+      </form>
     </div>
 
     <table class="voicefiles-table bg-white w-100">
@@ -130,7 +146,7 @@
     </table>
     {{#unless voicefiles}}
     <div class="alert alert-info my-2" role="alert">
-      現在沒有任何上傳音檔
+      沒有任何音檔
     </div>
     {{/unless}}
   </div>
@@ -139,7 +155,7 @@
     <nav aria-label="Page navigation example" class="mx-auto my-2">
       <ul class="pagination d-flex justify-content-center">
         <li class="page-item">
-          <a class="page-link" href="/admin/voicefiles?page={{pagination.prev}}&order={{order}}" aria-label="Previous">
+          <a class="page-link" href="/admin/voicefiles?page={{pagination.prev}}&orderby={{order}}&type={{type}}&keyword={{keyword}}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -147,11 +163,11 @@
         {{#if (equal this ../pagination.currentPage)}}
         <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
         {{else}}
-        <li class="page-item"><a class="page-link" href="/admin/voicefiles?page={{this}}&order={{../order}}">{{this}}</a>
+        <li class="page-item"><a class="page-link" href="/admin/voicefiles?page={{this}}&orderby={{../order}}&type={{type}}&keyword={{keyword}}">{{this}}</a>
         </li>
         {{/if}}
         {{/each}}
-        <li class="page-item"><a class="page-link" href="/admin/voicefiles?page={{pagination.next}}&order={{order}}"
+        <li class="page-item"><a class="page-link" href="/admin/voicefiles?page={{pagination.next}}&orderby={{order}}&type={{type}}&keyword={{keyword}}"
             aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>

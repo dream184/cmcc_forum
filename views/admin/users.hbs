@@ -1,7 +1,16 @@
 <section class="users-section col-12 col-md-9">
   <div class="users-container">
-    <div class="users-title d-flex justify-content-between my-3">
+    <div class="users-title d-flex justify-content-center my-3">
       <h3 class="font-weitht-bold">管理所有使用者權限</h3>
+    </div>
+    <div class="d-flex justify-content-center">
+      <form class="form-inline" action="/admin/users" method="get">
+        <div class="form-group mb-2">
+          <label for="search-bar" class="sr-only">請輸入使用者名字</label>
+          <input type="text" class="form-control" id="search-bar" name="keyword" placeholder="輸入使用者">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">搜尋</button>
+      </form>
     </div>
     {{>message}}
     <table class="users-table bg-white w-100">
@@ -43,7 +52,7 @@
     <nav aria-label="Page navigation example" class="mx-auto my-2">
       <ul class="pagination d-flex justify-content-center">
         <li class="page-item">
-          <a class="page-link" href="/admin/users?page={{pagination.prev}}" aria-label="Previous">
+          <a class="page-link" href="/admin/users?page={{pagination.prev}}&keyword={{keyword}}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -51,10 +60,10 @@
         {{#if (equal this ../pagination.currentPage)}}
         <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
         {{else}}
-        <li class="page-item"><a class="page-link" href="/admin/users?page={{this}}">{{this}}</a></li>
+        <li class="page-item"><a class="page-link" href="/admin/users?page={{this}}&keyword={{../keyword}}">{{this}}</a></li>
         {{/if}}
         {{/each}}
-        <li class="page-item"><a class="page-link" href="/admin/users?page={{pagination.next}}" aria-label="Next">
+        <li class="page-item"><a class="page-link" href="/admin/users?page={{pagination.next}}&keyword={{keyword}}" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
